@@ -1,0 +1,398 @@
+/*ластик*/
+
+*
+{
+	margin: 0;
+	padding: 0;
+}
+
+body
+{
+	font-family: serif;
+	font-size: 16px;
+}
+
+h1, h2, h3, h4, h5, h6
+{
+	/*font-family: 'Philosopher', sans-serif;*/
+	text-align: center;
+}
+
+h1
+{
+	margin: 1em 0;
+	font-size: 1.6em;
+}
+
+h2
+{
+	margin: 1em 0;
+	font-size: 1.4em;
+}
+
+h3
+{
+	margin: 1em 0;
+	font-size: 1.2em;
+}
+
+h4
+{
+	margin: 1em 0;
+	font-size: 1em;
+}
+
+h5
+{
+	margin: 1em 0;
+	font-size: 1em;
+}
+
+h6
+{
+	margin: 1em 0;
+	font-size: 1em;
+}
+
+img, a img
+{
+	vertical-align: top;
+	border: none;
+}
+
+ul
+{
+	list-style: none;
+}
+
+ul li
+{
+	margin: 25px 0;
+}
+
+a, a:link, a:visited, a:active
+{
+	color: red;
+}
+
+a:hover
+{
+	color: black;
+}
+
+.red
+{
+	color: red;
+}
+
+.fn
+{
+	display: none;
+	height: 0;
+}
+
+.gl-center
+{
+	width: 900px;
+	margin: 0 auto;
+	overflow: auto;
+	padding: 140px 0 0;
+	background: url('back.jpg') top no-repeat;
+	text-align: center;
+}
+
+.gl-admin
+{
+	width: 90%;
+	margin: 0 5% 0 5%;
+}
+
+	.crop
+	{
+		margin: 1.5em 0.5em;
+		border: 1px solid black;
+	}
+
+	.jcrop-holder
+	{
+		margin: 1.5em auto;
+		border: 1px solid black;
+	}
+
+	#anav, #asubnav
+	{
+		color: red;
+	}
+
+	#asubnav, #asubnav a
+	{
+		color: #80f;
+	}
+
+	#backnav
+	{
+		margin-top: 10px;
+		text-align: left;
+	}
+
+	#nav
+	{
+		clear: both;
+		padding: 0 5px 30px;
+		text-align: right;
+		color: red;
+	}
+
+	.img-str
+	{
+		overflow: auto;
+		clear: both;
+		width: 100%;
+	}
+
+		.img-box, .img-box-last, .img-box-first
+		{
+			margin: 5px 10px;
+			padding: 4px;
+			float: left;
+			position: relative;
+		}
+
+		.img-box-last
+		{
+			margin-right: 0;
+		}
+
+		.img-box-first
+		{
+			margin-left: 0;
+		}
+
+		.img-box:hover, .img-box-last:hover, .img-box-first:hover
+		{
+			background-color: black;
+		}
+
+			.img-box img, .img-box-last img, .img-box-first img
+			{
+				border: 1px solid black;
+			}
+
+	.img-str-big
+	{
+		overflow: auto;
+		clear: both;
+		width: 900px;
+		margin: 5px auto;
+	}
+
+		.img-box-big
+		{
+			padding: 4px;
+			width: 892px;
+			position: relative;
+		}
+
+		/*.img-box-big:hover
+		{
+			background-color: black;
+		}*/
+
+			.img-box-big img
+			{
+				border: 1px solid black;
+			}
+
+	.web-box
+	{
+		margin: 15px 4px 15px 4px;
+		overflow: auto;
+		text-align: left;
+	}
+
+	#footer
+	{
+		line-height: 100px;
+		clear: both;
+		padding-top: 10px;
+		margin-top: 30px;
+	}
+
+		#year
+		{
+			float: left;
+			font-size: 14px;
+			margin-left: 15px;
+		}
+
+		#logo
+		{
+			float: left;
+			margin-left: 4px;
+		}
+
+		#links
+		{
+			margin-right: 4px;
+			text-align: right;
+			color: red;
+		}
+
+	.year
+	{
+		margin: 26px 4px 6px;
+		height: 26px;
+		line-height: 26px;
+		text-align: left;
+	}
+
+		div.year h2
+		{
+			display: inline;
+			margin: 0;
+			padding: 1px 16px;
+			font-size: 1em;
+			color: white;
+			background: red;
+		}
+
+#tags, #tags_a
+{
+	line-height: 2.5em;
+	margin: 26px 5px;
+}
+
+#tags_a a
+{
+	border-bottom: 1px red dashed;
+}
+
+#tags_a a:hover
+{
+	border-bottom: 1px black dashed;
+}
+
+.tag
+{
+	text-decoration: none;
+	margin-right: 0.3em;
+	font-family: serif;
+}
+
+.tag0
+{
+	font-size: 0.9em;
+	color: #ccc;
+}
+
+.tag1
+{
+	font-size: 1.0em;
+}
+
+.tag2
+{
+	font-size: 1.3em;
+}
+
+.tag3
+{
+	font-size: 1.6em;
+}
+
+.tag4
+{
+	font-size: 1.9em;
+}
+
+.tag5
+{
+	font-size: 2.2em;
+}
+
+.tag6
+{
+	font-size: 2.5em;
+}
+
+.tbl_result
+{
+	width: 99.9%;
+	margin: 30px 0 0;
+	border-collapse: collapse;
+	margin-left: 0.1%;
+	border-bottom: 1px dashed #ccc;
+}
+
+.tbl_result td
+{
+	padding: 4px 8px;
+	border-right: 1px dashed #ccc;
+	border-left: 1px dashed #ccc;
+	margin: 0;
+}
+.tbl_result th
+{
+	font-weight: bold;
+	padding: 6px 8px;
+	border-bottom: 2px solid black;
+}
+.tbl_result td img
+{
+	margin: 4px 8px;
+	border: 1px solid black;
+}
+
+.tbl_result td a img, .tbl_result td span img
+{
+	margin: 4px 4px;
+	border: none;
+}
+
+.tbl_result tr
+{
+}
+
+.tbl_result tr.odd
+{
+}
+
+.tbl_result tr.even
+{
+	background-color: #eee;
+}
+
+p.num
+{
+	position: absolute;
+	font-weight: bold;
+	font-size: 0.9em;
+	color: white;
+	background: black;
+	padding: 2px 4px;
+	top: 10px;
+	left: 10px;
+}
+
+ul.tagslist
+{
+	padding: 0;
+	margin: 0;
+}
+
+ul.tagslist li
+{
+	display: inline;
+}
+
+a.spoiler
+{
+	text-decoration: none;
+	border-bottom: 1px red dashed;
+	cursor: pointer;
+}
+
+a:hover.spoiler
+{
+	border-bottom: 1px black dashed;
+}
