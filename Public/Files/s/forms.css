@@ -1,0 +1,30 @@
+input, textarea
+{
+	margin: 0.5em 0;
+}
+
+input.text, textarea.text
+{
+	padding: 2px 10px;
+	width: 300px;
+}
+
+input.submit, button
+{
+	padding: 1px 16px;
+	margin-top: 1em;
+}
+
+label
+{
+	font-weight: bold;
+}
+
+.msg
+{
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	vertical-align: top;
+	margin-top: 8px;
+}

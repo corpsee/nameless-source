@@ -1,0 +1,2 @@
+<img class="crop" src="<?php echo FILE_PATH_URL; ?>pictures/xmin/<?php echo $image['min']; ?>.jpg" width="200" height="90" />
+<img class="crop" src="<?php echo FILE_PATH_URL; ?>pictures/xgray/<?php echo $image['gray']; ?>.jpg" width="200" height="90" />
