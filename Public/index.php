@@ -34,9 +34,6 @@ require_once ROOT_PATH .'Vendors/autoload.php';
 require_once ROOT_PATH .'Functions.php';
 
 use Framework\HttpCache;
-use Assetic\Filter\Yui\JsCompressorFilter;
-use Assetic\Filter\Yui\CssCompressorFilter;
-use Assetic\Filter\CssMinFilter;
 use Symfony\Component\HttpKernel\HttpCache\Store;
 use Framework\Kernel;
 
@@ -50,35 +47,6 @@ $options = array
 	'stale_while_revalidate' => 2,
 	'stale_if_error'         => 60,
 );
-
-//echo file_get_contents('/Files/s/main.css');
-use Assetic\Asset\AssetCollection;
-use Assetic\Asset\FileAsset;
-
-$css = new AssetCollection(array
-(
-	new FileAsset(FILE_PATH . 's/main.css', new CssCompressorFilter(ROOT_PATH . 'yuicompressor-2.4.jar', 'java')),
-	new FileAsset(FILE_PATH . 's/normalize-2.0.1.css'),
-)
-);
-
-//print_r($css->dump());
-
-$filter = new JsCompressorFilter(ROOT_PATH . 'yuicompressor-2.4.jar', 'C:\Program Files\Java\java.exe');
-$filter->setCharset('UTF-8');
-$filter->setNomunge(FALSE);
-$filter->setDisableOptimizations(TRUE);
-
-//echo '<pre>'; print_r($filter); exit;
-
-$js = new AssetCollection(array
-(
-	new FileAsset(FILE_PATH . 'j/gallery.js'/*, /*$filter*/),
-	new FileAsset(FILE_PATH . 'j/jcrop.js'),
-)
-);
-
-print_r($js->dump());
 
 //$framework = new Kernel();
 //$framework = new HttpCache(new Kernel(), new Store(ROOT_PATH . 'Cache'), NULL, $options);
