@@ -1,3 +1,4 @@
+/* comment */
 $(document).ready (function(){
 
     $().piroBox
