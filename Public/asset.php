@@ -12,7 +12,6 @@ require_once ROOT_PATH .'Vendors/autoload.php';
 use Assetic\Asset\AssetCollection;
 use Assetic\Filter\Yui\CssCompressorFilter;
 use Assetic\Filter\Yui\JsCompressorFilter;
-use Assetic\Filter\GoogleClosure\CompilerApiFilter;
 use Assetic\Asset\FileAsset;
 
 $css = new AssetCollection

@@ -8,8 +8,53 @@ use Application\Model\Gallery;
 use Application\Model\Tag;
 use Symfony\Component\HttpFoundation\Response;
 
+use Assetic\Asset\AssetCollection;
+use Assetic\Filter\Yui\CssCompressorFilter;
+use Assetic\Filter\Yui\JsCompressorFilter;
+use Assetic\Asset\FileAsset;
+
 class IndexController extends Controller
 {
+	private function setAssetJs ($name, $scripts)
+	{
+		$scripts_collection = array();
+
+		foreach ($scripts as $script)
+		{
+			$scripts_collection[] = new FileAsset($script);
+		}
+
+		$js = new AssetCollection
+		(
+			$scripts_collection,
+			array(new JsCompressorFilter(ROOT_PATH . 'yuicompressor-2.4.jar', 'C:\Program Files\Java\jre6\bin\java.exe'))
+		);
+
+		file_put_contents(ROOT_PATH . 'Public/Files/j/' . $name . '.js', $js->dump());
+
+		return J_FILE_PATH . $name . '.js';
+	}
+
+	private function setAssetCss ($name, $styles)
+	{
+		$styles_collection = array();
+
+		foreach ($styles as $style)
+		{
+			$styles_collection[] = new FileAsset($style);
+		}
+
+		$css = new AssetCollection
+		(
+			$styles_collection,
+			array(new CssCompressorFilter(ROOT_PATH . 'yuicompressor-2.4.jar', 'C:\Program Files\Java\jre6\bin\java.exe'))
+		);
+
+		file_put_contents(ROOT_PATH . 'Public/Files/s/' . $name . '.css', $css->dump());
+
+		return S_FILE_PATH . $name . '.css';
+	}
+
 	public function index ()
 	{
 		$page_model    = new Page($this->getDatabase());
@@ -38,19 +83,22 @@ class IndexController extends Controller
 			return $response;
 		}
 
+		$styles =  array
+		(
+			S_FILE_PATH . 'main.css',
+			S_FILE_PATH . 'pirobox/pirobox.css',
+		);
+		$scripts =  array
+		(
+			J_FILE_PATH . 'jquery/jquery-1.6.4.min.js',
+			J_FILE_PATH . 'pirobox/jquery.pirobox-1.2.2.min.js',
+			J_FILE_PATH . 'gallery.js'
+		);
+
 		$data = array
 		(
-			'styles'       => array
-			(
-				S_FILE_PATH . 'main.css',
-				S_FILE_PATH . 'pirobox/pirobox.css',
-			),
-			'scripts'      => array
-			(
-				J_FILE_PATH . 'jquery/jquery-1.6.4.min.js',
-				J_FILE_PATH . 'pirobox/jquery.pirobox-1.2.2.min.js',
-				J_FILE_PATH . 'gallery.js'
-			),
+			'styles'       => $this->setAssetCss('frontend', $styles),
+			'scripts'      => $this->setAssetCss('frontend', $scripts),
 			'page'         => $page_model->getPage('index/index'),
 			'subtemplates' => array('content' => 'frontend/gallery'),
 			'pictures'     => $gallery_model->selectAllPicsSortByYear(),
