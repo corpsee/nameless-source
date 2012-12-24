@@ -23,7 +23,7 @@
 		</div>
 		<span id="file_path" style="display: none;"><?php echo FILE_PATH_URL; ?></span>
 
-		<script type="text/javascript">
+		<!--<script type="text/javascript">
 var _gaq = _gaq || [];
 var pluginUrl =
  '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
@@ -40,7 +40,7 @@ _gaq.push(['_trackPageview']);
 	var s = document.getElementsByTagName('script')[0];
 	s.parentNode.insertBefore(ga, s);
 })();
-		</script>
+		</script>-->
 
 	</body>
 

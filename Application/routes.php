@@ -77,16 +77,6 @@ return array
 			'tag'         => NULL,
 		),
 	),
-	'css' => array
-	(
-		'pattern'      => '/css{slash}',
-		'defaults'     => array
-		(
-			'_controller' => 'Application\\Controller\\IndexController::css',
-			'slash'       => '',
-		),
-		'requirements' => array ('slash'       => '/?'),
-	),
 
 	// AdminController
 	'admin' => array
@@ -211,5 +201,16 @@ return array
 			'_controller' => 'Application\\Controller\\TagController::delete',
 			'id'         => NULL,
 		),
+	),
+
+	'typo' => array
+	(
+		'pattern'      => '/typo{slash}',
+		'defaults'     => array
+		(
+			'_controller' => 'Application\\Controller\\TypoController::index',
+			'slash'       => '',
+		),
+		'requirements' => array ('slash' => '/?'),
 	),
 );
