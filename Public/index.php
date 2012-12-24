@@ -8,6 +8,11 @@ define('DS', DIRECTORY_SEPARATOR);
 define('SUBDOMENS', FALSE);
 
 define('ROOT_PATH', dirname(__DIR__) . DS);
+
+define('APPLICATION_PATH', ROOT_PATH . 'Application' . DS);
+define('TEMPLATE_PATH', APPLICATION_PATH . 'Templates' . DS);
+define('CONFIG_PATH', APPLICATION_PATH . 'Configs' . DS);
+
 define('FILE_PATH', ROOT_PATH . 'Public' . DS . 'Files' . DS);
 define('FILE_PATH_URL', '/Files/');
 
@@ -48,9 +53,9 @@ $options = array
 	'stale_if_error'         => 60,
 );
 
-//$framework = new Kernel();
+$framework = new Kernel();
 //$framework = new HttpCache(new Kernel(), new Store(ROOT_PATH . 'Cache'), NULL, $options);
-//$framework->run();
+$framework->run();
 
 //echo hash_hmac('sha1', '201986', 'necrosis') . '<br />';
 //echo hash_hmac('sha1', 'registered', 'registered') . '<br />';

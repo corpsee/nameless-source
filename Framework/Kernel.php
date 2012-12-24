@@ -57,9 +57,8 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		$this->container->kernel = $this;
 
 		// configurations/routes
-		$configs = include(ROOT_PATH . 'Application/configuration.php');
-		$routes  = include(ROOT_PATH . 'Application/routes.php');
-		//$this->container->users  = include(ROOT_PATH . 'Application/users.php');
+		$configs = include(CONFIG_PATH . 'configuration.php');
+		$routes  = include(CONFIG_PATH . 'routes.php');
 
 		// configuration
 		foreach ($configs as $config_option => $config)
@@ -68,7 +67,7 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		}
 
 		//TODO: вынести в регистрацию модулей
-		$this->container->validation_rules = include(ROOT_PATH . 'Application/validation.php');
+		$this->container->validation_rules = include(CONFIG_PATH . 'validation.php');
 
 		$this->init();
 
@@ -189,10 +188,10 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		{
 			ini_set('display_errors', 1);
 			error_reporting(-1);
-			if ('cli' !== php_sapi_name())
-			{
+			/*if ('cli' !== php_sapi_name())
+			{*/
 				ExceptionHandler::register($this->container->debug);
-			}
+			//}
 		}
 		else
 		{
