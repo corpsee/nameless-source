@@ -2,57 +2,30 @@
 
 namespace Application\Controller;
 
-use Framework\Controller;
 use Application\Model\Page;
 use Application\Model\Gallery;
 use Application\Model\Tag;
 use Symfony\Component\HttpFoundation\Response;
 
-use Assetic\Asset\AssetCollection;
-use Assetic\Filter\Yui\CssCompressorFilter;
-use Assetic\Filter\Yui\JsCompressorFilter;
-use Assetic\Asset\FileAsset;
-
-class IndexController extends Controller
+class IndexController extends FrontendController
 {
-	private function setAssetJs ($name, $scripts)
+	private function getScripts()
 	{
-		$scripts_collection = array();
-
-		foreach ($scripts as $script)
-		{
-			$scripts_collection[] = new FileAsset($script);
-		}
-
-		$js = new AssetCollection
+		return array
 		(
-			$scripts_collection,
-			array(new JsCompressorFilter(ROOT_PATH . 'yuicompressor-2.4.jar', 'C:\Program Files\Java\jre6\bin\java.exe'))
+			FILE_PATH_URL . 'j/' . 'jquery/jquery-1.6.4.min.js',
+			FILE_PATH_URL . 'j/' . 'pirobox/jquery.pirobox-1.2.2.min.js',
+			FILE_PATH_URL . 'j/' . 'gallery.js'
 		);
-
-		file_put_contents(ROOT_PATH . 'Public/Files/j/' . $name . '.js', $js->dump());
-
-		return J_FILE_PATH . $name . '.js';
 	}
 
-	private function setAssetCss ($name, $styles)
+	private function getStyles()
 	{
-		$styles_collection = array();
-
-		foreach ($styles as $style)
-		{
-			$styles_collection[] = new FileAsset($style);
-		}
-
-		$css = new AssetCollection
+		return array
 		(
-			$styles_collection,
-			array(new CssCompressorFilter(ROOT_PATH . 'yuicompressor-2.4.jar', 'C:\Program Files\Java\jre6\bin\java.exe'))
+			FILE_PATH_URL . 's/' . 'main.css',
+			FILE_PATH_URL . 's/' . 'pirobox/pirobox.css',
 		);
-
-		file_put_contents(ROOT_PATH . 'Public/Files/s/' . $name . '.css', $css->dump());
-
-		return S_FILE_PATH . $name . '.css';
 	}
 
 	public function index ()
@@ -61,14 +34,12 @@ class IndexController extends Controller
 		$gallery_model = new Gallery($this->getDatabase());
 		$tag_model     = new Tag($this->getDatabase());
 
-		$response = new Response();
-
+		//TODO: учитывать css/js
 		$lm_pictures = $gallery_model->getLastModifyDate();
 		$lm_tags     = $tag_model->getLastModifyDate();
 		$last_modify = ($lm_pictures > $lm_tags) ? $lm_pictures : $lm_tags;
 
-		//echo '<pre>'; print_r($gallery_model->selectAllPicsSortByYear()); exit();
-
+		$response = new Response();
 		$response->setCache(array
 		(
 			'etag'          => NULL,//md5(serialize($pictures)),
@@ -83,22 +54,10 @@ class IndexController extends Controller
 			return $response;
 		}
 
-		$styles =  array
-		(
-			S_FILE_PATH . 'main.css',
-			S_FILE_PATH . 'pirobox/pirobox.css',
-		);
-		$scripts =  array
-		(
-			J_FILE_PATH . 'jquery/jquery-1.6.4.min.js',
-			J_FILE_PATH . 'pirobox/jquery.pirobox-1.2.2.min.js',
-			J_FILE_PATH . 'gallery.js'
-		);
-
 		$data = array
 		(
-			'styles'       => $this->setAssetCss('frontend', $styles),
-			'scripts'      => $this->setAssetCss('frontend', $scripts),
+			'styles'       => $this->setAsset('frontend.min', $this->getStyles(), 'css'),
+			'scripts'      => $this->setAsset('frontend.min', $this->getScripts(), 'js'),
 			'page'         => $page_model->getPage('index/index'),
 			'subtemplates' => array('content' => 'frontend/gallery'),
 			'pictures'     => $gallery_model->selectAllPicsSortByYear(),
@@ -118,16 +77,9 @@ class IndexController extends Controller
 		$page_model    = new Page($this->getDatabase());
 		$gallery_model = new Gallery($this->getDatabase());
 
-		/*$pictures = $gallery_model->selectPicsByTag($tag);
-
-		if (!$pictures)
-		{
-			return $this->notFound('Не найдено соответствующего тега или нет изображенией отмеченных тегом.');
-		}*/
-
-		$response = new Response();
 		$last_modify = $gallery_model->getLastModifyDate();
 
+		$response = new Response();
 		$response->setCache(array
 		(
 			'etag'          => NULL,//md5(serialize($pictures)),
@@ -144,17 +96,8 @@ class IndexController extends Controller
 
 		$data = array
 		(
-			'styles'       => array
-			(
-				S_FILE_PATH . 'main.css',
-				S_FILE_PATH . 'pirobox/pirobox.css',
-			),
-			'scripts'      => array
-			(
-				J_FILE_PATH . 'jquery/jquery-1.6.4.min.js',
-				J_FILE_PATH . 'pirobox/jquery.pirobox-1.2.2.min.js',
-				J_FILE_PATH . 'gallery.js'
-			),
+			'styles'       => $this->setAsset('frontend.min', $this->getStyles(), 'css'),
+			'scripts'      => $this->setAsset('frontend.min', $this->getScripts(), 'js'),
 			'page'         => $page_model->getPage('index/onetag'),
 			'subtemplates' => array('content' => 'frontend/gallery_tag'),
 			'pictures'     => $gallery_model->selectPicsByTag($tag),
@@ -169,12 +112,11 @@ class IndexController extends Controller
 		$tag_model     = new Tag($this->getDatabase());
 		$gallery_model = new Gallery($this->getDatabase());
 
-		$response = new Response();
-
 		$lm_pictures = $gallery_model->getLastModifyDate();
 		$lm_tags     = $tag_model->getLastModifyDate();
 		$last_modify = ($lm_pictures > $lm_tags) ? $lm_pictures : $lm_tags;
 
+		$response = new Response();
 		$response->setCache(array
 		(
 			'etag'          => NULL,//md5(serialize($pictures)),
@@ -191,17 +133,8 @@ class IndexController extends Controller
 
 		$data = array
 		(
-			'styles'       => array
-			(
-				S_FILE_PATH . 'main.css',
-				S_FILE_PATH . 'pirobox/pirobox.css',
-			),
-			'scripts'      => array
-			(
-				J_FILE_PATH . 'jquery/jquery-1.6.4.min.js',
-				J_FILE_PATH . 'pirobox/jquery.pirobox-1.2.2.min.js',
-				J_FILE_PATH . 'gallery.js'
-			),
+			'styles'       => $this->setAsset('frontend.min', $this->getStyles(), 'css'),
+			'scripts'      => $this->setAsset('frontend.min', $this->getScripts(), 'js'),
 			'page'         => $page_model->getPage('index/bytag'),
 			'subtemplates'       => array('content' => 'frontend/gallery_bytag'),
 			'tags_with_pictures' => $tag_model->selectAllTagsWithPics($gallery_model),

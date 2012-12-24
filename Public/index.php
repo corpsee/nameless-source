@@ -11,6 +11,25 @@ define('ROOT_PATH', dirname(__DIR__) . DS);
 define('FILE_PATH', ROOT_PATH . 'Public' . DS . 'Files' . DS);
 define('FILE_PATH_URL', '/Files/');
 
+function pathToURL ($path)
+{
+	//echo $path . '<br />';
+	$path = str_replace('/', DS, $path);
+	$path = str_replace(FILE_PATH, FILE_PATH_URL, $path);
+	$path = str_replace(DS, '/', $path);
+	//echo $path . '<br /><br />';
+	return $path;
+}
+
+function URLToPath ($path)
+{
+	//echo $path . '<br />';
+	$path = str_replace(FILE_PATH_URL, FILE_PATH, $path);
+	$path = str_replace('/', DS, $path);
+	//echo $path . '<br /><br />';
+	return $path;
+}
+
 if (SUBDOMENS)
 {
 	$host = $_SERVER['HTTP_HOST'];
@@ -48,9 +67,9 @@ $options = array
 	'stale_if_error'         => 60,
 );
 
-//$framework = new Kernel();
+$framework = new Kernel();
 //$framework = new HttpCache(new Kernel(), new Store(ROOT_PATH . 'Cache'), NULL, $options);
-//$framework->run();
+$framework->run();
 
 //echo hash_hmac('sha1', '201986', 'necrosis') . '<br />';
 //echo hash_hmac('sha1', 'registered', 'registered') . '<br />';
