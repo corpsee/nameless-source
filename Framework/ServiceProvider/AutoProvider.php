@@ -14,13 +14,13 @@ class AutoProvider implements ProviderInterface
 	 */
 	public function register (Container $container)
 	{
-		if (file_exists(ROOT_PATH . 'Application/users.php'))
+		if (file_exists(CONFIG_PATH . 'users.php'))
 		{
-			$container->users  = include(ROOT_PATH . 'Application/users.php');
+			$container->users = include(CONFIG_PATH . 'users.php');
 		}
-		if (file_exists(ROOT_PATH . 'Application/access.php'))
+		if (file_exists(CONFIG_PATH . 'access.php'))
 		{
-			$container->action_access    = include(ROOT_PATH . 'Application/access.php');
+			$container->action_access = include(CONFIG_PATH . 'access.php');
 		}
 
 		$container->user = $container->service(function ($c)

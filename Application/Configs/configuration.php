@@ -9,7 +9,7 @@ return array
 	'locale'              => 'ru',
 	'http_port'           => 80,
 	'https_port'          => 443,
-	'templates_path'      => ROOT_PATH . 'Application' . DS . 'Templates' . DS,
+	'templates_path'      => TEMPLATE_PATH,
 	'templates_extension' => '.tpl',
 	'database_settings'   => 'sqlite:' . ROOT_PATH . 'Application' . DS . 'corpsee.sqlite',
 	'services'            => array
