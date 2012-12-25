@@ -52,11 +52,11 @@ class FrontendController extends Controller
 			switch ($type)
 			{
 				case 'js':
-					$filter = new JsCompressorFilter(ROOT_PATH . 'yuicompressor-2.4.jar', 'C:\Program Files\Java\jre6\bin\java.exe');
+					$filter = new JsCompressorFilter(ROOT_PATH . 'yuicompressor-2.4.7.jar', 'C:\Program Files\Java\jre6\bin\java.exe');
 					break;
 				case 'css':
 				default:
-					$filter = new CssCompressorFilter(ROOT_PATH . 'yuicompressor-2.4.jar', 'C:\Program Files\Java\jre6\bin\java.exe');
+					$filter = new CssCompressorFilter(ROOT_PATH . 'yuicompressor-2.4.7.jar', 'C:\Program Files\Java\jre6\bin\java.exe');
 			}
 
 			$collection = new AssetCollection
