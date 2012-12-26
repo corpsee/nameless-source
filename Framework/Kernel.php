@@ -24,6 +24,8 @@ use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Route;
 use Framework\Auto\User;
+use Framework\Logger\Logger;
+use Monolog\Handler\StreamHandler;
 
 class Kernel extends HttpKernel implements HttpKernelInterface
 {
@@ -69,8 +71,6 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		//TODO: вынести в регистрацию модулей
 		$this->container->validation_rules = include(CONFIG_PATH . 'validation.php');
 
-		$this->init();
-
 		// start point
 		if ($this->container->debug)
 		{
@@ -93,6 +93,8 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		}
 		unset($route);
 
+		$this->container->logger  = NULL;
+
 		// services
 		foreach ($this->container->services as $service)
 		{
@@ -101,16 +103,10 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 			$service_provider->register($this->container);
 		}
 
-		$this->container->logger  = NULL;
 		$this->container->database = $this->container->service(function ($c)
 		{
 			return new Database($c->database_settings);
 		});
-
-		/*$this->container->user = $this->container->service(function ($c)
-		{
-			return new User($c);
-		});*/
 
 		// sessions
 		$this->container->session_options = array();
@@ -141,19 +137,20 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		// controller resolver
 		$this->container->resolver = $this->container->service(function ($c)
 		{
-			return new ControllerResolver($c);
+			return new ControllerResolver($c, $c->logger);
 		});
 
 		// dispatcher
 		$this->container->dispatcher = $this->container->service(function ($c)
 		{
+			//var_dump($c->logger); exit;
 			$dispatcher = new EventDispatcher();
 			// матчинг путей, определение контроллера
-			$dispatcher->addSubscriber(new RouterListener($c->matcher));
+			$dispatcher->addSubscriber(new RouterListener($c->matcher, NULL, $c->logger));
 			// локаль
 			$dispatcher->addSubscriber(new LocaleListener($c->locale));
 			// подписчик для before
-			$dispatcher->addSubscriber(new FrameworkListener($c->session/*, $c->logger*/));
+			$dispatcher->addSubscriber(new FrameworkListener($c->session, $c->logger));
 			// приведение респонса к стандартизованному виду
 			$dispatcher->addSubscriber(new ResponseListener($c->charset));
 
@@ -164,6 +161,8 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		{
 			return new Validator($c);
 		});
+
+		$this->init();
 
 		parent::__construct($this->container->dispatcher, $this->container->resolver);
 	}

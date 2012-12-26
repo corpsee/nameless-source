@@ -16,6 +16,7 @@ return array
 	(
 		'auto'   => 'Framework\\ServiceProvider\\AutoProvider',
 		'mailer' => 'Framework\\ServiceProvider\\SwiftmailerProvider',
+		'logger' => 'Framework\\ServiceProvider\\MonologProvider',
 	),
 	'mailer_settings'     => array(),
 );

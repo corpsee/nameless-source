@@ -5,7 +5,8 @@ namespace Framework\ServiceProvider;
 use Framework\Container;
 use Framework\Kernel;
 use Framework\ProviderInterface;
-use Framework\Logger;
+use Framework\Logger\Logger;
+use Monolog\Handler\StreamHandler;
 
 class MonologProvider implements ProviderInterface
 {
@@ -14,7 +15,8 @@ class MonologProvider implements ProviderInterface
 		$container->logger = $container->service(function ($c)
 		{
 			$logger = new Logger($c->logger_name);
-			$logger->popHandler($c->logger_handler);
+			$logger->pushHandler($c->logger_handler);
+			return $logger;
 		});
 
 		$container->logger_handler = $container->service(function ($c)
@@ -28,6 +30,7 @@ class MonologProvider implements ProviderInterface
 		};
 
 		$container->logger_name = 'application';
+		$container->log_file = ROOT_PATH . $container->logger_name . '.log';
 	}
 
 	public function boot (Kernel $kernel)
