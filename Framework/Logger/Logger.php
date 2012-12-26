@@ -4,7 +4,7 @@
  * This file is part of the Framework package.
  * (c) Corpsee <poisoncorpsee@gmail.com>
  */
-namespace Framework;
+namespace Framework\Logger;
 
 use Monolog\Logger as BaseLogger;
 use Symfony\Component\HttpKernel\Log\LoggerInterface;
