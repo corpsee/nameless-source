@@ -24,8 +24,6 @@ use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Route;
 use Framework\Auto\User;
-use Framework\Logger\Logger;
-use Monolog\Handler\StreamHandler;
 
 class Kernel extends HttpKernel implements HttpKernelInterface
 {
