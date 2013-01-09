@@ -39,10 +39,6 @@ class MonologProvider implements ProviderInterface
 			$app['monolog']->addInfo('> '.$request->getMethod().' '.$request->getRequestUri());
 		});
 
-		$app->error(function (\Exception $e) use ($app) {
-			$app['monolog']->addError($e->getMessage());
-		}, 255);
-
 		$app->after(function (Request $request, Response $response) use ($app) {
 			$app['monolog']->addInfo('< '.$response->getStatusCode());
 		});    */
