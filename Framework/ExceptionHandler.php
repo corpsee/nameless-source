@@ -82,6 +82,19 @@ class ExceptionHandler
 		$this->createResponse($exception)->send();
 	}
 
+	private function log (\Exception $exception)
+	{
+		$message = sprintf('%s: %s (uncaught exception) at %s line %s', get_class($exception), $exception->getMessage(), $exception->getFile(), $exception->getLine());
+		if (NULL !== $this->logger)
+		{
+			$this->logger->err($message);
+		}
+		else
+		{
+			error_log($message);
+		}
+	}
+
 	/**
 	 * Creates the error Response associated with the given Exception.
 	 *
@@ -91,67 +104,50 @@ class ExceptionHandler
 	 */
 	public function createResponse ($exception)
 	{
-		if (!$exception instanceof FlattenException)
-		{
-			$exception = FlattenException::create($exception);
-		}
+		$title = 'Whoops, looks like something went wrong.';
+		$response = new Response('', $exception->getStatusCode(), $exception->getHeaders());
 
 		try
 		{
-			$response = new Response('', $exception->getStatusCode(), $exception->getHeaders());
+			$this->log($exception);
 
-			$template_obj = new Template
-			(
-				$this->templates_path,
-				$this->templates_extension
-			);
-
-			return $template_obj->renderResponse($exception->getStatusCode(), array(), $response);
-		}
-		catch (\Exception $e)
-		{
-			//echo '<pre>'; print_r($e); exit;
-			return new Response('<h1>Server error!</h2>', $exception->getStatusCode(), $exception->getHeaders());
-		}
-
-
-		$content = '';
-		$title   = '';
-		try
-		{
 			if (!$exception instanceof FlattenException)
 			{
 				$exception = FlattenException::create($exception);
 			}
 
-			switch ($exception->getStatusCode())
-			{
-				case 404:
-					$title = 'Sorry, the page you are looking for could not be found.';
-					break;
-				default:
-					$title = 'Whoops, looks like something went wrong.';
-			}
-
 			if ($this->debug)
 			{
-				$content = $this->getContent($exception);
+				$response_raw = $this->decorate($this->getContent($exception), $title);
+			}
+			else
+			{
+				$template_obj = new Template
+				(
+					$this->templates_path,
+					$this->templates_extension
+				);
+
+				return $template_obj->renderResponse($exception->getStatusCode(), array(), $response);
 			}
 		}
 		catch (\Exception $e)
 		{
+			$this->log($e);
+
 			// something nasty happened and we cannot throw an exception here anymore
 			if ($this->debug)
 			{
-				$title = sprintf('Exception thrown when handling an exception (%s: %s)', get_class($exception), $exception->getMessage());
+				$response_raw = $this->decorate('', sprintf('Exception thrown when handling an exception (%s: %s)', get_class($exception), $exception->getMessage()));
 			}
 			else
 			{
 				$title = 'Whoops, looks like something went wrong.';
+				$response_raw = $this->decorate('', 'Whoops, looks like something went wrong.');
 			}
 		}
 
-		return new Response($this->decorate($content, $title), $exception->getStatusCode(), $exception->getHeaders());
+		return new Response($response_raw, $exception->getStatusCode(), $exception->getHeaders());
 	}
 
 	private function getContent ($exception)

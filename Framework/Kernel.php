@@ -16,7 +16,6 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
 use Symfony\Component\HttpKernel\EventListener\ResponseListener;
 use Symfony\Component\HttpKernel\EventListener\LocaleListener;
-use Symfony\Component\HttpKernel\Debug\ExceptionHandler;
 use Symfony\Component\HttpKernel\Debug\ErrorHandler;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler;
@@ -181,21 +180,17 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		mb_internal_encoding('UTF-8');
 
 		// error/exception reporting
+		error_reporting(-1);
 		if ($this->container->debug)
 		{
 			ini_set('display_errors', 1);
-			error_reporting(-1);
-			/*if ('cli' !== php_sapi_name())
-			{*/
-				ExceptionHandler::register($this->container->debug);
-			//}
 		}
 		else
 		{
 			ini_set('display_errors', 0);
-			ExceptionHandlerProduction::register($this->container->templates_path, $this->container->templates_extension);
 		}
 		ErrorHandler::register();
+		ExceptionHandler::register($this->container->templates_path, $this->container->templates_extension, $this->container->debug, 'UTF-8', $this->container->logger);
 	}
 
 	public function boot()
