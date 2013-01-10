@@ -30,7 +30,14 @@ class IndexController extends FrontendController
 
 	public function index ()
 	{
-		$page_model    = new Page($this->getDatabase());
+		$message = \Swift_Message::newInstance()->setSubject('[YourSite] Feedback')->setFrom(array('noreply@yoursite.com'))->setTo(array('feedback@yoursite.com'))->setBody('message');
+		return $this->container->mailer->send($message);
+
+		//mail('caffeinated@example.com', 'My Subject', 'message');
+
+		//$this->notFound();
+
+		/*$page_model    = new Page($this->getDatabase());
 		$gallery_model = new Gallery($this->getDatabase());
 		$tag_model     = new Tag($this->getDatabase());
 
@@ -63,7 +70,7 @@ class IndexController extends FrontendController
 			'pictures'     => $gallery_model->selectAllPicsSortByYear(),
 			'tags'         => $tag_model->selectAllTagsWithClass($gallery_model),
 		);
-		return $this->render('front_page', $data, $response);
+		return $this->render('front_page', $data, $response);*/
 	}
 
 	public function oneTag ($tag)

@@ -82,7 +82,7 @@ class ExceptionHandler
 		$this->createResponse($exception)->send();
 	}
 
-	private function log (\Exception $exception)
+	private function log (FlattenException $exception)
 	{
 		$message = sprintf('%s: %s (uncaught exception) at %s line %s', get_class($exception), $exception->getMessage(), $exception->getFile(), $exception->getLine());
 		if (NULL !== $this->logger)
@@ -104,17 +104,17 @@ class ExceptionHandler
 	 */
 	public function createResponse ($exception)
 	{
+		if (!$exception instanceof FlattenException)
+		{
+			$exception = FlattenException::create($exception);
+		}
+
 		$title = 'Whoops, looks like something went wrong.';
 		$response = new Response('', $exception->getStatusCode(), $exception->getHeaders());
 
 		try
 		{
 			$this->log($exception);
-
-			if (!$exception instanceof FlattenException)
-			{
-				$exception = FlattenException::create($exception);
-			}
 
 			if ($this->debug)
 			{
@@ -133,6 +133,11 @@ class ExceptionHandler
 		}
 		catch (\Exception $e)
 		{
+			if (!$e instanceof FlattenException)
+			{
+				$e = FlattenException::create($e);
+			}
+
 			$this->log($e);
 
 			// something nasty happened and we cannot throw an exception here anymore

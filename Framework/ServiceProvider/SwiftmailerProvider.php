@@ -30,6 +30,7 @@ class SwiftmailerProvider implements ProviderInterface
 
 		$container->mailer_transport = $container->service(function ($c)
 		{
+			$transport = new \Swift_Transport_MailTransport($c->mailer_transport_eventdispatcher)
 			$transport = new \Swift_Transport_EsmtpTransport
 			(
 				$c->mailer_transport_buffer,
@@ -41,7 +42,7 @@ class SwiftmailerProvider implements ProviderInterface
 			(
 				array
 				(
-					'host' => 'localhost',
+					'host' => 'corpsee.local',
 					'port' => 25,
 					'username' => '',
 					'password' => '',
@@ -65,7 +66,7 @@ class SwiftmailerProvider implements ProviderInterface
 			return new \Swift_Transport_StreamBuffer(new \Swift_StreamFilters_StringReplacementFilterFactory());
 		});
 
-		$container->mailer_transport_authhandler = $container->service(function ()
+		/*$container->mailer_transport_authhandler = $container->service(function ()
 		{
 			return new \Swift_Transport_Esmtp_AuthHandler
 			(
@@ -76,7 +77,7 @@ class SwiftmailerProvider implements ProviderInterface
 					new \Swift_Transport_Esmtp_Auth_PlainAuthenticator(),
 				)
 			);
-		});
+		}); */
 
 		$container->mailer_transport_eventdispatcher = $container->service(function ()
 		{

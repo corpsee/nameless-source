@@ -8,6 +8,7 @@ namespace Framework;
 
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -34,7 +35,7 @@ class FrameworkListener implements EventSubscriberInterface
 	 * @param SessionInterface $session
 	 * @param LoggerInterface|null $logger
 	 */
-	public function __construct(SessionInterface $session, LoggerInterface $logger = NULL)
+	public function __construct (SessionInterface $session, LoggerInterface $logger = NULL)
 	{
 		$this->session = $session;
 		$this->logger  = $logger;
@@ -43,7 +44,7 @@ class FrameworkListener implements EventSubscriberInterface
 	/**
 	 * @param FilterControllerEvent $event
 	 */
-	public function onKernelController(FilterControllerEvent $event)
+	public function onKernelController (FilterControllerEvent $event)
 	{
 		$controller = $event->getController();
 
@@ -58,7 +59,7 @@ class FrameworkListener implements EventSubscriberInterface
 	/**
 	 * @param GetResponseEvent $event
 	 */
-	public function onEarlyKernelRequest(GetResponseEvent $event)
+	public function onEarlyKernelRequest (GetResponseEvent $event)
 	{
 		$request = $event->getRequest();
 		$request->setSession($this->session);
@@ -69,6 +70,17 @@ class FrameworkListener implements EventSubscriberInterface
 			$request->getSession()->start();
 		}
 
+		$this->logger->info('> '.$request->getMethod().' '.$request->getRequestUri());
+
+	}
+
+	/**
+	 * @param PostResponseEvent $event
+	 */
+	public function onTerminate (PostResponseEvent $event)
+	{
+		$response = $event->getResponse();
+		$this->logger->info('< '.$response->getStatusCode());
 	}
 
 	/**
@@ -80,6 +92,7 @@ class FrameworkListener implements EventSubscriberInterface
 		(
 			KernelEvents::CONTROLLER => array('onKernelController'),
 			KernelEvents::REQUEST    => array('onEarlyKernelRequest'),
+			KernelEvents::TERMINATE  => array('onTerminate'),
 		);
 	}
 }
