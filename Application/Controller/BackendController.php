@@ -10,7 +10,10 @@ class BackendController extends Controller
 {
 	public function before()
 	{
-		if (!$this->container->user->getAccess($this->getAttributes('_route')))
+
+		$access = $this->container->user->getAccess($this->getAttributes('_route'));
+		//echo var_dump($access);
+		if (!$access)
 		{
 			throw new AccessDeniedException('Access Denied!');
 		}
