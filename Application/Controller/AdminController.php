@@ -36,6 +36,8 @@ class AdminController extends BackendController
 				//$response = new RedirectResponse('/admin/gallery');
 				//$response = $this->container->user->login($auto, $response, 3600*24*30);
 				//return $response;
+				//echo 1; exit;
+				$this->container->user->login($auto);
 				return $this->redirect('/admin/gallery');
 			}
 			elseif ($authenticate === 1)
