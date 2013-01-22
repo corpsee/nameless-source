@@ -29,7 +29,7 @@ class User
 
 	/**
 	 * @param Session $session
-	 * @param array $routes
+	 * @param RouteCollection $routes
 	 * @param array $access
 	 */
 	public function __construct(Session $session, RouteCollection $routes, array $access)
