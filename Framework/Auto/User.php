@@ -2,9 +2,9 @@
 
 namespace Framework\Auto;
 
-use Framework\Container;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Routing\RouteCollection;
 
 class User
 {
@@ -29,10 +29,10 @@ class User
 
 	/**
 	 * @param Session $session
-	 * @param array $routes
+	 * @param RouteCollection $routes
 	 * @param array $access
 	 */
-	public function __construct(Session $session, array $routes, array $access)
+	public function __construct(Session $session, RouteCollection $routes, array $access)
 	{
         $this->session = $session;
         $this->routes  = $routes;
@@ -86,9 +86,9 @@ class User
 		$user_id       = $auto->getUserId();
 		$user_name     = $auto->getUserName();
 
-		$this->container->session->set(self::USER_ID, $user_id);
-		$this->container->session->set(self::USER_NAME, $user_name);
-		$this->container->session->set(self::USER_GROUPS, $user_groups);
+		$this->session->set(self::USER_ID, $user_id);
+		$this->session->set(self::USER_NAME, $user_name);
+		$this->session->set(self::USER_GROUPS, $user_groups);
 	}*/
 
 	/**
@@ -145,8 +145,6 @@ class User
 	}
 
 	/**
-	 * @param string $user_name
-	 *
 	 * @return boolean
 	 */
 	public function isLogin ()
@@ -162,7 +160,7 @@ class User
 	public function getAccess ($route)
 	{
 		//TODO: переименовать в getAccessByRoute
-		$defaults = $this->container->routes->get($route)->getDefaults();
+		$defaults = $this->routes->get($route)->getDefaults();
 
 		return $this->getAccessByController($defaults['_controller']);
 	}
@@ -174,33 +172,45 @@ class User
 	 */
 	public function getAccessByController ($controller)
 	{
+		$access = FALSE;
 		list($controller, $action) = explode('::', $controller);
 
 		$groups = $this->getUserGroups();
 
+		//echo '<pre>';
+		//print_r(array($controller, $action));
+		//print_r($this->access); exit;
+
 		// если в настройках нет контроллера - разрешен
-		if (!isset($this->container->action_access[$controller]))
+		if (!isset($this->access[$controller]))
 		{
-			return TRUE;
+			//echo 1;
+			$access = TRUE;
 		}
 		else
 		{
+			//echo 2;
 			// если в настройках нет действия - разрешен
-			if(!isset($this->container->action_access[$controller][$action]))
+			if(!isset($this->access[$controller][$action]))
 			{
-				return TRUE;
+				echo 3;
+				$access = TRUE;
 			}
 			else
 			{
-				foreach ($this->container->action_access[$controller][$action] as $action_access)
+				//echo 4;
+				//echo '<pre>'; print_r($groups);
+				foreach ($this->access[$controller][$action] as $action_access)
 				{
 					if (in_array($action_access, $groups))
 					{
-						return TRUE;
+						//echo 5;
+						$access = TRUE;
 					}
 				}
 			}
 		}
-		return FALSE;
+		//exit;
+		return $access;
 	}
 }
