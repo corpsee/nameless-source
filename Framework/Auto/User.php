@@ -35,8 +35,8 @@ class User
 	public function __construct(Session $session, array $routes, array $access)
 	{
         $this->session = $session;
-        $this->routes = $routes;
-        $this->access = $access;
+        $this->routes  = $routes;
+        $this->access  = $access;
 	}
 
     /**
