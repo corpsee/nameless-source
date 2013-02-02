@@ -180,13 +180,14 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		mb_internal_encoding('UTF-8');
 
 		// error/exception reporting
-		error_reporting(-1);
 		if ($this->container->debug)
 		{
+			error_reporting(-1);
 			ini_set('display_errors', 1);
 		}
 		else
 		{
+			error_reporting(E_ALL ^ (E_STRICT | E_NOTICE | E_DEPRECATED));
 			ini_set('display_errors', 0);
 		}
 		ErrorHandler::register();

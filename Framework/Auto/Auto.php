@@ -71,6 +71,7 @@ class Auto
 	 */
 	public function authenticate($user_name, $user_password)
 	{
+		$error = self::ERROR_NONE;
 		$user = $this->user_provider->getUserByName($user_name);
 
 		if (FALSE === $user)
@@ -88,8 +89,6 @@ class Auto
 				$this->user_id       = (integer)$user['id'];
 				$this->user_name     = $user_name;
 				$this->user_groups   = $this->user_provider->getUserGroups($user_name);
-
-				$error = self::ERROR_NONE;
 			}
 		}
 		return $error;

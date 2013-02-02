@@ -35,12 +35,5 @@ class MonologProvider implements ProviderInterface
 
 	public function boot (Kernel $kernel)
 	{
-		/*$app->before(function (Request $request) use ($app) {
-			$app['monolog']->addInfo('> '.$request->getMethod().' '.$request->getRequestUri());
-		});
-
-		$app->after(function (Request $request, Response $response) use ($app) {
-			$app['monolog']->addInfo('< '.$response->getStatusCode());
-		});    */
 	}
 }

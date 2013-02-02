@@ -30,6 +30,14 @@ class IndexController extends FrontendController
 
 	public function index ()
 	{
+		//$message = \Swift_Message::newInstance()->setSubject('[YourSite] Feedback')->setFrom(array('noreply@yoursite.com'))->setTo(array('feedback@yoursite.com'))->setBody('message');
+		//$this->container->mailer->send($message);
+		//mail('caffeinated@example.com', 'My Subject', 'message');
+
+		//$this->notFound();
+
+		//return new Response('111');
+
 		$page_model    = new Page($this->getDatabase());
 		$gallery_model = new Gallery($this->getDatabase());
 		$tag_model     = new Tag($this->getDatabase());
