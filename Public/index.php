@@ -73,8 +73,12 @@ $options = array
 );
 
 $framework = new Kernel();
-//$framework = new HttpCache(new Kernel(), new Store(ROOT_PATH . 'Cache'), NULL, $options);
+$framework = new HttpCache(new Kernel(), new Store(ROOT_PATH . 'Cache'), NULL, $options);
 $framework->run();
+
+//echo '<pre>';
+//var_dump(preg_match('![\w\p{L}\p{Nd}]+!i', 'привет123'));
+//var_dump(preg_match('![\p{L}\p{Nd}]+!i', 'привет123_@@'));
 
 //echo hash_hmac('sha1', '201986', 'necrosis') . '<br />';
 //echo hash_hmac('sha1', 'registered', 'registered') . '<br />';
