@@ -17,6 +17,44 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 		$this->validator = new Validator(new Container());
 	}
 
+	public function noemptyTrueProvider ()
+	{
+		return array
+		(
+			array('noempty'),
+			array('.'),
+		);
+	}
+
+	public function noemptyFalseProvider ()
+	{
+		return array
+		(
+			array(''),
+			array('   '),
+		);
+	}
+
+	public function numberTrueProvider ()
+	{
+		return array
+		(
+			array('0'),
+			array('12569'),
+		);
+	}
+
+	public function numberFalseProvider ()
+	{
+		return array
+		(
+			array('12.569'),
+			array('12 569'),
+			array('-12569'),
+			array('12569a'),
+		);
+	}
+
 	public function emailTrueProvider ()
 	{
 		return array
@@ -73,14 +111,39 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 		$this->assertArrayHasKey(0, $this->validator->validateField('test_field', $string, array('email')));
 	}
 
-	public function testNoempty ()
+	/**
+	 * @dataProvider noemptyTrueProvider
+	 */
+	public function testTrueNoempty ($string)
 	{
 		$this->init();
+		$this->assertArrayNotHasKey(0, $this->validator->validateField('test_field', $string, array('noempty')));
+	}
 
-		$this->assertArrayNotHasKey(0, $this->validator->validateField('test_field', 'непустое_поле', array('noempty')));
-		$this->assertArrayNotHasKey(0, $this->validator->validateField('test_field', '.', array('noempty')));
+	/**
+	 * @dataProvider noemptyFalseProvider
+	 */
+	public function testFalseNoempty ($string)
+	{
+		$this->init();
+		$this->assertArrayHasKey(0, $this->validator->validateField('test_field', $string, array('noempty')));
+	}
 
-		$this->assertArrayHasKey(0, $this->validator->validateField('test_field', '', array('noempty')));
-		$this->assertArrayHasKey(0, $this->validator->validateField('test_field', '  ', array('noempty')));
+	/**
+	 * @dataProvider numberTrueProvider
+	 */
+	public function testTrueNumber ($string)
+	{
+		$this->init();
+		$this->assertArrayNotHasKey(0, $this->validator->validateField('test_field', $string, array('number')));
+	}
+
+	/**
+	 * @dataProvider numberFalseProvider
+	 */
+	public function testFalseNumber ($string)
+	{
+		$this->init();
+		$this->assertArrayHasKey(0, $this->validator->validateField('test_field', $string, array('number')));
 	}
 }
