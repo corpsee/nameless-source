@@ -71,7 +71,7 @@ class Validator
 	 */
 	private function number ($value)
 	{
-		if ($value && !preg_match('!^[\p{Nd} ]+$!iu', $value))
+		if ($value && !preg_match('!^[\p{Nd}]+$!iu', $value))
 		{
 			return FALSE;
 		}
@@ -85,7 +85,7 @@ class Validator
 	 */
 	private function decimal ($value)
 	{
-		if ($value && !preg_match('!^[\p{Nd}/., ]+$!iu', $value))
+		if ($value && !preg_match('!^[\p{Nd}\., ]+$!iu', $value))
 		{
 			return FALSE;
 		}
