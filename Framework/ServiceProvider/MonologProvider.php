@@ -30,7 +30,7 @@ class MonologProvider implements ProviderInterface
 		};
 
 		$container->logger_name = 'application';
-		$container->log_file = ROOT_PATH . $container->logger_name . '.log';
+		$container->log_file = $container->log_path . $container->logger_name . '.log';
 	}
 
 	public function boot (Kernel $kernel)

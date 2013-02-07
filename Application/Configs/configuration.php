@@ -18,5 +18,5 @@ return array
 		'mailer' => 'Framework\\ServiceProvider\\SwiftmailerProvider',
 		'logger' => 'Framework\\ServiceProvider\\MonologProvider',
 	),
-	'mailer_settings'     => array(),
+	'log_path'            => ROOT_PATH . DS . 'Logs' . DS,
 );
