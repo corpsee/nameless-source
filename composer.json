@@ -19,8 +19,10 @@
 			"Framework" : "",
 			"Framework\\Auto" : "",
 			"Framework\\ServiceProvider" : "",
-			"Framework\\Tests" : ""
-		}
+			"Framework\\Tests" : "",
+			"Tests" : ""
+		},
+		"files" :["Functions.php", "Constants.php"]
 	},
 	"config" :
 	{

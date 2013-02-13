@@ -25,9 +25,7 @@ else
 
 define('ROOT_PATH', dirname(__DIR__) . DIRECTORY_SEPARATOR);
 
-require_once ROOT_PATH . 'Constants.php';
-require_once ROOT_PATH .'Functions.php';
-require_once ROOT_PATH .'Vendors/autoload.php';
+require_once '/../Vendors/autoload.php';
 
 
 use Framework\HttpCache;
