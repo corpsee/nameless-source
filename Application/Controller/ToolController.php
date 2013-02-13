@@ -15,12 +15,12 @@ class ToolController extends Controller
 		(
 			'styles'       => array
 			(
-				S_FILE_PATH . 'reset.css',
-				S_FILE_PATH . 'typographic.css'
+				STYLE_PATH_URL . 'reset.css',
+				STYLE_PATH_URL . 'typographic.css'
 			),
 			'scripts'      => array
 			(
-				J_FILE_PATH . 'jquery/jquery-1.8.3.min.js',
+				SCRIPT_PATH_URL . 'jquery/jquery-1.8.3.min.js',
 			),
 			'page'         => $page_model->getPage('admin/login'),
 			'subtemplates' => array('content' => 'frontend/tool_index'),

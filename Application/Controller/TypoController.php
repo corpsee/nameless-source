@@ -14,12 +14,12 @@ class TypoController extends Controller
 		(
 			'styles'       => array
 			(
-				S_FILE_PATH . 'normalize-2.0.1.css',
-				S_FILE_PATH . 'newstyle.css',
+				STYLE_PATH_URL . 'normalize-2.0.1.css',
+				STYLE_PATH_URL . 'newstyle.css',
 			),
 			'scripts'      => array
 			(
-				J_FILE_PATH . 'jquery/jquery-1.8.3.min.js',
+				SCRIPT_PATH_URL . 'jquery/jquery-1.8.3.min.js',
 			),
 			'page'         => array
 			(

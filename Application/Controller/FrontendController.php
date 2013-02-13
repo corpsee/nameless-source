@@ -27,11 +27,11 @@ class FrontendController extends Controller
 		switch ($type)
 		{
 			case 'js':
-				$result_path = ROOT_PATH . 'Public/Files/j/' . $name . '.' . $type;
+				$result_path = ROOT_PATH . 'Public/files/j/' . $name . '.' . $type;
 				break;
 			case 'css':
 			default:
-				$result_path = ROOT_PATH . 'Public/Files/s/' . $name . '.' . $type;
+				$result_path = ROOT_PATH . 'Public/files/s/' . $name . '.' . $type;
 		}
 		$hash_path = ROOT_PATH . 'Cache/' . $name . '-' . $type;
 
@@ -52,11 +52,11 @@ class FrontendController extends Controller
 			switch ($type)
 			{
 				case 'js':
-					$filter = new JsCompressorFilter(ROOT_PATH . 'yuicompressor-2.4.7.jar', 'C:\Program Files\Java\jre6\bin\java.exe');
+					$filter = new JsCompressorFilter(ROOT_PATH . 'yuicompressor-2.4.7.jar', 'C:\Program files\Java\jre6\bin\java.exe');
 					break;
 				case 'css':
 				default:
-					$filter = new CssCompressorFilter(ROOT_PATH . 'yuicompressor-2.4.7.jar', 'C:\Program Files\Java\jre6\bin\java.exe');
+					$filter = new CssCompressorFilter(ROOT_PATH . 'yuicompressor-2.4.7.jar', 'C:\Program files\Java\jre6\bin\java.exe');
 			}
 
 			$collection = new AssetCollection

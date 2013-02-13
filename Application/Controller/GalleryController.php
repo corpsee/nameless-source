@@ -19,8 +19,8 @@ class GalleryController extends BackendController
 		(
 			'styles'       => array
 			(
-				S_FILE_PATH . 'reset.css',
-				S_FILE_PATH . 'typographic.css'
+				STYLE_PATH_URL . 'reset.css',
+				STYLE_PATH_URL . 'typographic.css'
 			),
 			'scripts'      => array(),
 			'page'         => $page_model->getPage('admin/login'),
@@ -90,16 +90,16 @@ class GalleryController extends BackendController
 		(
 			'styles'       => array
 			(
-				S_FILE_PATH . 'reset.css',
-				S_FILE_PATH . 'typographic.css',
-				S_FILE_PATH . 'jquery-ui/jquery-ui-1.8.16.custom.css'
+				STYLE_PATH_URL . 'reset.css',
+				STYLE_PATH_URL . 'typographic.css',
+				STYLE_PATH_URL . 'jquery-ui/jquery-ui-1.8.16.custom.css'
 			),
 			'scripts'      => array
 			(
-				J_FILE_PATH . 'jquery/jquery-1.6.4.min.js',
-				J_FILE_PATH . 'jquery-ui/jquery-ui-1.8.16.custom.min.js',
-				J_FILE_PATH . 'validation.js',
-				J_FILE_PATH . 'datepicker.js',
+				SCRIPT_PATH_URL . 'jquery/jquery-1.6.4.min.js',
+				SCRIPT_PATH_URL . 'jquery-ui/jquery-ui-1.8.16.custom.min.js',
+				SCRIPT_PATH_URL . 'validation.js',
+				SCRIPT_PATH_URL . 'datepicker.js',
 			),
 			'page'         => $page_model->getPage('gallery/add'),
 			'subtemplates' => array('content' => 'backend/gallery/gallery_add'),
@@ -133,14 +133,14 @@ class GalleryController extends BackendController
 		(
 			'styles'       => array
 			(
-				S_FILE_PATH . 'reset.css',
-				S_FILE_PATH . 'typographic.css'
+				STYLE_PATH_URL . 'reset.css',
+				STYLE_PATH_URL . 'typographic.css'
 			),
 			'scripts'      => array
 			(
-				J_FILE_PATH . 'jquery/jquery-1.6.4.min.js',
-				J_FILE_PATH . 'jcrop/jquery.jcrop-0.9.9.min.js',
-				J_FILE_PATH . 'jcrop.js'
+				SCRIPT_PATH_URL . 'jquery/jquery-1.6.4.min.js',
+				SCRIPT_PATH_URL . 'jcrop/jquery.jcrop-0.9.9.min.js',
+				SCRIPT_PATH_URL . 'jcrop.js'
 			),
 			'page'         => $page_model->getPage('gallery/crop'),
 			'subtemplates' => array('content' => 'backend/gallery/gallery_crop'),
@@ -162,12 +162,12 @@ class GalleryController extends BackendController
 		(
 			'styles'       => array
 			(
-				S_FILE_PATH . 'reset.css',
-				S_FILE_PATH . 'typographic.css'
+				STYLE_PATH_URL . 'reset.css',
+				STYLE_PATH_URL . 'typographic.css'
 			),
 			'scripts'      => array
 			(
-				J_FILE_PATH . 'jquery/jquery-1.6.4.min.js',
+				SCRIPT_PATH_URL . 'jquery/jquery-1.6.4.min.js',
 			),
 			'page'         => $page_model->getPage('gallery/result'),
 			'subtemplates' => array('content' => 'backend/gallery/gallery_result'),
@@ -212,16 +212,16 @@ class GalleryController extends BackendController
 		(
 			'styles'       => array
 			(
-				S_FILE_PATH . 'reset.css',
-				S_FILE_PATH . 'typographic.css',
-				S_FILE_PATH . 'jquery-ui/jquery-ui-1.8.16.custom.css'
+				STYLE_PATH_URL . 'reset.css',
+				STYLE_PATH_URL . 'typographic.css',
+				STYLE_PATH_URL . 'jquery-ui/jquery-ui-1.8.16.custom.css'
 			),
 			'scripts'      => array
 			(
-				J_FILE_PATH . 'jquery/jquery-1.6.4.min.js',
-				J_FILE_PATH . 'jquery-ui/jquery-ui-1.8.16.custom.min.js',
-				J_FILE_PATH . 'validation.js',
-				J_FILE_PATH . 'datepicker.js'
+				SCRIPT_PATH_URL . 'jquery/jquery-1.6.4.min.js',
+				SCRIPT_PATH_URL . 'jquery-ui/jquery-ui-1.8.16.custom.min.js',
+				SCRIPT_PATH_URL . 'validation.js',
+				SCRIPT_PATH_URL . 'datepicker.js'
 			),
 			'page'         => $page_model->getPage('gallery/edit'),
 			'subtemplates' => array('content' => 'backend/gallery/gallery_edit'),
@@ -278,12 +278,12 @@ class GalleryController extends BackendController
 		(
 			'styles'       => array
 			(
-				S_FILE_PATH . 'reset.css',
-				S_FILE_PATH . 'typographic.css',
+				STYLE_PATH_URL . 'reset.css',
+				STYLE_PATH_URL . 'typographic.css',
 			),
 			'scripts'      => array
 			(
-				J_FILE_PATH . 'jquery/jquery-1.6.4.min.js',
+				SCRIPT_PATH_URL . 'jquery/jquery-1.6.4.min.js',
 			),
 			'page'         => $page_model->getPage('gallery/editimage'),
 			'subtemplates' => array('content' => 'backend/gallery/gallery_editimage'),

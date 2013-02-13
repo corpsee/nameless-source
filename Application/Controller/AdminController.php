@@ -54,8 +54,8 @@ class AdminController extends BackendController
 		(
 			'styles'       => array
 			(
-				S_FILE_PATH . 'reset.css',
-				S_FILE_PATH . 'typographic.css'
+				STYLE_PATH_URL . 'reset.css',
+				STYLE_PATH_URL . 'typographic.css'
 			),
 			'scripts'      => array(),
 			'page'         => $page_model->getPage('admin/login'),
