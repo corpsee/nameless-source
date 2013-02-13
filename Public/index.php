@@ -1,41 +1,10 @@
 <?php
 
+// только для отладки
 error_reporting(-1);
 ini_set('display_errors', 1);
 
-// загружать ресурсы с субдоменов или нет
-define('DS', DIRECTORY_SEPARATOR);
-define('SUBDOMENS', FALSE);
-
-define('ROOT_PATH', dirname(__DIR__) . DS);
-
-define('APPLICATION_PATH', ROOT_PATH . 'Application' . DS);
-define('TEMPLATE_PATH', APPLICATION_PATH . 'Templates' . DS);
-define('CONFIG_PATH', APPLICATION_PATH . 'Configs' . DS);
-
-define('FILE_PATH', ROOT_PATH . 'Public' . DS . 'Files' . DS);
-define('FILE_PATH_URL', '/Files/');
-
-function pathToURL ($path)
-{
-	//echo $path . '<br />';
-	$path = str_replace('/', DS, $path);
-	$path = str_replace(FILE_PATH, FILE_PATH_URL, $path);
-	$path = str_replace(DS, '/', $path);
-	//echo $path . '<br /><br />';
-	return $path;
-}
-
-function URLToPath ($path)
-{
-	//echo $path . '<br />';
-	$path = str_replace(FILE_PATH_URL, FILE_PATH, $path);
-	$path = str_replace('/', DS, $path);
-	//echo $path . '<br /><br />';
-	return $path;
-}
-
-if (SUBDOMENS)
+/*if (SUBDOMENS)
 {
 	$host = $_SERVER['HTTP_HOST'];
 	if ($position = stripos($_SERVER['HTTP_HOST'], 'www.') !== FALSE)
@@ -52,10 +21,14 @@ else
 	define('I_FILE_PATH', FILE_PATH_URL . 'i/');
 	define('S_FILE_PATH', FILE_PATH_URL . 's/');
 	define('J_FILE_PATH', FILE_PATH_URL . 'j/');
-}
+}*/
 
-require_once ROOT_PATH .'Vendors/autoload.php';
+define('ROOT_PATH', dirname(__DIR__) . DIRECTORY_SEPARATOR);
+
+require_once ROOT_PATH . 'Constants.php';
 require_once ROOT_PATH .'Functions.php';
+require_once ROOT_PATH .'Vendors/autoload.php';
+
 
 use Framework\HttpCache;
 use Symfony\Component\HttpKernel\HttpCache\Store;

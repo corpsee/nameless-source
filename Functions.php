@@ -68,6 +68,26 @@ function utf8_convert_encoding ($str, $to, $from = NULL)
 }*/
 
 /**
+ * @param string $path
+ *
+ * @return string
+ */
+function pathToURL ($path)
+{
+	return str_replace(array(FILE_PATH, DS, '\\'), array(FILE_PATH_URL, '/', '/'), $path);
+}
+
+/**
+ * @param string $path
+ *
+ * @return string
+ */
+function URLToPath ($path)
+{
+	return str_replace(array(FILE_PATH_URL, '/'), array(FILE_PATH, DS), $path);
+}
+
+/**
  * @param string $str
  *
  * @return string
