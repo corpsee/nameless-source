@@ -19,8 +19,8 @@ class TagController extends BackendController
 		(
 			'styles'       => array
 			(
-				S_FILE_PATH . 'reset.css',
-				S_FILE_PATH . 'typographic.css'
+				STYLE_PATH_URL . 'reset.css',
+				STYLE_PATH_URL . 'typographic.css'
 			),
 			'scripts'      => array(),
 			'page'         => $page_model->getPage('tag/index'),
@@ -67,16 +67,16 @@ class TagController extends BackendController
 		(
 			'styles'       => array
 			(
-				S_FILE_PATH . 'reset.css',
-				S_FILE_PATH . 'typographic.css',
-				S_FILE_PATH . 'chosen/chosen.css'
+				STYLE_PATH_URL . 'reset.css',
+				STYLE_PATH_URL . 'typographic.css',
+				STYLE_PATH_URL . 'chosen/chosen.css'
 			),
 			'scripts'      => array
 			(
-				J_FILE_PATH . 'jquery/jquery-1.6.4.min.js',
-				J_FILE_PATH . 'chosen/chosen.jquery.min.js',
-				J_FILE_PATH . 'validation.js',
-				J_FILE_PATH . 'select.js'
+				SCRIPT_PATH_URL . 'jquery/jquery-1.6.4.min.js',
+				SCRIPT_PATH_URL . 'chosen/chosen.jquery.min.js',
+				SCRIPT_PATH_URL . 'validation.js',
+				SCRIPT_PATH_URL . 'select.js'
 			),
 			'page'         => $page_model->getPage('tag/add'),
 			'subtemplates' => array('content' => 'backend/tags/tags_add'),
@@ -125,16 +125,16 @@ class TagController extends BackendController
 		(
 			'styles'       => array
 			(
-				S_FILE_PATH . 'reset.css',
-				S_FILE_PATH . 'typographic.css',
-				S_FILE_PATH . 'chosen/chosen.css'
+				STYLE_PATH_URL . 'reset.css',
+				STYLE_PATH_URL . 'typographic.css',
+				STYLE_PATH_URL . 'chosen/chosen.css'
 			),
 			'scripts'      => array
 			(
-				J_FILE_PATH . 'jquery/jquery-1.6.4.min.js',
-				J_FILE_PATH . 'chosen/chosen.jquery.min.js',
-				J_FILE_PATH . 'validation.js',
-				J_FILE_PATH . 'select.js'
+				SCRIPT_PATH_URL . 'jquery/jquery-1.6.4.min.js',
+				SCRIPT_PATH_URL . 'chosen/chosen.jquery.min.js',
+				SCRIPT_PATH_URL . 'validation.js',
+				SCRIPT_PATH_URL . 'select.js'
 			),
 			'page'         => $page_model->getPage('tag/edit'),
 			'subtemplates' => array('content' => 'backend/tags/tags_edit'),

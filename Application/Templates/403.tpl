@@ -4,7 +4,7 @@
 		<title>Ошибка 403. Доступ запрещен.</title>
        	<meta http-equiv="content-Language" content="ru" />
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		<link rel="stylesheet" type="text/css" href="<?php echo S_FILE_PATH; ?>main.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo STYLE_PATH_URL; ?>main.css" />
     </head>
     <body>
 
