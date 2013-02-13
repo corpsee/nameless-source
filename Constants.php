@@ -1,6 +1,7 @@
 <?php
 
 define('DS', DIRECTORY_SEPARATOR);
+define('ROOT_PATH', __DIR__ . DS);
 
 define('APPLICATION_PATH', ROOT_PATH . 'Application' . DS);
 define('TEMPLATE_PATH',    APPLICATION_PATH . 'Templates' . DS);

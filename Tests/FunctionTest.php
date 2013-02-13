@@ -1,11 +1,6 @@
 <?php
 
-namespace Framework\Tests;
-
-define('ROOT_PATH', dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR);
-
-require_once ROOT_PATH . 'Constants.php';
-require_once ROOT_PATH . 'Functions.php';
+namespace Tests;
 
 class FunctionTest extends \PHPUnit_Framework_TestCase
 {
