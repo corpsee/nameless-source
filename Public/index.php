@@ -23,8 +23,6 @@ else
 	define('J_FILE_PATH', FILE_PATH_URL . 'j/');
 }*/
 
-define('ROOT_PATH', dirname(__DIR__) . DIRECTORY_SEPARATOR);
-
 require_once '/../Vendors/autoload.php';
 
 
@@ -44,7 +42,7 @@ $options = array
 );
 
 $framework = new Kernel();
-$framework = new HttpCache(new Kernel(), new Store(ROOT_PATH . 'Cache'), NULL, $options);
+//$framework = new HttpCache(new Kernel(), new Store(ROOT_PATH . 'Cache'), NULL, $options);
 $framework->run();
 
 //echo '<pre>';
