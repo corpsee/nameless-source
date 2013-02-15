@@ -10,9 +10,10 @@ use Assetic\Asset\FileAsset;
 
 class FrontendController extends Controller
 {
-	protected function setAsset ($name, array $assets, $type = 'css')
+	protected function generateAssets ($name, array $assets, $type = 'css')
 	{
-		if ($this->container->debug === TRUE)
+		// В debug-режиме (режим разработки) файлы не компилируются
+		if ($this->container->minify_assets === FALSE)
 		{
 		 	return $assets;
 		}
@@ -27,13 +28,13 @@ class FrontendController extends Controller
 		switch ($type)
 		{
 			case 'js':
-				$result_path = ROOT_PATH . 'Public/files/j/' . $name . '.' . $type;
+				$result_path = SCRIPT_PATH . $name . '.' . $type;
 				break;
 			case 'css':
 			default:
-				$result_path = ROOT_PATH . 'Public/files/s/' . $name . '.' . $type;
+				$result_path = STYLE_PATH . $name . '.' . $type;
 		}
-		$hash_path = ROOT_PATH . 'Cache/' . $name . '-' . $type;
+		$hash_path = $this->container->cache_path . $name . '-' . $type;
 
 		$canonical_hash = '';
 		if (file_exists($hash_path))
@@ -41,6 +42,7 @@ class FrontendController extends Controller
 			$canonical_hash = trim(file_get_contents($hash_path));
 		}
 
+		// Сжатие и минификация новых общих файлов
 		if ($canonical_hash !== $hash)
 		{
 			$assets_array = array();
@@ -52,11 +54,11 @@ class FrontendController extends Controller
 			switch ($type)
 			{
 				case 'js':
-					$filter = new JsCompressorFilter(ROOT_PATH . 'yuicompressor-2.4.7.jar', 'C:\Program files\Java\jre6\bin\java.exe');
+					$filter = new JsCompressorFilter($this->container->yuicompressor_path, $this->container->java_path);
 					break;
 				case 'css':
 				default:
-					$filter = new CssCompressorFilter(ROOT_PATH . 'yuicompressor-2.4.7.jar', 'C:\Program files\Java\jre6\bin\java.exe');
+					$filter = new CssCompressorFilter($this->container->yuicompressor_path, $this->container->java_path);
 			}
 
 			$collection = new AssetCollection
@@ -70,6 +72,5 @@ class FrontendController extends Controller
 		}
 
 		return array(pathToURL($result_path));
-		//exit;
 	}
 }

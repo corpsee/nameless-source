@@ -3,8 +3,8 @@
 return array
 (
 	'debug'               => TRUE,
+	'minify_assets'       => TRUE,
 	'timezone'            => 'Asia/Novosibirsk',
-	'doctype'             => '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">',
 	'charset'             => 'UTF-8',
 	'locale'              => 'ru',
 	'http_port'           => 80,
@@ -19,4 +19,7 @@ return array
 		'logger' => 'Framework\\ServiceProvider\\MonologProvider',
 	),
 	'log_path'            => ROOT_PATH . DS . 'Logs' . DS,
+	'cache_path'          => ROOT_PATH . DS . 'Cache' . DS,
+	'yuicompressor_path'  => ROOT_PATH . 'yuicompressor-2.4.7.jar',
+	'java_path'           => 'C:\Program files\Java\jre6\bin\java.exe',
 );

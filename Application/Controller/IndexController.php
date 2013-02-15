@@ -64,8 +64,8 @@ class IndexController extends FrontendController
 
 		$data = array
 		(
-			'styles'       => $this->setAsset('frontend.min', $this->getStyles(), 'css'),
-			'scripts'      => $this->setAsset('frontend.min', $this->getScripts(), 'js'),
+			'styles'       => $this->generateAssets('frontend.min', $this->getStyles(), 'css'),
+			'scripts'      => $this->generateAssets('frontend.min', $this->getScripts(), 'js'),
 			'page'         => $page_model->getPage('index/index'),
 			'subtemplates' => array('content' => 'frontend/gallery'),
 			'pictures'     => $gallery_model->selectAllPicsSortByYear(),
@@ -104,8 +104,8 @@ class IndexController extends FrontendController
 
 		$data = array
 		(
-			'styles'       => $this->setAsset('frontend.min', $this->getStyles(), 'css'),
-			'scripts'      => $this->setAsset('frontend.min', $this->getScripts(), 'js'),
+			'styles'       => $this->generateAssets('frontend.min', $this->getStyles(), 'css'),
+			'scripts'      => $this->generateAssets('frontend.min', $this->getScripts(), 'js'),
 			'page'         => $page_model->getPage('index/onetag'),
 			'subtemplates' => array('content' => 'frontend/gallery_tag'),
 			'pictures'     => $gallery_model->selectPicsByTag($tag),
@@ -141,8 +141,8 @@ class IndexController extends FrontendController
 
 		$data = array
 		(
-			'styles'       => $this->setAsset('frontend.min', $this->getStyles(), 'css'),
-			'scripts'      => $this->setAsset('frontend.min', $this->getScripts(), 'js'),
+			'styles'       => $this->generateAssets('frontend.min', $this->getStyles(), 'css'),
+			'scripts'      => $this->generateAssets('frontend.min', $this->getScripts(), 'js'),
 			'page'         => $page_model->getPage('index/bytag'),
 			'subtemplates'       => array('content' => 'frontend/gallery_bytag'),
 			'tags_with_pictures' => $tag_model->selectAllTagsWithPics($gallery_model),
