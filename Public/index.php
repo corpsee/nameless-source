@@ -41,6 +41,9 @@ $options = array
 	'stale_if_error'         => 60,
 );
 
+//phpinfo(); exit;
+//echo '<pre>'; print_r(getenv('TEMP')); exit;
+
 $framework = new Kernel();
 //$framework = new HttpCache(new Kernel(), new Store(ROOT_PATH . 'Cache'), NULL, $options);
 $framework->run();
