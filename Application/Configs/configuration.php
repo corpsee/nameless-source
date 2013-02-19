@@ -3,7 +3,7 @@
 return array
 (
 	'debug'               => TRUE,
-	'minify_assets'       => TRUE,
+	'minify_assets'       => FALSE,
 	'timezone'            => 'Asia/Novosibirsk',
 	'charset'             => 'UTF-8',
 	'locale'              => 'ru',
@@ -14,9 +14,11 @@ return array
 	'database_settings'   => 'sqlite:' . ROOT_PATH . 'Application' . DS . 'corpsee.sqlite',
 	'services'            => array
 	(
-		'auto'   => 'Framework\\ServiceProvider\\AutoProvider',
-		'mailer' => 'Framework\\ServiceProvider\\SwiftmailerProvider',
-		'logger' => 'Framework\\ServiceProvider\\MonologProvider',
+		'database'   => 'Framework\\ServiceProvider\\DatabaseProvider',
+		'validation' => 'Framework\\ServiceProvider\\ValidationProvider',
+		'auto'       => 'Framework\\ServiceProvider\\AutoProvider',
+		'mailer'     => 'Framework\\ServiceProvider\\SwiftmailerProvider',
+		'logger'     => 'Framework\\ServiceProvider\\MonologProvider',
 	),
 	'log_path'            => ROOT_PATH . DS . 'Logs' . DS,
 	'cache_path'          => ROOT_PATH . DS . 'Cache' . DS,
