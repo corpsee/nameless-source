@@ -55,8 +55,18 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		$this->container = new Container();
 		$this->container->kernel = $this;
 
+		//TODO: добавить конфигурацию поумолчанию и мердж с пользовательской
 		// configurations/routes
-		$configs = include(CONFIG_PATH . 'configuration.php');
+		if (file_exists(CONFIG_PATH . 'configuration.php'))
+		{
+			$configs = include_once(CONFIG_PATH . 'configuration.php');
+		}
+
+		if (file_exists(CONFIG_PATH . 'routes.php'))
+		{
+			$routes = include_once(CONFIG_PATH . 'routes.php');
+		}
+
 		$routes  = include(CONFIG_PATH . 'routes.php');
 
 		// configuration
@@ -65,8 +75,7 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 			$this->container->$config_option = $config;
 		}
 
-		//TODO: вынести в регистрацию модулей
-		$this->container->validation_rules = include(CONFIG_PATH . 'validation.php');
+		//$this->container->validation_rules = include(CONFIG_PATH . 'validation.php');
 
 		// start point
 		if ($this->container->debug)
@@ -100,10 +109,10 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 			$service_provider->register($this->container);
 		}
 
-		$this->container->database = $this->container->service(function ($c)
+		/*$this->container->database = $this->container->service(function ($c)
 		{
 			return new Database($c->database_settings);
-		});
+		});*/
 
 		// sessions
 		$this->container->session_options = array();
@@ -154,10 +163,10 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 			return $dispatcher;
 		});
 
-		$this->container->validator = $this->container->service(function ($c)
+		/*$this->container->validator = $this->container->service(function ($c)
 		{
 			return new Validator($c);
-		});
+		});*/
 
 		$this->init();
 
