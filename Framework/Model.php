@@ -6,6 +6,8 @@
  */
 namespace Framework;
 
+use Framework\Database\Database;
+
 class Model
 {
 	/**

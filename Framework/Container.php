@@ -20,6 +20,7 @@ class Container
 
 	/**
 	 * @param string $key
+	 *
 	 * @param mixed $value
 	 */
 	public function __set ($key, $value)
