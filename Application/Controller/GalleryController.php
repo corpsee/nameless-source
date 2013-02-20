@@ -24,7 +24,7 @@ class GalleryController extends BackendController
 			),
 			'scripts'      => array(),
 			'page'         => $page_model->getPage('admin/login'),
-			'subtemplates' => array('content' => 'backend/gallery/gallery_list'),
+			'subtemplates' => array('content' => 'backend' . DS . 'gallery' . DS . 'gallery_list'),
 			'pictures'     => $gallery_model->selectAllPicsWithTags($tag_model),
 			'links'        => array
 			(
@@ -102,7 +102,7 @@ class GalleryController extends BackendController
 				SCRIPT_PATH_URL . 'datepicker.js',
 			),
 			'page'         => $page_model->getPage('gallery/add'),
-			'subtemplates' => array('content' => 'backend/gallery/gallery_add'),
+			'subtemplates' => array('content' => 'backend' . DS . 'gallery' . DS . 'gallery_add'),
 			'tags'         => $tag_model->selectAllTagsInString(),
 		);
 		return $this->render('back_page', $data);
@@ -143,7 +143,7 @@ class GalleryController extends BackendController
 				SCRIPT_PATH_URL . 'jcrop.js'
 			),
 			'page'         => $page_model->getPage('gallery/crop'),
-			'subtemplates' => array('content' => 'backend/gallery/gallery_crop'),
+			'subtemplates' => array('content' => 'backend' . DS . 'gallery' . DS . 'gallery_crop'),
 			'image'        => array
 			(
 				'image' => $image,
@@ -170,7 +170,7 @@ class GalleryController extends BackendController
 				SCRIPT_PATH_URL . 'jquery/jquery-1.6.4.min.js',
 			),
 			'page'         => $page_model->getPage('gallery/result'),
-			'subtemplates' => array('content' => 'backend/gallery/gallery_result'),
+			'subtemplates' => array('content' => 'backend' . DS . 'gallery' . DS . 'gallery_result'),
 			'image'        => array('min'  => $image . '-min', 'gray' => $image . '-gray')
 		);
 		return $this->render('back_page', $data);
@@ -224,7 +224,7 @@ class GalleryController extends BackendController
 				SCRIPT_PATH_URL . 'datepicker.js'
 			),
 			'page'         => $page_model->getPage('gallery/edit'),
-			'subtemplates' => array('content' => 'backend/gallery/gallery_edit'),
+			'subtemplates' => array('content' => 'backend' . DS . 'gallery' . DS . 'gallery_edit'),
 			'tags'         => $tag_model->selectAllTagsInString()
 		);
 
@@ -286,7 +286,7 @@ class GalleryController extends BackendController
 				SCRIPT_PATH_URL . 'jquery/jquery-1.6.4.min.js',
 			),
 			'page'         => $page_model->getPage('gallery/editimage'),
-			'subtemplates' => array('content' => 'backend/gallery/gallery_editimage'),
+			'subtemplates' => array('content' => 'backend' . DS . 'gallery' . DS . 'gallery_editimage'),
 			'image'        => array('id' => $id),
 		);
 		return $this->render('back_page', $data);

@@ -29,6 +29,6 @@ class TypographyController extends Controller
 				'keywords' => ''
 			),
 		);
-		return $this->render('typography', $data);
+		return $this->render('typography' . DS . 'typography', $data);
 	}
 }

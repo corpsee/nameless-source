@@ -24,7 +24,7 @@ class TagController extends BackendController
 			),
 			'scripts'      => array(),
 			'page'         => $page_model->getPage('tag/index'),
-			'subtemplates' => array('content' => 'backend/tags/tags_list'),
+			'subtemplates' => array('content' => 'backend' . DS . 'tags' . DS . 'tags_list'),
 			'tags'         => $tag_model->selectAllTagsWithPicInString($gallery_model),
 			'links'        => array
 			(
@@ -79,7 +79,7 @@ class TagController extends BackendController
 				SCRIPT_PATH_URL . 'select.js'
 			),
 			'page'         => $page_model->getPage('tag/add'),
-			'subtemplates' => array('content' => 'backend/tags/tags_add'),
+			'subtemplates' => array('content' => 'backend' . DS . 'tags' . DS . 'tags_add'),
 			'pictures'     => $gallery_model->selectAllPics()
 		);
 		return $this->render('back_page', $data);
@@ -137,7 +137,7 @@ class TagController extends BackendController
 				SCRIPT_PATH_URL . 'select.js'
 			),
 			'page'         => $page_model->getPage('tag/edit'),
-			'subtemplates' => array('content' => 'backend/tags/tags_edit'),
+			'subtemplates' => array('content' => 'backend' . DS . 'tags' . DS . 'tags_edit'),
 			'values'       => array
 			(
 				'tag'      => $tag['tag'],

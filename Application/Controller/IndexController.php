@@ -67,7 +67,7 @@ class IndexController extends FrontendController
 			'styles'       => $this->generateAssets('frontend.min', $this->getStyles(), 'css'),
 			'scripts'      => $this->generateAssets('frontend.min', $this->getScripts(), 'js'),
 			'page'         => $page_model->getPage('index/index'),
-			'subtemplates' => array('content' => 'frontend/gallery'),
+			'subtemplates' => array('content' => 'frontend' . DS . 'gallery'),
 			'pictures'     => $gallery_model->selectAllPicsSortByYear(),
 			'tags'         => $tag_model->selectAllTagsWithClass($gallery_model),
 		);
@@ -107,7 +107,7 @@ class IndexController extends FrontendController
 			'styles'       => $this->generateAssets('frontend.min', $this->getStyles(), 'css'),
 			'scripts'      => $this->generateAssets('frontend.min', $this->getScripts(), 'js'),
 			'page'         => $page_model->getPage('index/onetag'),
-			'subtemplates' => array('content' => 'frontend/gallery_tag'),
+			'subtemplates' => array('content' => 'frontend' . DS . 'gallery_tag'),
 			'pictures'     => $gallery_model->selectPicsByTag($tag),
 			'tag'          => $tag,
 		);
@@ -144,31 +144,10 @@ class IndexController extends FrontendController
 			'styles'       => $this->generateAssets('frontend.min', $this->getStyles(), 'css'),
 			'scripts'      => $this->generateAssets('frontend.min', $this->getScripts(), 'js'),
 			'page'         => $page_model->getPage('index/bytag'),
-			'subtemplates'       => array('content' => 'frontend/gallery_bytag'),
+			'subtemplates'       => array('content' => 'frontend' . DS . 'gallery_bytag'),
 			'tags_with_pictures' => $tag_model->selectAllTagsWithPics($gallery_model),
 			'tags'               => $tag_model->selectAllTagsWithClass($gallery_model),
 		);
 		return $this->render('front_page', $data, $response);
-	}
-
-	public function css ()
-	{
-		$page_model    = new Page($this->getDatabase());
-
-		$data = array
-		(
-			'styles'       => array
-			(
-				STYLE_PATH_URL . 'normalize-2.0.1.css',
-				STYLE_PATH_URL . 'newstyle.css',
-			),
-			'scripts'      => array
-			(
-				SCRIPT_PATH_URL . 'jquery/jquery-1.8.3.min.js',
-			),
-			'page'         => $page_model->getPage('index/css'),
-			'subtemplates' => array('content' => 'frontend/css'),
-		);
-		return $this->render('front_page', $data);
 	}
 }
