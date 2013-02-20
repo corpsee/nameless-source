@@ -21,7 +21,7 @@ class ErrorController extends BackendController
 			),
 			'scripts'      => array(),
 			'page'         => $page_model->getPage('admin/error'),
-			'subtemplates' => array('content' => 'backend/error'),
+			'subtemplates' => array('content' => 'backend' . DS . 'error'),
 		);
 
 		switch ($code)

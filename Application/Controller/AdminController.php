@@ -59,7 +59,7 @@ class AdminController extends BackendController
 			),
 			'scripts'      => array(),
 			'page'         => $page_model->getPage('admin/login'),
-			'subtemplates' => array('content' => 'backend/login'),
+			'subtemplates' => array('content' => 'backend' . DS . 'login'),
 			'action'       => '/admin/login',
 		);
 
