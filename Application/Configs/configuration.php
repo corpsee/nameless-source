@@ -3,7 +3,7 @@
 return array
 (
 	'debug'               => TRUE,
-	'minify_assets'       => TRUE,
+	'minify_assets'       => FALSE,
 	'timezone'            => 'Asia/Novosibirsk',
 	'charset'             => 'UTF-8',
 	'locale'              => 'ru',

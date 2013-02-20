@@ -5,7 +5,7 @@ namespace Application\Controller;
 use Framework\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
-class TypoController extends Controller
+class TypographyController extends Controller
 {
 
 	public function index ()
@@ -14,8 +14,8 @@ class TypoController extends Controller
 		(
 			'styles'       => array
 			(
-				STYLE_PATH_URL . 'normalize-2.0.1.css',
-				STYLE_PATH_URL . 'newstyle.css',
+				STYLE_PATH_URL . 'normalize_2.1.0.css',
+				STYLE_PATH_URL . 'typography_0.1.css',
 			),
 			'scripts'      => array
 			(
@@ -28,8 +28,7 @@ class TypoController extends Controller
 				'description' => '',
 				'keywords' => ''
 			),
-			'subtemplates' => array('content' => 'typo'),
 		);
-		return $this->render('front_page', $data);
+		return $this->render('typography', $data);
 	}
 }
