@@ -203,12 +203,12 @@ return array
 		),
 	),
 
-	'typo' => array
+	'typography' => array
 	(
-		'pattern'      => '/typo{slash}',
+		'pattern'      => '/typography{slash}',
 		'defaults'     => array
 		(
-			'_controller' => 'Application\\Controller\\TypoController::index',
+			'_controller' => 'Application\\Controller\\TypographyController::index',
 			'slash'       => '',
 		),
 		'requirements' => array ('slash' => '/?'),
