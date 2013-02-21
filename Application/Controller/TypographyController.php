@@ -14,7 +14,7 @@ class TypographyController extends Controller
 		(
 			'styles'       => array
 			(
-				STYLE_PATH_URL . 'normalize_2.1.0.css',
+				STYLE_PATH_URL . 'normalize_1.1.0.css',
 				STYLE_PATH_URL . 'typography_0.1.css',
 			),
 			'scripts'      => array
