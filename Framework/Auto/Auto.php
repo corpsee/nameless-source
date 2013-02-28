@@ -11,16 +11,22 @@ class Auto
 	const ERROR_NONE             = 0;
 	const ERROR_USERNAME_INVALID = 1;
 	const ERROR_PASSWORD_INVALID = 2;
+	const ERROR_UNKNOWN_IDENTITY = 100;
 
 	/**
 	 * @var integer
 	 */
-	protected $user_id;
+	protected $user_id = 0;
 
 	/**
 	 * @var string
 	 */
 	protected $user_name;
+
+	/**
+	 * @var string
+	 */
+	protected $user_password;
 
 	/**
 	 * @var array
@@ -33,11 +39,18 @@ class Auto
 	protected $user_provider;
 
 	/**
+	 * @var int
+	 */
+	protected $error = self::ERROR_UNKNOWN_IDENTITY;
+
+	/**
 	 * @param UserProviderInterface $user_provider
 	 */
-	public function __construct(UserProviderInterface $user_provider)
+	public function __construct(UserProviderInterface $user_provider, $user_name, $user_password)
 	{
 		$this->user_provider = $user_provider;
+		$this->user_name     = $user_name;
+		$this->user_password = $user_password;
 	}
 
 	/**
@@ -69,10 +82,10 @@ class Auto
 	 * @param string $password
 	 * @return integer
 	 */
-	public function authenticate($user_name, $user_password)
+	public function authenticate()
 	{
 		$error = self::ERROR_NONE;
-		$user = $this->user_provider->getUserByName($user_name);
+		$user = $this->user_provider->getUserByName($this->user_name);
 
 		if (FALSE === $user)
 		{
@@ -80,25 +93,16 @@ class Auto
 		}
 		else
 		{
-			if ($this->getUserHash($user_password, $user['salt']) !== $user['password'])
+			if (!hashCheck($this->user_password, $user['password']))
 			{
 				$error = self::ERROR_PASSWORD_INVALID;
 			}
 			else
 			{
 				$this->user_id       = (integer)$user['id'];
-				$this->user_name     = $user_name;
-				$this->user_groups   = $this->user_provider->getUserGroups($user_name);
+				$this->user_groups   = $this->user_provider->getUserGroups($this->user_name);
 			}
 		}
 		return $error;
 	}
-
-	public function getUserHash ($user_password, $user_salt)
-	{
-		sleep(2);
-		return hash_hmac('sha1', $user_password, $user_salt);
-	}
-
-
 }

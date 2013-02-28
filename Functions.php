@@ -67,6 +67,21 @@ function utf8_convert_encoding ($str, $to, $from = NULL)
 	return mb_convert_encoding($str, $to, $from);
 }*/
 
+function hashMake($value, $rounds = 10)
+{
+	$work_rounds = str_pad($rounds, 2, '0', STR_PAD_LEFT);
+
+	$salt = substr(str_shuffle(str_repeat('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 5)), 0, 40);
+	$salt = substr(strtr(base64_encode($salt), '+', '.'), 0 , 22);
+
+	return crypt($value, '$2a$' . $work_rounds . '$' . $salt);
+}
+
+function hashCheck($value, $hash)
+{
+	return crypt($value, $hash) === $hash;
+}
+
 /**
  * @param string $path
  *
