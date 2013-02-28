@@ -6,6 +6,18 @@ use Framework\Model;
 
 class Tag extends Model
 {
+	// Форматирует дату при выборке данных из базы
+	private function formatDate (array $data)
+	{
+		$post_date   = \DateTime::createFromFormat('U', $data['post_date']);
+		$data['post_date']     = $post_date->format('d.m.Y');
+
+		$modify_date = \DateTime::createFromFormat('U', $data['modify_date']);
+		$data['modify_date']   = $modify_date->format('d.m.Y');
+
+		return $data;
+	}
+
 	// id, tag
 	public function selectTagByID ($id)
 	{
@@ -49,7 +61,11 @@ class Tag extends Model
 	{
 		$data = $this->selectAllTagsWithClass($gallery_model);
 
-		foreach ($data as &$row) { $row['pictures'] = $gallery_model->selectPicsInStringByTag($row['tag']); }
+		foreach ($data as &$row)
+		{
+			$row['pictures'] = $gallery_model->selectPicsInStringByTag($row['tag']);
+			$row = $this->formatDate($row);
+		}
 		unset($row);
 
 		return $data;
@@ -125,19 +141,23 @@ class Tag extends Model
 	public function addTag (Gallery $gallery_model, $tag, $pictures)
 	{
 		$data = $this->database->selectOne("SELECT COUNT(*) AS `count` FROM `tbl_tags` WHERE `tag` = ?", array($tag));
-		//echo '<pre>'; print_r($data); exit();
 
 		if ($data['count'] == 0)
 		{
 			$this->database->beginTransaction();
 
-				$tag_id = $this->database->execute("INSERT INTO `tbl_tags` (`tag`) VALUES (?)", array($tag));
+				$tag = standardize_unicode(trim($tag));
+				$tag_id = $this->database->execute("INSERT INTO `tbl_tags` (`tag`, `post_date`, `modify_date`) VALUES (?, ?, ?)", array($tag, time(), time()));
 				$this->setLastModifyDate();
 
 				foreach ($pictures as $picture)
 				{
 					$pic = $this->database->selectOne("SELECT `id` FROM `tbl_pictures` WHERE `title` = ?", array($picture));
-					$this->database->execute("INSERT INTO `tbl_pictures_tags` (`pictures_id`, `tags_id`) VALUES (?, ?)", array($pic['id'], $tag_id));
+
+					if ($pic)
+					{
+						$this->database->execute("INSERT INTO `tbl_pictures_tags` (`pictures_id`, `tags_id`) VALUES (?, ?)", array($pic['id'], $tag_id));
+					}
 				}
 
 				if ($pictures)
@@ -162,20 +182,24 @@ class Tag extends Model
 		{
 			$this->database->beginTransaction();
 
-				//$data = $this->database->selectOne("SELECT * FROM `tbl_tags` WHERE `id` = ?", array($tag_id));
-				$this->database->execute("UPDATE `tbl_tags` SET `tag` = ? WHERE `id` = ?", array($tag ,$tag_id));
+				$tag = standardize_unicode(trim($tag));
+				$this->database->execute("UPDATE `tbl_tags` SET `tag` = ?, `modify_date` = ? WHERE `id` = ?", array($tag, time(),$tag_id));
 				$this->database->execute("DELETE FROM `tbl_pictures_tags` WHERE `tags_id` = ?", array($tag_id));
 				$this->setLastModifyDate();
 
 				foreach ($pictures as $picture)
 				{
 					$pic = $this->database->selectOne("SELECT `id` FROM `tbl_pictures` WHERE `title` = ?", array($picture));
-					$this->database->execute("INSERT INTO `tbl_pictures_tags` (`pictures_id`, `tags_id`) VALUES (?, ?)", array($pic['id'], $tag_id));
+
+					if ($pic)
+					{
+						$this->database->execute("INSERT INTO `tbl_pictures_tags` (`pictures_id`, `tags_id`) VALUES (?, ?)", array($pic['id'], $tag_id));
+					}
 				}
 
 				if ($pictures)
 				{
-					$gallery_model->setLastModifyDate();
+
 				}
 
 			$this->database->commit();

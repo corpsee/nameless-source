@@ -39,7 +39,7 @@ class Container
 	{
 		if (!isset($this->values[$key]))
 		{
-			throw new \InvalidArgumentException(sprintf('Value "%s" is not defined.', $key));
+			throw new \InvalidArgumentException(sprintf('Value "%s" is not defined in container.', $key));
 		}
 
 		if (is_callable($this->values[$key]))
