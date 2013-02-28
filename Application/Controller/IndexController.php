@@ -42,7 +42,6 @@ class IndexController extends FrontendController
 		$gallery_model = new Gallery($this->getDatabase());
 		$tag_model     = new Tag($this->getDatabase());
 
-		//TODO: учитывать css/js
 		$lm_pictures = $gallery_model->getLastModifyDate();
 		$lm_tags     = $tag_model->getLastModifyDate();
 		$last_modify = ($lm_pictures > $lm_tags) ? $lm_pictures : $lm_tags;

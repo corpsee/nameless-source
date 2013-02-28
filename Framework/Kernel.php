@@ -91,7 +91,7 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		// routes
 		foreach ($routes as $route_name => &$route)
 		{
-			//TODO: довести до ума, добавить проверку остальных параметров
+			if (!isset($route['defaults'])) { $route['defaults'] = array(); }
 			if (!isset($route['requirements'])) { $route['requirements'] = array(); }
 			if (!isset($route['options'])) { $route['options'] = array(); }
 

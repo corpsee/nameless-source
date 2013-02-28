@@ -10,6 +10,7 @@ use Monolog\Handler\StreamHandler;
 
 class MonologProvider implements ProviderInterface
 {
+	//TODO: по возможности разделить логи по уровнфм в разные файлы
 	public function register (Container $container)
 	{
 		$container->logger = $container->service(function ($c)

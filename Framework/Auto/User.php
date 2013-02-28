@@ -157,11 +157,9 @@ class User
 	 *
 	 * @return boolean
 	 */
-	public function getAccess ($route)
+	public function getAccessByRoute ($route)
 	{
-		//TODO: переименовать в getAccessByRoute
 		$defaults = $this->routes->get($route)->getDefaults();
-
 		return $this->getAccessByController($defaults['_controller']);
 	}
 
