@@ -28,9 +28,9 @@ class TagController extends BackendController
 			'tags'         => $tag_model->selectAllTagsWithPicInString($gallery_model),
 			'links'        => array
 			(
-				'add'       => $this->container->user->getAccess('tag_add'),
-				'delete'    => $this->container->user->getAccess('tag_delete'),
-				'edit'      => $this->container->user->getAccess('tag_edit'),
+				'add'       => $this->container->user->getAccessByRoute('tag_add'),
+				'delete'    => $this->container->user->getAccessByRoute('tag_delete'),
+				'edit'      => $this->container->user->getAccessByRoute('tag_edit'),
 			)
 		);
 		//echo '<pre>'; var_dump($data); echo '</pre>';

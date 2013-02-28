@@ -11,7 +11,7 @@ class BackendController extends Controller
 	public function before()
 	{
 
-		$access = $this->container->user->getAccess($this->getAttributes('_route'));
+		$access = $this->container->user->getAccessByRoute($this->getAttributes('_route'));
 		//echo var_dump($access);
 		if (!$access)
 		{

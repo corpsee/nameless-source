@@ -28,11 +28,11 @@ class GalleryController extends BackendController
 			'pictures'     => $gallery_model->selectAllPicsWithTags($tag_model),
 			'links'        => array
 			(
-				'add'       => $this->container->user->getAccess('gallery_add'),
-				'delete'    => $this->container->user->getAccess('gallery_delete'),
-				'edit'      => $this->container->user->getAccess('gallery_edit'),
-				'editimage' => $this->container->user->getAccess('gallery_editimage'),
-				'crop'      => $this->container->user->getAccess('gallery_crop'),
+				'add'       => $this->container->user->getAccessByRoute('gallery_add'),
+				'delete'    => $this->container->user->getAccessByRoute('gallery_delete'),
+				'edit'      => $this->container->user->getAccessByRoute('gallery_edit'),
+				'editimage' => $this->container->user->getAccessByRoute('gallery_editimage'),
+				'crop'      => $this->container->user->getAccessByRoute('gallery_crop'),
 			)
 		);
 		return $this->render('back_page', $data);

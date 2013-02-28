@@ -158,7 +158,6 @@ class Tag extends Model
 	{
 		$data = $this->database->selectOne("SELECT COUNT(*) AS `count` FROM `tbl_tags` WHERE `tag` = ?", array($tag));
 
-		//TODO: изменение имени тега выдает оштбку
 		if ($data['count'] !== 0)
 		{
 			$this->database->beginTransaction();
