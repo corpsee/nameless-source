@@ -44,6 +44,15 @@ $options = array
 //phpinfo(); exit;
 //echo '<pre>'; print_r(getenv('TEMP')); exit;
 
+//$password = hashMake('registered');
+//echo $password . '<br />';
+//echo (integer)hashCheck('password', $password);
+
+//echo '<pre>';
+//var_dump(stringToArray(''));
+//var_dump(stringToArray('group'));
+//var_dump(stringToArray('group1, group2'));
+
 $framework = new Kernel();
 //$framework = new HttpCache(new Kernel(), new Store(ROOT_PATH . 'Cache'), NULL, $options);
 $framework->run();

@@ -12,7 +12,6 @@ class FrontendController extends Controller
 {
 	protected function generateAssets ($name, array $assets, $type = 'css')
 	{
-		// В debug-режиме (режим разработки) файлы не компилируются
 		if ($this->container->minify_assets === FALSE)
 		{
 		 	return $assets;

@@ -17,7 +17,7 @@ class ExceptionHandler
 	/**
 	 * @var boolean
 	 */
-	private $debug;
+	private $environment;
 
 	/**
 	 * @var string
@@ -46,11 +46,11 @@ class ExceptionHandler
 	 * @param string          $charset
 	 * @param LoggerInterface $logger
 	 */
-	public function __construct ($templates_path, $templates_extension = '.tpl', $debug = TRUE, $charset = 'UTF-8', LoggerInterface $logger = NULL)
+	public function __construct ($templates_path, $templates_extension = '.tpl', $environment = 'debug', $charset = 'UTF-8', LoggerInterface $logger = NULL)
 	{
-		$this->debug   = $debug;
-		$this->charset = $charset;
-		$this->logger  = $logger;
+		$this->environment = $environment;
+		$this->charset     = $charset;
+		$this->logger      = $logger;
 
 		$this->templates_path      = $templates_path;
 		$this->templates_extension = $templates_extension;
@@ -65,9 +65,9 @@ class ExceptionHandler
 	 *
 	 * @return ExceptionHandler
 	 */
-	public static function register ($templates_path, $templates_extension = '.tpl', $debug = TRUE, $charset = 'UTF-8', LoggerInterface $logger = NULL)
+	public static function register ($templates_path, $templates_extension = '.tpl', $environment = 'debug', $charset = 'UTF-8', LoggerInterface $logger = NULL)
 	{
-		$handler = new static($templates_path, $templates_extension, $debug, $charset, $logger);
+		$handler = new static($templates_path, $templates_extension, $environment, $charset, $logger);
 		set_exception_handler(array($handler, 'handle'));
 		return $handler;
 	}
@@ -116,7 +116,7 @@ class ExceptionHandler
 		{
 			$this->log($exception);
 
-			if ($this->debug)
+			if ($this->environment = 'debug')
 			{
 				$response_raw = $this->decorate($this->getContent($exception), $title);
 			}
@@ -141,7 +141,7 @@ class ExceptionHandler
 			$this->log($e);
 
 			// something nasty happened and we cannot throw an exception here anymore
-			if ($this->debug)
+			if ($this->environment = 'debug')
 			{
 				$response_raw = $this->decorate('', sprintf('Exception thrown when handling an exception (%s: %s)', get_class($exception), $exception->getMessage()));
 			}

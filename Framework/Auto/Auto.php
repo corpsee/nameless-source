@@ -16,7 +16,7 @@ class Auto
 	/**
 	 * @var integer
 	 */
-	protected $user_id = 0;
+	protected $user_id;
 
 	/**
 	 * @var string
@@ -99,7 +99,7 @@ class Auto
 			}
 			else
 			{
-				$this->user_id       = (integer)$user['id'];
+				$this->user_id       = isset($user['id']) ? (integer)$user['id'] : $this->user_name;
 				$this->user_groups   = $this->user_provider->getUserGroups($this->user_name);
 			}
 		}

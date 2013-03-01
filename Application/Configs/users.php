@@ -5,9 +5,7 @@ return array
 	// 201986
 	'corpsee' => array
 	(
-		'id'       => 1,
-		'password' => '844819511f2a01f5e4af156cba5e05f897cb707a',
-		'salt'     => 'necrosis',
+		'password' => '$2a$08$THJnQkdscWJoTTRLM1dhROYLSMHrCV4JzWQksIujQjCT1cq25OxxG',
 		'groups'   => array
 		(
 			'ROLE_ADMIN',
@@ -17,9 +15,7 @@ return array
 	// registered
 	'registered' => array
 	(
-		'id'       => 2,
-		'password' => 'c18c2b8c75cdbdc3c2c5d33ac9af6856fd46bd9d',
-		'salt'     => 'registered',
+		'password' => '$2a$08$bEJzRGI4TDFmNzN4SjdoUObn292Fg8/yEohQCWDTLsWP1Qkj0OmeG',
 		'groups'   => array
 		(
 			'ROLE_REGISTERED',

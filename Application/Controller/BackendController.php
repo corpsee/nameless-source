@@ -21,25 +21,15 @@ class BackendController extends Controller
 
 	protected function getValidation ($form)
 	{
-		//return $this->container->validator->validate($form);
 		if ($msg = $this->container->validator->validate($form))
 		{
-			//print_r($msg); exit;
-			return new Response
-			(
-				json_encode(array('status' => 'error', 'msg' => $msg)),
-				200,
-				array('Content-Type' => 'application/json')
-			);
+			$response = array('status' => 'error', 'msg' => $msg);
 		}
 		else
 		{
-			return new Response
-			(
-				json_encode(array('status' => 'success')),
-				200,
-				array('Content-Type' => 'application/json')
-			);
+			$response = array('status' => 'success');
 		}
+
+		return new Response(json_encode($response), 200, array('Content-Type' => 'application/json'));
 	}
 }
