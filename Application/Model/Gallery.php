@@ -65,7 +65,7 @@ class Gallery extends Model
 
 		foreach ($data as &$row)
 		{
-			$date = \DateTime::createFromFormat('d.m.Y:H.i.s', $row['create_date'] . ':12.00.00');
+			$date = \DateTime::createFromFormat('d.m.Y:H.i.s', $row['create_date'] . ':00.00.00');
 			$pictures[$date->format('Y')][] = $row;
 		}
 		unset($row);
