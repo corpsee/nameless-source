@@ -24,13 +24,19 @@ class DBUserProvider implements UserProviderInterface
 	 *
 	 * @return array|false
 	 */
-	public function getUserByName ($username)
+	public function getUserByName ($user_name)
 	{
-		return $this->database->selectOne("SELECT `username`, `password`, `salt`, `groups` FROM `tbl_users` WHERE `username` = ?", array($username));
+		return $this->database->selectOne("SELECT `id`, `password` FROM `tbl_users` WHERE `username` = ?", array($user_name));
 	}
 
 	public function getUserGroups ($user_name)
 	{
+		$groups = $this->database->selectOne("SELECT `groups` FROM `tbl_users` WHERE `username` = ?", array($user_name));
 
+		if ($groups)
+		{
+			return stringToArray($groups['groups']);
+		}
+		return FALSE;
 	}
 }

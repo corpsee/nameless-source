@@ -2,7 +2,12 @@
 
 return array
 (
-	'debug'               => TRUE,
+	/*
+	 * debug      - режим разработки с выводом ошибок
+	 * test       - режим эмул€ции продакшена дл€ разработки (без писем об ошибках и тп)
+	 * production - режим продакшена
+	*/
+	'environment'         => 'debug', // production,test,debug
 	'minify_assets'       => FALSE,
 	'timezone'            => 'Asia/Novosibirsk',
 	'charset'             => 'UTF-8',

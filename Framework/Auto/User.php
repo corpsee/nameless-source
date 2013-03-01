@@ -157,6 +157,7 @@ class User
 	 *
 	 * @return boolean
 	 */
+	//TODO: переименовать в checkAccess
 	public function getAccessByRoute ($route)
 	{
 		$defaults = $this->routes->get($route)->getDefaults();
@@ -175,40 +176,29 @@ class User
 
 		$groups = $this->getUserGroups();
 
-		//echo '<pre>';
-		//print_r(array($controller, $action));
-		//print_r($this->access); exit;
-
 		// если в настройках нет контроллера - разрешен
 		if (!isset($this->access[$controller]))
 		{
-			//echo 1;
 			$access = TRUE;
 		}
 		else
 		{
-			//echo 2;
 			// если в настройках нет действия - разрешен
 			if(!isset($this->access[$controller][$action]))
 			{
-				echo 3;
 				$access = TRUE;
 			}
 			else
 			{
-				//echo 4;
-				//echo '<pre>'; print_r($groups);
 				foreach ($this->access[$controller][$action] as $action_access)
 				{
 					if (in_array($action_access, $groups))
 					{
-						//echo 5;
 						$access = TRUE;
 					}
 				}
 			}
 		}
-		//exit;
 		return $access;
 	}
 }

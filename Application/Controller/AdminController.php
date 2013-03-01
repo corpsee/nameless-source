@@ -17,7 +17,6 @@ class AdminController extends BackendController
 		}
 
 		$page_model = new Page($this->getDatabase());
-		$auto = new Auto(new FileUserProvider($this->container->users));
 
 		/*if ($this->getRequest()->cookies->has(User::COOKIE_AUTOLOGIN) && !$auto->autoAuthenticate($this->getCookies(User::COOKIE_AUTOLOGIN)))
 		{
@@ -29,7 +28,8 @@ class AdminController extends BackendController
 		if ($this->isMethod('POST'))
 		{
 			// аутентификация
-			$authenticate = $auto->authenticate($this->getPost('login'), $this->getPost('password'));
+			$auto = new Auto(new FileUserProvider($this->container->users), $this->getPost('login'), $this->getPost('password'));
+			$authenticate = $auto->authenticate();
 
 			if ($authenticate === 0)
 			{

@@ -67,6 +67,12 @@ function utf8_convert_encoding ($str, $to, $from = NULL)
 	return mb_convert_encoding($str, $to, $from);
 }*/
 
+/**
+ * @param string $value
+ * @param int $rounds
+ *
+ * @return string
+ */
 function hashMake($value, $rounds = 10)
 {
 	$work_rounds = str_pad($rounds, 2, '0', STR_PAD_LEFT);
@@ -77,6 +83,12 @@ function hashMake($value, $rounds = 10)
 	return crypt($value, '$2a$' . $work_rounds . '$' . $salt);
 }
 
+/**
+ * @param string $value
+ * @param string $hash
+ *
+ * @return boolean
+ */
 function hashCheck($value, $hash)
 {
 	return crypt($value, $hash) === $hash;
@@ -295,8 +307,8 @@ function standardize_unicode ($str)
  */
 function PicturesSort ($first, $second)
 {
-	$first_date  = \DateTime::createFromFormat('d.m.Y:H.i.s', $first['create_date'] . ':12.00.00');
-	$second_date = \DateTime::createFromFormat('d.m.Y:H.i.s', $second['create_date'] . ':12.00.00');
+	$first_date  = \DateTime::createFromFormat('d.m.Y:H.i.s', $first['create_date'] . ':00.00.00');
+	$second_date = \DateTime::createFromFormat('d.m.Y:H.i.s', $second['create_date'] . ':00.00.00');
 
 	if ($first_date == $second_date)
 	{
@@ -327,11 +339,11 @@ function stringToArray ($string, $delimiter = ',')
  *
  * @return string
  */
-function arrayToString ($array, $delimiter = ', ')
+function arrayToString (array $array, $delimiter = ', ')
 {
 	$string = '';
 
-	if (is_array($array) && $array)
+	if ($array)
 	{
 		$last_item = array_pop($array);
 		foreach ($array as $item) { $string .= $item . $delimiter; }
