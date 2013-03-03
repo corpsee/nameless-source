@@ -20,6 +20,7 @@ class TypographyController extends Controller
 			'scripts'      => array
 			(
 				SCRIPT_PATH_URL . 'jquery/jquery-1.8.3.min.js',
+				//SCRIPT_PATH_URL . 'less-1.3.3.min.js',
 			),
 			'page'         => array
 			(

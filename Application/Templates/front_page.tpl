@@ -12,7 +12,7 @@
 		<?php endforeach; ?>
 
 		<?php foreach ($styles as $style): ?>
-			<link href="<?php echo $style; ?>" rel="stylesheet" type="text/css" />
+			<link href="<?php echo $style; ?>" rel="stylesheet/css" type="text/css" />
 		<?php endforeach; ?>
     </head>
 
