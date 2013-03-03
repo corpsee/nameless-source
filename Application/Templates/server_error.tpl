@@ -4,7 +4,7 @@
 		<title>Ошибка сервера.</title>
 		<meta http-equiv="content-Language" content="ru" />
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-		<link rel="stylesheet" type="text/css" href="<?php echo FILE_PATH_URL; ?>styles/frontend-main.css" />
+		<link rel="stylesheet/css" type="text/css" href="<?php echo FILE_PATH_URL; ?>styles/frontend-main.css" />
 	</head>
 	<body>
 

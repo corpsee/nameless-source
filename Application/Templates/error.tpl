@@ -12,10 +12,8 @@
 		<?php endforeach; ?>
 
 		<?php foreach ($styles as $style): ?>
-			<link href="<?php echo $style; ?>" rel="stylesheet" type="text/css" />
+			<link href="<?php echo $style; ?>" rel="stylesheet/css" type="text/css" />
 		<?php endforeach; ?>
-
-		<link href='http://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700|Philosopher:400,400italic,700&amp;subset=latin,cyrillic' rel='stylesheet' type='text/css'>
     </head>
 
 	<body>
