@@ -22,7 +22,7 @@
 			"Framework\\Tests" : "",
 			"Tests" : ""
 		},
-		"files" :["Functions.php", "Constants.php"]
+		"files" : ["Functions.php"]
 	},
 	"config" :
 	{

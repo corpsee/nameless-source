@@ -162,7 +162,7 @@ class Gallery extends Model
 		}
 
 		// уменьшение картинки, если необходимо
-		$width = imagesx($source_img);
+		$width  = imagesx($source_img);
 		$height = imagesy($source_img);
 
 		if (($width > $height) && ($width > 1024))
