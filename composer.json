@@ -1,0 +1,32 @@
+{
+    "require" :
+	{
+        "symfony/http-foundation" : "v2.1.4",
+		"symfony/http-kernel" : "v2.1.4",
+		"symfony/routing" : "v2.1.4",
+		"symfony/event-dispatcher" : "v2.1.4",
+		"swiftmailer/swiftmailer" : "v4.2.2",
+		"monolog/monolog": "1.2.1",
+		"phpunit/phpunit" : "3.7.10",
+		"kriswallsmith/assetic" : "v1.0.4"
+    },
+	"autoload" :
+	{
+		"psr-0" :
+		{
+			"Application\\Controller" : "",
+			"Application\\Model" : "",
+			"Framework" : "",
+			"Framework\\Auto" : "",
+			"Framework\\ServiceProvider" : "",
+			"Framework\\Tests" : "",
+			"Tests" : ""
+		},
+		"files" : ["Functions.php"]
+	},
+	"config" :
+	{
+		"vendor-dir" : "Vendors",
+		"bin-dir" : "Bin"
+	}
+}
