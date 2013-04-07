@@ -78,7 +78,7 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		//$this->container->validation_rules = include(CONFIG_PATH . 'validation.php');
 
 		// start point
-		if ($this->container->environment = 'debug')
+		if ($this->container->environment == 'debug')
 		{
 			$this->start_time = microtime(TRUE);
 		}
@@ -189,7 +189,7 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		mb_internal_encoding('UTF-8');
 
 		// error/exception reporting
-		if ($this->container->envirinment = 'debug')
+		if ($this->container->environment == 'debug')
 		{
 			error_reporting(-1);
 			ini_set('display_errors', 1);
@@ -199,6 +199,7 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 			error_reporting(E_ALL ^ (E_STRICT | E_NOTICE | E_DEPRECATED));
 			ini_set('display_errors', 0);
 		}
+		//die($this->container->environment);
 		ErrorHandler::register();
 		ExceptionHandler::register($this->container->templates_path, $this->container->templates_extension, $this->container->environment, 'UTF-8', $this->container->logger);
 	}

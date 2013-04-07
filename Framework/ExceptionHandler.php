@@ -116,7 +116,7 @@ class ExceptionHandler
 		{
 			$this->log($exception);
 
-			if ($this->environment = 'debug')
+			if ($this->environment == 'debug')
 			{
 				$response_raw = $this->decorate($this->getContent($exception), $title);
 			}
@@ -141,7 +141,7 @@ class ExceptionHandler
 			$this->log($e);
 
 			// something nasty happened and we cannot throw an exception here anymore
-			if ($this->environment = 'debug')
+			if ($this->environment == 'debug')
 			{
 				$response_raw = $this->decorate('', sprintf('Exception thrown when handling an exception (%s: %s)', get_class($exception), $exception->getMessage()));
 			}
