@@ -1,5 +1,5 @@
 <?php
-
+//
 /*function utf8_chr($dec)
 {
 	if ($dec < 128)
@@ -291,11 +291,13 @@ function standardize ($str)
  */
 function standardize_unicode ($str)
 {
-	$pattern = array('#[- \\/+\.,:;=]#iu', '#[^\p{L}\p{Nd}_]+#iu');
-	$replace = array('_', '');
-
-	$str = preg_replace($pattern, $replace, $str);
-
+	$str = trim($str);
+	$str = preg_replace
+	(
+		array('#[- \\/+\.,:;=]#iu', '#[^\p{L}\p{Nd}_]+#iu'),
+		array('_', ''),
+		$str
+	);
 	return mb_strtolower(trim($str));
 }
 
@@ -333,6 +335,7 @@ function stringToArray ($string, $delimiter = ',')
 	return $array;
 }
 
+//TODO: проверить с пустыми значениями и запятой в конце
 /**
  * @param $array
  * @param string $delimiter

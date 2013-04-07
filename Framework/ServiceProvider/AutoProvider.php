@@ -7,6 +7,7 @@ use Framework\Kernel;
 use Framework\ProviderInterface;
 use Framework\Auto\User;
 
+//TODO: вынести сервис-провайдеры внутрь соответствующих модулей
 class AutoProvider implements ProviderInterface
 {
 	/**
@@ -17,6 +18,10 @@ class AutoProvider implements ProviderInterface
 		if (file_exists(CONFIG_PATH . 'users.php'))
 		{
 			$container->users = include(CONFIG_PATH . 'users.php');
+		}
+		else
+		{
+			//TODO: сделать исключение, если файлы настроек не найдены
 		}
 		if (file_exists(CONFIG_PATH . 'access.php'))
 		{
