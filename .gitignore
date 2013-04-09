@@ -1,10 +1,7 @@
 /Bin
 /Vendors
 /.idea
-/composer.json
 /composer.phar
-/.readme
-/composer.json
-/composer.phar
-Sessions
-Temp
+/Application/Sessions
+/Application/Temp
+/composer.lock
