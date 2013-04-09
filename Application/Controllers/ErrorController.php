@@ -1,11 +1,12 @@
 <?php
 
-namespace Application\Controller;
+namespace Application\Controllers;
 
 use Framework\Auto\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Framework\Controller;
 
-class ErrorController extends BackendController
+class ErrorController extends Controller
 {
 	public function errorServer ($code)
 	{

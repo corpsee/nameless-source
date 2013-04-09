@@ -70,8 +70,10 @@ class FrameworkListener implements EventSubscriberInterface
 			$request->getSession()->start();
 		}
 
-		$this->logger->info('> '.$request->getMethod().' '.$request->getRequestUri());
-
+		if (!is_null($this->logger))
+		{
+			$this->logger->info('> '.$request->getMethod().' '.$request->getRequestUri());
+		}
 	}
 
 	/**
@@ -80,7 +82,11 @@ class FrameworkListener implements EventSubscriberInterface
 	public function onTerminate (PostResponseEvent $event)
 	{
 		$response = $event->getResponse();
-		$this->logger->info('< '.$response->getStatusCode());
+
+		if (!is_null($this->logger))
+		{
+			$this->logger->info('< '.$response->getStatusCode());
+		}
 	}
 
 	/**
