@@ -1,10 +1,10 @@
 <?php
 
-namespace Application\Controller;
+namespace Application\Controllers;
 
 use Symfony\Component\HttpFoundation\Response;
-
-class IndexController extends FrontendController
+use Framework\Controller;
+class IndexController extends Controller
 {
 
 	public function index ()

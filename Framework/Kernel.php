@@ -99,7 +99,8 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		}
 		unset($route);
 
-		$this->container->logger  = NULL;
+		$this->container->logger = NULL;
+		//echo var_dump($this->container->logger); exit();
 
 		// services
 		foreach ($this->container->services as $service)
@@ -108,11 +109,6 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 			$this->providers[] = $service_provider;
 			$service_provider->register($this->container);
 		}
-
-		/*$this->container->database = $this->container->service(function ($c)
-		{
-			return new Database($c->database_settings);
-		});*/
 
 		// sessions
 		$this->container->session_options = array();
@@ -149,7 +145,6 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		// dispatcher
 		$this->container->dispatcher = $this->container->service(function ($c)
 		{
-			//var_dump($c->logger); exit;
 			$dispatcher = new EventDispatcher();
 			// матчинг путей, определение контроллера
 			$dispatcher->addSubscriber(new RouterListener($c->matcher, NULL, $c->logger));
@@ -162,11 +157,6 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 
 			return $dispatcher;
 		});
-
-		/*$this->container->validator = $this->container->service(function ($c)
-		{
-			return new Validator($c);
-		});*/
 
 		$this->init();
 
@@ -201,6 +191,7 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		}
 		//die($this->container->environment);
 		ErrorHandler::register();
+
 		ExceptionHandler::register($this->container->templates_path, $this->container->templates_extension, $this->container->environment, 'UTF-8', $this->container->logger);
 	}
 

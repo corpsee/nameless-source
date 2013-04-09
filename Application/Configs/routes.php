@@ -8,7 +8,7 @@ return array
 		'pattern'      => '/error/{code}',
 		'defaults'     => array
 		(
-			'_controller' => 'Application\\Controller\\ErrorController::errorServer',
+			'_controller' => 'Application\\Controllers\\ErrorController::errorServer',
 			'code'       => 500,
 		),
 	),
@@ -17,7 +17,7 @@ return array
 		'pattern'      => '/error/{code}/',
 		'defaults'     => array
 		(
-			'_controller' => 'Application\\Controller\\ErrorController::errorServer',
+			'_controller' => 'Application\\Controllers\\ErrorController::errorServer',
 			'code'       => 500,
 		),
 	),
@@ -28,7 +28,7 @@ return array
 		'pattern'      => '/',
 		'defaults'     => array
 		(
-			'_controller' => 'Application\\Controller\\IndexController::index',
+			'_controller' => 'Application\\Controllers\\IndexController::index',
 		),
 	),
 );

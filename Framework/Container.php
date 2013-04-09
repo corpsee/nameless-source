@@ -37,7 +37,7 @@ class Container
 	 */
 	public function __get ($key)
 	{
-		if (!isset($this->values[$key]))
+		if (!isset($this->values[$key]) && !is_null($this->values[$key]))
 		{
 			throw new \InvalidArgumentException(sprintf('Value "%s" is not defined in container.', $key));
 		}
