@@ -2,6 +2,8 @@
 /Vendors
 /.idea
 /composer.phar
+/composer.lock
 /Application/Sessions
 /Application/Temp
-/composer.lock
+/Application/Logs
+/Application/Cache
