@@ -1,5 +1,9 @@
 <?php
 
+// только для отладки
+error_reporting(-1);
+ini_set('display_errors', 1);
+
 // константы
 define('DS',        DIRECTORY_SEPARATOR);
 define('ROOT_PATH', dirname(__DIR__) . DS);
