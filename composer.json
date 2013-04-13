@@ -1,28 +1,29 @@
 {
-	"require" :
+	"require":
 	{
-		"symfony/http-foundation"  : "v2.1.4",
-		"symfony/http-kernel"      : "v2.1.4",
-		"symfony/routing"          : "v2.1.4",
-		"symfony/event-dispatcher" : "v2.1.4",
-		"swiftmailer/swiftmailer"  : "v4.2.2",
-		"monolog/monolog"          : "1.2.1",
-		"phpunit/phpunit"          : "3.7.10",
-		"kriswallsmith/assetic"    : "v1.0.4"
+		"pimple/pimple":            "v1.0.2",
+		"symfony/http-foundation":  "v2.1.4",
+		"symfony/http-kernel":      "v2.1.4",
+		"symfony/routing":          "v2.1.4",
+		"symfony/event-dispatcher": "v2.1.4",
+		"swiftmailer/swiftmailer":  "v4.2.2",
+		"monolog/monolog":          "1.2.1",
+		"phpunit/phpunit":          "3.7.10",
+		"kriswallsmith/assetic":    "v1.0.4"
 	},
-	"autoload" :
+	"autoload":
 	{
-		"psr-0" :
+		"psr-0":
 		{
-			"Application" : "",
-			"Framework"   : "",
-			"Tests"       : ""
+			"Application": "",
+			"Framework":   "",
+			"Tests":       ""
 		},
-		"files" : ["Functions.php"]
+		"files": ["Functions.php"]
 	},
-	"config" :
+	"config":
 	{
-		"vendor-dir" : "Vendors",
-		"bin-dir" : "Bin"
+		"vendor-dir": "Vendors",
+		"bin-dir":    "Bin"
 	}
 }

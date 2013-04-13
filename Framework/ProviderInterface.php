@@ -11,7 +11,7 @@ interface ProviderInterface
 	/**
 	 * @param Container $container
 	 */
-	public function register (Container $container);
+	public function register (\Pimple $container);
 
 	/**
 	 * @param Kernel $kernel

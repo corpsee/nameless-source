@@ -12,14 +12,14 @@ class ValidationProvider implements ProviderInterface
 	/**
 	 * @param Container $container
 	 */
-	public function register (Container $container)
+	public function register (\Pimple $container)
 	{
 		if (file_exists(CONFIG_PATH . 'validation.php'))
 		{
-			$container->validation_rules = include_once(CONFIG_PATH . 'validation.php');
+			$container['validation_rules'] = include_once(CONFIG_PATH . 'validation.php');
 		}
 
-		$container->validator = $container->service(function ($c)
+		$container['validator'] = $container->share(function ($c)
 		{
 			return new Validator($c);
 		});

@@ -16,5 +16,5 @@ interface ControllerInterface
 	/**
 	 * @param Container $container
 	 */
-	function setContainer(Container $container = NULL);
+	function setContainer(\Pimple $container = NULL);
 }

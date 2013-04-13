@@ -14,7 +14,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
 	public function init()
 	{
-		$this->validator = new Validator(new Container());
+		$this->validator = new Validator(new \Pimple());
 	}
 
 	public function noemptyTrueProvider ()
