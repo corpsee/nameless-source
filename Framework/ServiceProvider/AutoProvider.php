@@ -13,11 +13,11 @@ class AutoProvider implements ProviderInterface
 	/**
 	 * @param Container $container
 	 */
-	public function register (Container $container)
+	public function register (\Pimple $container)
 	{
 		if (file_exists(CONFIG_PATH . 'users.php'))
 		{
-			$container->users = include(CONFIG_PATH . 'users.php');
+			$container['users'] = include(CONFIG_PATH . 'users.php');
 		}
 		else
 		{
@@ -25,12 +25,12 @@ class AutoProvider implements ProviderInterface
 		}
 		if (file_exists(CONFIG_PATH . 'access.php'))
 		{
-			$container->action_access = include(CONFIG_PATH . 'access.php');
+			$container['action_access'] = include(CONFIG_PATH . 'access.php');
 		}
 
-		$container->user = $container->service(function ($c)
+		$container['user'] = $container->share(function ($c)
 		{
-			return new User($c->session, $c->routes, $c->action_access);
+			return new User($c['session'], $c['routes'], $c['action_access']);
 		});
 	}
 

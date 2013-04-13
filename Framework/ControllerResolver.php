@@ -25,7 +25,7 @@ class ControllerResolver extends BaseControllerResolver
 	 * @param Container $container
 	 * @param LoggerInterface $logger
 	 */
-	public function __construct(Container $container, LoggerInterface $logger = NULL)
+	public function __construct(\Pimple $container, LoggerInterface $logger = NULL)
 	{
 		$this->container = $container;
 		parent::__construct($logger);

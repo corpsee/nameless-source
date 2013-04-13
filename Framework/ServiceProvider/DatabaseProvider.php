@@ -12,11 +12,11 @@ class DatabaseProvider implements ProviderInterface
 	/**
 	 * @param Container $container
 	 */
-	public function register (Container $container)
+	public function register (\Pimple $container)
 	{
-		$container->database = $container->service(function ($c)
+		$container['database'] = $container->share(function ($c)
 		{
-			return new Database($c->database_settings);
+			return new Database($c['database_settings']);
 		});
 	}
 

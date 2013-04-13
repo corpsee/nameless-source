@@ -11,24 +11,24 @@ class SwiftmailerProvider implements ProviderInterface
 	/**
 	 * @param Container $container
 	 */
-	public function register (Container $container)
+	public function register (\Pimple $container)
 	{
-		$container->mailer = $container->service(function ($c)
+		$container['mailer'] = $container->share(function ($c)
 		{
-			return new \Swift_Mailer($c->mailer_transport);
+			return new \Swift_Mailer($c['mailer_transport']);
 		});
 
-		$container->mailer_transport = $container->service(function ($c)
+		$container['mailer_transport'] = $container->share(function ($c)
 		{
-			return new \Swift_Transport_MailTransport($c->mailer_transport_invoker, $c->mailer_transport_eventdispatcher);
+			return new \Swift_Transport_MailTransport($c['mailer_transport_invoker'], $c['mailer_transport_eventdispatcher']);
 		});
 
-		$container->mailer_transport_invoker = $container->service(function ()
+		$container['mailer_transport_invoker'] = $container->share(function ()
 		{
 			return new \Swift_Transport_SimpleMailInvoker();
 		});
 
-		$container->mailer_transport_eventdispatcher = $container->service(function ()
+		$container['mailer_transport_eventdispatcher'] = $container->share(function ()
 		{
 			return new \Swift_Events_SimpleEventDispatcher();
 		});

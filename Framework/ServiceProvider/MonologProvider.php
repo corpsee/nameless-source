@@ -10,28 +10,28 @@ use Monolog\Handler\StreamHandler;
 
 class MonologProvider implements ProviderInterface
 {
-	//TODO: по возможности разделить логи по уровнфм в разные файлы
-	public function register (Container $container)
+	//TODO: пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+	public function register (\Pimple $container)
 	{
-		$container->logger = $container->service(function ($c)
+		$container['logger'] = $container->share(function ($c)
 		{
-			$logger = new Logger($c->logger_name);
-			$logger->pushHandler($c->logger_handler);
+			$logger = new Logger($c['logger_name']);
+			$logger->pushHandler($c-['logger_handler']);
 			return $logger;
 		});
 
-		$container->logger_handler = $container->service(function ($c)
+		$container['logger_handler'] = $container->share(function ($c)
 		{
-			return new StreamHandler($c->log_file, $c->log_level);
+			return new StreamHandler($c['log_file'], $c['log_level']);
 		});
 
-		$container->log_level = function ()
+		$container['log_level'] = function ()
 		{
 			return Logger::DEBUG;
 		};
 
-		$container->logger_name = 'application';
-		$container->log_file = $container->log_path . $container->logger_name . '.log';
+		$container['logger_name'] = 'application';
+		$container['log_file'] = $container['log_path'] . $container['logger_name'] . '.log';
 	}
 
 	public function boot (Kernel $kernel)

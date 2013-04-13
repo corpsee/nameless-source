@@ -26,7 +26,7 @@ class Controller implements ControllerInterface
 	/**
 	 * @param Container $container
 	 */
-	public function setContainer(Container $container = NULL)
+	public function setContainer(\Pimple $container = NULL)
 	{
 		$this->container = $container;
 	}
@@ -36,7 +36,7 @@ class Controller implements ControllerInterface
 	 */
 	public function getRequest ()
 	{
-		return $this->container->request;
+		return $this->container['request'];
 	}
 
 	/**
@@ -44,7 +44,7 @@ class Controller implements ControllerInterface
 	 */
 	public function getDatabase ()
 	{
-		return $this->container->database;
+		return $this->container['database'];
 	}
 
 	/**
@@ -52,7 +52,7 @@ class Controller implements ControllerInterface
 	 */
 	private function getKernel ()
 	{
-		return $this->container->kernel;
+		return $this->container['kernel'];
 	}
 
 	/**
@@ -108,8 +108,8 @@ class Controller implements ControllerInterface
 	{
 		$template_obj = new Template
 		(
-			$this->container->templates_path,
-			$this->container->templates_extension
+			$this->container['templates_path'],
+			$this->container['templates_extension']
 		);
 		return $template_obj->renderResponse($template, $data, $response);
 	}
@@ -273,6 +273,6 @@ class Controller implements ControllerInterface
 	 */
 	public function isAjax ()
 	{
-		return $this->container->request->isXmlHttpRequest();
+		return $this->container['request']->isXmlHttpRequest();
 	}
 }
