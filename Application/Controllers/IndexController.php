@@ -3,7 +3,7 @@
 namespace Application\Controllers;
 
 use Symfony\Component\HttpFoundation\Response;
-use Framework\Controller;
+use Nameless\Core\Controller;
 class IndexController extends Controller
 {
 

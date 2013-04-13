@@ -1,6 +1,6 @@
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ index.development.php [L]
+RewriteRule ^(.*)$ index.php [L]
 
 # Сжатие ответа
 <IfModule deflate_module>
