@@ -16,10 +16,9 @@
 		"psr-0":
 		{
 			"Application": "",
-			"Framework":   "",
-			"Tests":       ""
+			"Nameless":   ""
 		},
-		"files": ["Functions.php"]
+		"files": ["Nameless/Core/Functions/Functions.php"]
 	},
 	"config":
 	{
