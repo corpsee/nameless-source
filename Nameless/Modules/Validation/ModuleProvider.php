@@ -1,19 +1,18 @@
 <?php
 
-namespace Nameless\Core\ServiceProvider;
+namespace Nameless\Modules\Validation;
 
-use Nameless\Core\Container;
 use Nameless\Core\Kernel;
-use Nameless\Core\ProviderInterface;
-use Nameless\Modules\Validation\Validator;
+use Nameless\Core\ModuleProviderInterface;
 
-class ValidationProvider implements ProviderInterface
+class ModuleProvider implements ModuleProviderInterface
 {
 	/**
-	 * @param Container $container
+	 * @param \Pimple $container
 	 */
 	public function register (\Pimple $container)
 	{
+		//TODO: исключение / значение массива по умолчанию
 		if (file_exists(CONFIG_PATH . 'validation.php'))
 		{
 			$container['validation_rules'] = include_once(CONFIG_PATH . 'validation.php');

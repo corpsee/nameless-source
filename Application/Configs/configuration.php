@@ -14,11 +14,11 @@ return array
 	'database_settings'   => '',
 	'services'            => array
 	(
-		//'database'   => 'Nameless\\Core\\ServiceProvider\\DatabaseProvider',
-		//'validation' => 'Nameless\\Core\\ServiceProvider\\ValidationProvider',
-		//'auto'       => 'Nameless\\Core\\ServiceProvider\\AutoProvider', // needs database module
-		//'mailer'     => 'Nameless\\Core\\ServiceProvider\\SwiftmailerProvider', // needs swift mailer
-		//'logger'     => 'Nameless\\Core\\ServiceProvider\\MonologProvider', // needs monolog
+		//'Database',
+		//'Validation',
+		//'Auto',
+		//'Mailer',
+		//'Logger',
 	),
 	'log_path'            => APPLICATION_PATH . 'Logs' . DS,
 	'cache_path'          => APPLICATION_PATH . 'Cache' . DS,

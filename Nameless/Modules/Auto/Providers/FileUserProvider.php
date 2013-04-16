@@ -1,8 +1,8 @@
 <?php
 
-namespace Nameless\Modules\Auto\Provider;
+namespace Nameless\Modules\Auto\Providers;
 
-use Framework\Auto\User;
+use Nameless\Modules\Auto\User;
 
 class FileUserProvider implements UserProviderInterface
 {

@@ -1,15 +1,13 @@
 <?php
 
-namespace Nameless\Core\ServiceProvider;
+namespace Nameless\Modules\Logger;
 
 use Nameless\Core\Kernel;
-use Nameless\Core\ProviderInterface;
-use Nameless\Modules\Logger\Logger;
+use Nameless\Core\ModuleProviderInterface;
 use Monolog\Handler\StreamHandler;
 
-class MonologProvider implements ProviderInterface
+class ModuleProvider implements ModuleProviderInterface
 {
-	//TODO: �� ����������� ��������� ���� �� ������� � ������ �����
 	public function register (\Pimple $container)
 	{
 		$container['logger'] = $container->share(function ($c)

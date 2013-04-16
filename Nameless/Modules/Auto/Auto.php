@@ -2,8 +2,7 @@
 
 namespace Nameless\Modules\Auto;
 
-use Nameless\Modules\Model;
-use Framework\Auto\Provider\UserProviderInterface;
+use Nameless\Modules\Auto\Providers\UserProviderInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 
 class Auto
