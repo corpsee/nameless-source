@@ -1,6 +1,6 @@
 <?php
 
-namespace Nameless\Modules\Auto\Provider;
+namespace Nameless\Modules\Auto\Providers;
 
 Interface UserProviderInterface
 {

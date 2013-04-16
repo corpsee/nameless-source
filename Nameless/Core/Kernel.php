@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Framework package.
+ * This file is part of the Nameless framework package.
  * (c) Corpsee <poisoncorpsee@gmail.com>
  */
 namespace Nameless\Core;
@@ -29,7 +29,7 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 	/**
 	 * @var array
 	 */
-	private $providers = array();
+	private $modules = array();
 
 	/**
 	 * @var boolean
@@ -103,9 +103,18 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		// services
 		foreach ($this->container['services'] as $service)
 		{
-			$service_provider = new $service();
-			$this->providers[] = $service_provider;
-			$service_provider->register($this->container);
+			$module_provider_name = 'Nameless\\Modules\\' . $service . '\\ModuleProvider';
+			$module_provider = new $module_provider_name;
+
+			if ($module_provider instanceof ModuleProviderInterface)
+			{
+				$this->modules[] = $module_provider;
+				$module_provider->register($this->container);
+			}
+			else
+			{
+				//TODO: исключение
+			}
 		}
 
 		// sessions
@@ -193,13 +202,14 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		ExceptionHandler::register($this->container['templates_path'], $this->container['templates_extension'], $this->container['environment'], 'UTF-8', $this->container['logger']);
 	}
 
+	//TODO: boot -> initializeModules
 	public function boot()
 	{
 		if (!$this->booted)
 		{
-			foreach ($this->providers as $provider)
+			foreach ($this->modules as $module)
 			{
-				$provider->boot($this);
+				$module->boot($this);
 			}
 			$this->booted = TRUE;
 		}

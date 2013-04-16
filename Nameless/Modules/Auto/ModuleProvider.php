@@ -1,17 +1,16 @@
 <?php
 
-namespace Nameless\Core\ServiceProvider;
+namespace Nameless\Modules\Auto;
 
-use Nameless\Core\Container;
 use Nameless\Core\Kernel;
-use Nameless\Core\ProviderInterface;
+use Nameless\Core\ModuleProviderInterface;
 use Nameless\Modules\Auto\User;
 
 //TODO: вынести сервис-провайдеры внутрь соответствующих модулей
-class AutoProvider implements ProviderInterface
+class ModuleProvider implements ModuleProviderInterface
 {
 	/**
-	 * @param Container $container
+	 * @param \Pimple $container
 	 */
 	public function register (\Pimple $container)
 	{

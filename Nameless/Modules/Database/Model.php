@@ -1,12 +1,10 @@
 <?php
 
 /*
- * This file is part of the Framework package.
+ * This file is part of the Nameless framework package.
  * (c) Corpsee <poisoncorpsee@gmail.com>
  */
-namespace Nameless\Core;
-
-use Nameless\Modules\Database\Database;
+namespace Nameless\Modules\Database;
 
 class Model
 {

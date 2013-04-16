@@ -1,16 +1,14 @@
 <?php
 
-namespace Nameless\Core\ServiceProvider;
+namespace Nameless\Modules\Database;
 
-use Nameless\CoreContainer;
 use Nameless\Core\Kernel;
-use Nameless\Core\ProviderInterface;
-use Nameless\Modules\Database\Database;
+use Nameless\Core\ModuleProviderInterface;
 
-class DatabaseProvider implements ProviderInterface
+class ModuleProvider implements ModuleProviderInterface
 {
 	/**
-	 * @param Container $container
+	 * @param \Pimple $container
 	 */
 	public function register (\Pimple $container)
 	{

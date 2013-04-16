@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Framework package.
+ * This file is part of the Nameless framework package.
  * (c) Corpsee <poisoncorpsee@gmail.com>
  */
 namespace Nameless\Modules\Validation;
