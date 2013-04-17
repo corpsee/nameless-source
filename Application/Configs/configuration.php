@@ -2,8 +2,8 @@
 
 return array
 (
-	'environment'         => 'debug', // production,test,debug
-	'minify_assets'       => FALSE,
+	// production, test, debug
+	'environment'         => 'debug',
 	'timezone'            => 'Asia/Novosibirsk',
 	'charset'             => 'UTF-8',
 	'locale'              => 'ru',
