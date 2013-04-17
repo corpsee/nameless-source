@@ -2,6 +2,7 @@
 
 return array
 (
+	//TODO: разнести настройки по соответствующим модулям
 	// production, test, debug
 	'environment'         => 'debug',
 	'timezone'            => 'Asia/Novosibirsk',

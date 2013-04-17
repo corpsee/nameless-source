@@ -113,7 +113,7 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 			}
 			else
 			{
-				//TODO: исключение
+				throw new \RuntimeException($module_provider_name . ' must be instance of ModuleProviderInterface');
 			}
 		}
 
