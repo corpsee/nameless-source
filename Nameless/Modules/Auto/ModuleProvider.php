@@ -6,7 +6,6 @@ use Nameless\Core\Kernel;
 use Nameless\Core\ModuleProviderInterface;
 use Nameless\Modules\Auto\User;
 
-//TODO: вынести сервис-провайдеры внутрь соответствующих модулей
 class ModuleProvider implements ModuleProviderInterface
 {
 	/**
