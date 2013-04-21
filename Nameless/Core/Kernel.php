@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Route;
 use Nameless\Modules\Auto\User;
+use Symfony\Component\Yaml\Exception\RuntimeException;
 
 class Kernel extends HttpKernel implements HttpKernelInterface
 {
@@ -49,105 +50,30 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 	/**
 	 *
 	 */
-	public function __construct()
+	public function __construct($start_time = NULL)
 	{
 		// container/kernel
-		$this->container = new \Pimple();
+		$this->container           = new \Pimple();
 		$this->container['kernel'] = $this;
-
-		//TODO: добавить конфигурацию поумолчанию и мердж с пользовательской
-		// configurations/routes
-		/*if (file_exists(CONFIG_PATH . 'configuration.php'))
-		{
-			$configs = include_once(CONFIG_PATH . 'configuration.php');
-		}
-
-		if (file_exists(CONFIG_PATH . 'routes.php'))
-		{
-			$routes = include_once(CONFIG_PATH . 'routes.php');
-		}*/
-
-		$configs = include_once(CONFIG_PATH . 'configuration.php');
-		$routes  = include_once(CONFIG_PATH . 'routes.php');
-
-		// configuration
-		foreach ($configs as $config_option => $config)
-		{
-			$this->container[$config_option] = $config;
-		}
-
-		// start point
-		if ($this->container['environment'] == 'debug')
-		{
-			$this->start_time = microtime(TRUE);
-		}
-
-		// routers
-		$this->container['routes'] = $this->container->share(function ($c)
-		{
-			return new RouteCollection();
-		});
-		// routes
-		foreach ($routes as $route_name => &$route)
-		{
-			$route['defaults']     = isset($route['defaults']) ? $route['defaults'] : array();
-			$route['requirements'] = isset($route['requirements']) ? $route['requirements'] : array();
-			$route['options']      = isset($route['options']) ? $route['options'] : array();
-
-			$this->container['routes']->add($route_name, new Route($route['pattern'], $route['defaults'], $route['requirements'], $route['options']));
-		}
-		unset($route);
-
 		$this->container['logger'] = NULL;
 
-		// services
-		foreach ($this->container['services'] as $service)
-		{
-			$module_provider_name = 'Nameless\\Modules\\' . $service . '\\ModuleProvider';
-			$module_provider = new $module_provider_name;
+		// configuration
+		$this->configurationInit();
 
-			if ($module_provider instanceof ModuleProviderInterface)
-			{
-				$this->modules[] = $module_provider;
-				$module_provider->register($this->container);
-			}
-			else
-			{
-				throw new \RuntimeException($module_provider_name . ' must be instance of ModuleProviderInterface');
-			}
+		// start point
+		if ($this->container['environment'] === 'debug' && !is_null($start_time))
+		{
+			$this->start_time = $start_time;
 		}
 
-		// sessions
-		$this->container['session_options'] = array();
-		$this->container['session_default_locale'] = $this->container['locale'];
-		$this->container['session_path'] = '';
-		// session handler
-		$this->container['session_handler'] = $this->container->share(function ($c)
-		{
-			return new NativeFileSessionHandler($c['session_path']);
-		});
-		// session storage
-		$this->container['session_storage'] = $this->container->share(function ($c)
-		{
-			return new NativeSessionStorage($c['session_options'], $c['session_handler']);
-		});
-		// session
-		$this->container['session'] = $this->container->share(function ($c)
-		{
-			return new Session($c['session_storage']);
-		});
+		// routes
+		$this->routerInit();
 
-		// matcher (router)
-		$this->container['matcher'] = $this->container->share(function ($c)
-		{
-			$context  = new RequestContext($c['http_port'], $c['https_port']);
-			return new UrlMatcher($c['routes'], $context);
-		});
-		// controller resolver
-		$this->container['resolver'] = $this->container->share(function ($c)
-		{
-			return new ControllerResolver($c, $c['logger']);
-		});
+		// modules
+		$this->modulesInit();
+
+		// sessions
+		$this->sessionInit();
 
 		// dispatcher
 		$this->container['dispatcher'] = $this->container->share(function ($c)
@@ -160,20 +86,110 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 			// подписчик для before
 			$dispatcher->addSubscriber(new NamelessListener($c['session'], $c['logger']));
 			// приведение респонса к стандартизованному виду
-			$dispatcher->addSubscriber(new ResponseListener($c['charset']));
+			$dispatcher->addSubscriber(new ResponseListener('UTF-8'));
 
 			return $dispatcher;
 		});
 
-		$this->init();
+		$this->environmentInit();
 
 		parent::__construct($this->container['dispatcher'], $this->container['resolver']);
+	}
+
+	private function configurationInit ()
+	{
+		$app_config = array();
+		if (file_exists(CONFIG_PATH . 'configuration.php'))
+		{
+			$app_config = include_once(CONFIG_PATH . 'configuration.php');
+		}
+
+		$default_config = include_once(ROOT_PATH . 'Nameless' . DS . 'Configs' . DS . 'configuration.php');
+		$config         = array_merge($default_config, $app_config);
+
+		foreach ($config as $config_option => $config_value)
+		{
+			$this->container[$config_option] = $config_value;
+		}
+	}
+
+	private function routerInit ()
+	{
+		$routes = array();
+		if (file_exists(CONFIG_PATH . 'routes.php'))
+		{
+			$routes = include_once(CONFIG_PATH . 'routes.php');
+		}
+
+		$this->container['routes'] = $this->container->share(function ()
+		{
+			return new RouteCollection();
+		});
+
+		foreach ($routes as $route_name => $route_value)
+		{
+			$defaults     = isset($route['defaults']) ? $route['defaults'] : array();
+			$requirements = isset($route['requirements']) ? $route['requirements'] : array();
+			$options      = isset($route['options']) ? $route['options'] : array();
+
+			$this->container['routes']->add($route_name, new Route($route['pattern'], $defaults, $requirements, $options));
+		}
+
+		$this->container['matcher'] = $this->container->share(function ($c)
+		{
+			$context  = new RequestContext($c['http_port'], $c['https_port']);
+			return new UrlMatcher($c['routes'], $context);
+		});
+
+		$this->container['resolver'] = $this->container->share(function ($c)
+		{
+			return new ControllerResolver($c, $c['logger']);
+		});
+	}
+
+	private function modulesInit ()
+	{
+		foreach ($this->container['modules'] as $module)
+		{
+			$module_provider_name = 'Nameless\\Modules\\' . $module . '\\ModuleProvider';
+			$module_provider      = new $module_provider_name;
+
+			if (!$module_provider instanceof ModuleProviderInterface)
+			{
+				throw new \RuntimeException($module_provider_name . ' must be instance of ModuleProviderInterface');
+			}
+
+			$this->modules[$module] = $module_provider;
+			$module_provider->register($this->container);
+		}
+	}
+
+	private function sessionInit ()
+	{
+		$this->container['session_options'] = array();
+		$this->container['session_default_locale'] = $this->container['locale'];
+		$this->container['session_path'] = '';
+
+		$this->container['session_handler'] = $this->container->share(function ($c)
+		{
+			return new NativeFileSessionHandler($c['session_path']);
+		});
+
+		$this->container['session_storage'] = $this->container->share(function ($c)
+		{
+			return new NativeSessionStorage($c['session_options'], $c['session_handler']);
+		});
+
+		$this->container['session'] = $this->container->share(function ($c)
+		{
+			return new Session($c['session_storage']);
+		});
 	}
 
 	/**
 	 * @throws \RuntimeException
 	 */
-	private function init ()
+	private function environmentInit ()
 	{
 		// Установка часового пояса
 		date_default_timezone_set($this->container['timezone']);
