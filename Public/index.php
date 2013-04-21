@@ -3,6 +3,7 @@
 // только для отладки
 error_reporting(-1);
 ini_set('display_errors', 1);
+$start_point = microtime(TRUE);
 
 // константы
 define('DS',        DIRECTORY_SEPARATOR);
@@ -21,5 +22,5 @@ require_once(ROOT_PATH . 'Vendors' . DS . 'autoload.php');
 
 use Nameless\Core\Kernel;
 
-$framework = new Kernel();
+$framework = new Kernel($start_point);
 $framework->run();
