@@ -23,7 +23,6 @@ use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Route;
 use Nameless\Modules\Auto\User;
-use Symfony\Component\Yaml\Exception\RuntimeException;
 
 class Kernel extends HttpKernel implements HttpKernelInterface
 {
@@ -50,47 +49,18 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 	/**
 	 *
 	 */
-	public function __construct($start_time = NULL)
+	public function __construct()
 	{
 		// container/kernel
 		$this->container           = new \Pimple();
 		$this->container['kernel'] = $this;
 		$this->container['logger'] = NULL;
 
-		// configuration
 		$this->configurationInit();
-
-		// start point
-		if ($this->container['environment'] === 'debug' && !is_null($start_time))
-		{
-			$this->start_time = $start_time;
-		}
-
-		// routes
 		$this->routerInit();
-
-		// modules
 		$this->modulesInit();
-
-		// sessions
 		$this->sessionInit();
-
-		// dispatcher
-		$this->container['dispatcher'] = $this->container->share(function ($c)
-		{
-			$dispatcher = new EventDispatcher();
-			// матчинг путей, определение контроллера
-			$dispatcher->addSubscriber(new RouterListener($c['matcher'], NULL, $c['logger']));
-			// локаль
-			$dispatcher->addSubscriber(new LocaleListener($c['locale']));
-			// подписчик для before
-			$dispatcher->addSubscriber(new NamelessListener($c['session'], $c['logger']));
-			// приведение респонса к стандартизованному виду
-			$dispatcher->addSubscriber(new ResponseListener('UTF-8'));
-
-			return $dispatcher;
-		});
-
+		$this->dispatcherInit();
 		$this->environmentInit();
 
 		parent::__construct($this->container['dispatcher'], $this->container['resolver']);
@@ -183,6 +153,24 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		$this->container['session'] = $this->container->share(function ($c)
 		{
 			return new Session($c['session_storage']);
+		});
+	}
+
+	private function dispatcherInit ()
+	{
+		$this->container['dispatcher'] = $this->container->share(function ($c)
+		{
+			$dispatcher = new EventDispatcher();
+			// матчинг путей, определение контроллера
+			$dispatcher->addSubscriber(new RouterListener($c['matcher'], NULL, $c['logger']));
+			// локаль
+			$dispatcher->addSubscriber(new LocaleListener($c['locale']));
+			// подписчик для before
+			$dispatcher->addSubscriber(new NamelessListener($c['session'], $c['logger']));
+			// приведение респонса к стандартизованному виду
+			$dispatcher->addSubscriber(new ResponseListener('UTF-8'));
+
+			return $dispatcher;
 		});
 	}
 
