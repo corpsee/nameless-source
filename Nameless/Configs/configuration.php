@@ -9,7 +9,7 @@ return array
 	'http_port'           => 80,
 	'https_port'          => 443,
 	'templates_path'      => TEMPLATE_PATH,
-	'templates_extension' => '.tpl',
+	'templates_extension' => 'tpl',
 	'modules'            => array
 	(
 		//'Database','Validation','Auto','Mailer','Logger',

@@ -14,9 +14,14 @@ namespace Nameless\Core;
 use Symfony\Component\HttpFoundation\Response;
 
 //TODO: getVar/setVar, get/setTemplate, get/setGlobal, bind/bindGlobal
+//TODO: подумать над фильтрами (анти-xss/экранирование)
 class Template
 {
+	/**
+	 * @var Response
+	 */
 	protected $response;
+
 	/**
 	 * @var array
 	 */
@@ -35,46 +40,143 @@ class Template
 	/**
 	 * @var string
 	 */
+	protected $template;
+
+	/**
+	 * @var string
+	 */
 	protected $template_extension;
 
 	/**
-	 * @param string        $template_path
-	 * @param string        $template_extension
-	 * @param array         $data
-	 * @param Response|NULL $response
+	 * @param string   $template_path
+	 * @param string   $template_extension
+	 * @param array    $data
+	 * @param string   $template
+	 * @param Response $response
 	 */
-	public function __construct ($template_path, $template_extension = '.tpl', array $data = array(), Response $response = NULL)
+	public function __construct ($template_path, $template_extension = 'tpl', array $data = array(), $template = '', Response $response = NULL)
 	{
 		$this->template_path      = $template_path;
 		$this->template_extension = $template_extension;
 		$this->data               = $data;
 		$this->response           = $response;
+		$this->template           = $template;
 	}
 
-	/*public function __get($data_name)
+	/**
+	 * @param string|array $data_name
+	 * @param mixed        $data_value
+	 *
+	 * @return Template
+	 * @throws \InvalidArgumentException
+	 */
+	public function setData ($data_name, $data_value = NULL)
 	{
-		return $this->getData($data_name);
+		if (is_array($data_name) && is_null($data_value))
+		{
+			$this->data = $data_name;
+		}
+		elseif ($data_name)
+		{
+			$this->data[$data_name] = $data_value;
+		}
+		else
+		{
+			throw new \InvalidArgumentException('Invalid argument for set template data');
+		}
+		return $this;
 	}
 
-	public function __set($data_name, $data_value)
+	/**
+	 * @param mixed $data_name
+	 * @param mixed $data_default
+	 *
+	 * @return mixed
+	 * @throws \OutOfBoundsException
+	 */
+	public function getData ($data_name = NULL, $data_default = NULL)
 	{
-		$this->setData($data_name, $data_value);
+		if (is_null($data_name))
+		{
+			return $this->data;
+		}
+		elseif (isset($this->data[$data_name]))
+		{
+			return $this->data[$data_name];
+		}
+		elseif (is_null($data_default))
+		{
+			throw new \OutOfBoundsException('Value doesn`t exist in template data');
+		}
+		return $data_default;
 	}
 
-	public function __unset($data_name)
+	/**
+	 * @param mixed $data_name
+	 * @param mixed $data_value
+	 *
+	 * @return Template
+	 */
+	public function bindData ($data_name, &$data_value)
 	{
-		unset($this->data[$data_name]);
+		$this->data[$data_name] = &$data_value;
+		return $this;
 	}
 
-	public function __isset($data_name)
+	/**
+	 * @param string|array $data_name
+	 * @param mixed        $data_value
+	 *
+	 * @throws \InvalidArgumentException
+	 */
+	public static function setGloabalData ($data_name, $data_value = NULL)
 	{
-		return isset($this->data[$data_name]);
+		if (is_array($data_name) && is_null($data_value))
+		{
+			self::$global_data = $data_name;
+		}
+		elseif ($data_name)
+		{
+			self::$global_data[$data_name] = $data_value;
+		}
+		else
+		{
+			throw new \InvalidArgumentException('Invalid argument for set template global data');
+		}
 	}
 
-	public function __toString()
+	/**
+	 * @param mixed $data_name
+	 * @param mixed $data_default
+	 *
+	 * @return mixed
+	 * @throws \OutOfBoundsException
+	 */
+	public static function getGlobalData ($data_name = NULL, $data_default = NULL)
 	{
+		if (is_null($data_name))
+		{
+			return self::$global_data;
+		}
+		elseif (isset(self::$global_data[$data_name]))
+		{
+			return self::$global_data[$data_name];
+		}
+		elseif (is_null($data_default))
+		{
+			throw new \OutOfBoundsException('Value doesn`t exist in template data');
+		}
+		return $data_default;
+	}
 
-	}*/
+	/**
+	 * @param mixed $data_name
+	 * @param mixed $data_value
+	 */
+	public static function bindGlobalData ($data_name, &$data_value)
+	{
+		self::$global_data[$data_name] = &$data_value;
+	}
 
 	/**
 	 * @param string $template_path
@@ -95,104 +197,114 @@ class Template
 		return $this->template_path;
 	}
 
+	/**
+	 * @param Response $response
+	 *
+	 * @return Template
+	 */
 	public function setResponse (Response $response)
 	{
 		$this->response = $response;
 		return $this;
 	}
 
+	/**
+	 * @return Response|NULL
+	 */
 	public function getResponse ()
 	{
 		return $this->response;
 	}
 
 	/**
-	 * @param string|array $data_name
-	 * @param string|NULL  $data_value
+	 * @param string $template
 	 *
 	 * @return Template
 	 */
-	public function setData ($data_name, $data_value = NULL)
+	public function setTemplate ($template)
 	{
-		if (is_array($data_name) && is_null($data_value))
-		{
-			foreach ($data_name as $var_name => $var_value)
-			{
-				$this->data[$var_name] = $var_value;
-			}
-
-		}
-		else
-		{
-			$this->data[$data_name] = $data_value;
-		}
+		$this->template = $template;
 		return $this;
 	}
 
 	/**
-	 * @param string|NULL $data_name
-	 *
-	 * @return mixed
+	 * @return string
 	 */
-	public function getData ($data_name = NULL)
+	public function getTemplate ()
 	{
-		if (is_null($data_name))
-		{
-			return $this->data;
-		}
-		elseif (isset($this->data[$data_name]))
-		{
-			return $this->data[$data_name];
-		}
-		return NULL;
+		return $this->template;
+	}
+
+	/**
+	 * @param string $template_extension
+	 *
+	 * @return Template
+	 */
+	public function setTemplateExtension ($template_extension)
+	{
+		$this->template_extension = $template_extension;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getTemplateExtension ()
+	{
+		return $this->template_extension;
 	}
 
 	/**
 	 * @param string $template
-	 * @param array $data
+	 * @param array  $data
 	 *
 	 * @return string
-	 *
 	 * @throws \Exception
 	 */
-	protected function getTemplate ($template, $data = array())
+	protected function renderTemplate ($template, array $data = array())
 	{
-		if ($data) { $this->data = $data; }
+		if ($data)
+		{
+			$this->data = $data;
+		}
 
-		$path = $this->template_path . $template . $this->template_extension;
-
+		$template_fullpath = $this->template_path . $template . '.' . $this->template_extension;
 		extract($this->data, EXTR_SKIP);
 
 		ob_start();
 
 		try
 		{
-			include_once($path);
+			include $template_fullpath;
 		}
-		catch (\Exception $e)
+		catch (\Exception $exception)
 		{
 			ob_end_clean();
-			throw $e;
+			throw $exception;
 		}
 		return ob_get_clean();
 	}
 
 	/**
-	 * @param string $template
-	 * @param array $data
+	 * @param string   $template
+	 * @param array    $data
 	 * @param Response $response
 	 *
 	 * @return Response
 	 */
 	public function render($template, array $data = array(), Response $response = NULL)
 	{
-		if (NULL === $response)
+		if (is_null($response) && is_null($this->response))
 		{
-			$response = new Response();
+			$this->response = new Response();
+		}
+		elseif ($response)
+		{
+			$this->response = $response;
 		}
 
-		$response->setContent($this->getTemplate($template, $data));
-
+		//TODO: сделать проверку пути
+		$response->setContent($this->renderTemplate($template, $data));
 		return $response;
 	}
 }
