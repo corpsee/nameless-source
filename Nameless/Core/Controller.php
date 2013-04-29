@@ -106,12 +106,15 @@ class Controller implements ControllerInterface
 	 */
 	public function render ($template, array $data = array(), Response $response = NULL)
 	{
-		$template_obj = new Template
+		$template_instance = new Template
 		(
 			$this->container['templates_path'],
-			$this->container['templates_extension']
+			$this->container['templates_extension'],
+			$data,
+			$template,
+			$response
 		);
-		return $template_obj->renderResponse($template, $data, $response);
+		return $template_instance->render();
 	}
 
 	/**

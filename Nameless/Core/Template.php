@@ -45,6 +45,11 @@ class Template
 	/**
 	 * @var string
 	 */
+	protected $template_fullpath;
+
+	/**
+	 * @var string
+	 */
 	protected $template_extension;
 
 	/**
@@ -256,26 +261,26 @@ class Template
 
 	/**
 	 * @param string $template
-	 * @param array  $data
 	 *
 	 * @return string
+	 * @throws \RuntimeException
 	 * @throws \Exception
 	 */
-	protected function renderTemplate ($template, array $data = array())
+	protected function renderTemplate ($template)
 	{
-		if ($data)
-		{
-			$this->data = $data;
-		}
+		extract($this->data, EXTR_REFS);
 
-		$template_fullpath = $this->template_path . $template . '.' . $this->template_extension;
-		extract($this->data, EXTR_SKIP);
+		$this->template_fullpath = $this->template_path . $template . '.' . $this->template_extension;
+		if (!file_exists($this->template_fullpath))
+		{
+			throw new \RuntimeException('Template file: ' . $this->template_fullpath . ' doesn`t exist.');
+		}
 
 		ob_start();
 
 		try
 		{
-			include $template_fullpath;
+			include $this->template_fullpath;
 		}
 		catch (\Exception $exception)
 		{
@@ -292,8 +297,18 @@ class Template
 	 *
 	 * @return Response
 	 */
-	public function render($template, array $data = array(), Response $response = NULL)
+	public function render($template = '', array $data = array(), Response $response = NULL)
 	{
+		if ($data)
+		{
+			$this->data = $data;
+		}
+
+		if ($template)
+		{
+			$this->template = $template;
+		}
+
 		if (is_null($response) && is_null($this->response))
 		{
 			$this->response = new Response();
@@ -303,8 +318,7 @@ class Template
 			$this->response = $response;
 		}
 
-		//TODO: сделать проверку пути
-		$response->setContent($this->renderTemplate($template, $data));
+		$response->setContent($this->renderTemplate($this->template));
 		return $response;
 	}
 }
