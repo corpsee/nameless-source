@@ -260,17 +260,15 @@ class Template
 	}
 
 	/**
-	 * @param string $template
-	 *
 	 * @return string
 	 * @throws \RuntimeException
 	 * @throws \Exception
 	 */
-	protected function renderTemplate ($template)
+	protected function renderTemplate ()
 	{
 		extract($this->data, EXTR_REFS);
 
-		$this->template_fullpath = $this->template_path . $template . '.' . $this->template_extension;
+		$this->template_fullpath = $this->template_path . $this->template . '.' . $this->template_extension;
 		if (!file_exists($this->template_fullpath))
 		{
 			throw new \RuntimeException('Template file: ' . $this->template_fullpath . ' doesn`t exist.');
@@ -288,6 +286,12 @@ class Template
 			throw $exception;
 		}
 		return ob_get_clean();
+	}
+
+	public function subtemplate ($subtamplate)
+	{
+		$subtamplate_instance = new static($this->template_path, $this->template_extension, $this->data, $subtamplate);
+		return $subtamplate_instance->renderTemplate();
 	}
 
 	/**
@@ -318,7 +322,7 @@ class Template
 			$this->response = $response;
 		}
 
-		$response->setContent($this->renderTemplate($this->template));
+		$response->setContent($this->renderTemplate());
 		return $response;
 	}
 }
