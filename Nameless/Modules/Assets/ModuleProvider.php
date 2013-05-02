@@ -2,27 +2,22 @@
 
 namespace Nameless\Modules\Assets;
 
-use Nameless\Core\Kernel;
-use Nameless\Core\ModuleProviderInterface;
+use Nameless\Core\ModuleProvider as BaseModuleProvider;
 use Nameless\Modules\Assets\AssetsDispatcher;
 
-class ModuleProvider implements ModuleProviderInterface
+class ModuleProvider extends BaseModuleProvider
 {
-	/**
-	 * @param \Pimple $container
-	 */
-	public function register (\Pimple $container)
+	const MODULE_NAME = 'Assets';
+
+	public function register ()
 	{
-		$container['assets_dispatcher'] = $container->share(function ($c)
+		parent::register();
+
+		$this->container['assets_dispatcher'] = $this->container->share(function ($c)
 		{
 			return new AssetsDispatcher($c);
 		});
 	}
 
-	/**
-	 * @param Kernel $kernel
-	 */
-	public function boot (Kernel $kernel)
-	{
-	}
+	public function boot () {}
 }

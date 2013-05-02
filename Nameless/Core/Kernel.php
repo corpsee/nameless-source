@@ -122,7 +122,7 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		foreach ($this->container['modules'] as $module)
 		{
 			$module_provider_name = 'Nameless\\Modules\\' . $module . '\\ModuleProvider';
-			$module_provider      = new $module_provider_name;
+			$module_provider      = new $module_provider_name($this->container);
 
 			if (!$module_provider instanceof ModuleProviderInterface)
 			{
@@ -203,7 +203,7 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		//die($this->container->environment);
 		ErrorHandler::register();
 
-		ExceptionHandler::register($this->container['templates_path'], $this->container['templates_extension'], $this->container['environment'], 'UTF-8', $this->container['logger']);
+		ExceptionHandler::register(TEMPLATE_PATH, $this->container['templates_extension'], $this->container['environment'], 'UTF-8', $this->container['logger']);
 	}
 
 	//TODO: boot -> initializeModules

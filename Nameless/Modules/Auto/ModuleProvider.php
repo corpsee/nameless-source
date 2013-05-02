@@ -2,40 +2,33 @@
 
 namespace Nameless\Modules\Auto;
 
-use Nameless\Core\Kernel;
-use Nameless\Core\ModuleProviderInterface;
+use Nameless\Core\ModuleProvider as BaseModuleProvider;
 use Nameless\Modules\Auto\User;
 
-class ModuleProvider implements ModuleProviderInterface
+class ModuleProvider extends BaseModuleProvider
 {
-	/**
-	 * @param \Pimple $container
-	 */
-	public function register (\Pimple $container)
+	const MODULE_NAME = 'Auto';
+
+	public function register ()
 	{
+		parent::register();
+
+		//TODO: вынести пользователей и права в один файл настроек модуля
 		if (file_exists(CONFIG_PATH . 'users.php'))
 		{
-			$container['users'] = include(CONFIG_PATH . 'users.php');
-		}
-		else
-		{
-			//TODO: сделать исключение, если файлы настроек не найдены
-		}
-		if (file_exists(CONFIG_PATH . 'access.php'))
-		{
-			$container['action_access'] = include(CONFIG_PATH . 'access.php');
+			$this->container['users'] = include_once(CONFIG_PATH . 'auto_users_configuration.php');
 		}
 
-		$container['user'] = $container->share(function ($c)
+		if (file_exists(CONFIG_PATH . 'access.php'))
+		{
+			$this->container['action_access'] = include_once(CONFIG_PATH . 'auto_access_configuration.php');
+		}
+
+		$this->container['user'] = $this->container->share(function ($c)
 		{
 			return new User($c['session'], $c['routes'], $c['action_access']);
 		});
 	}
 
-	/**
-	 * @param Kernel $kernel
-	 */
-	public function boot (Kernel $kernel)
-	{
-	}
+	public function boot () {}
 }

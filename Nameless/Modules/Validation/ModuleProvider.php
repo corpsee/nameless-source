@@ -2,32 +2,27 @@
 
 namespace Nameless\Modules\Validation;
 
-use Nameless\Core\Kernel;
-use Nameless\Core\ModuleProviderInterface;
+use Nameless\Core\ModuleProvider as BaseModuleProvider;
 
-class ModuleProvider implements ModuleProviderInterface
+class ModuleProvider extends BaseModuleProvider
 {
-	/**
-	 * @param \Pimple $container
-	 */
-	public function register (\Pimple $container)
+	const MODULE_NAME = 'Validation';
+
+	public function register ()
 	{
-		//TODO: исключение / значение массива по умолчанию
+		parent::register();
+
+		//TODO: вынести в общие настройки модуля
 		if (file_exists(CONFIG_PATH . 'validation.php'))
 		{
-			$container['validation_rules'] = include_once(CONFIG_PATH . 'validation.php');
+			$this->container['validation_rules'] = include_once(CONFIG_PATH . 'validation.php');
 		}
 
-		$container['validator'] = $container->share(function ($c)
+		$this->container['validator'] = $this->container->share(function ($c)
 		{
 			return new Validator($c);
 		});
 	}
 
-	/**
-	 * @param Kernel $kernel
-	 */
-	public function boot (Kernel $kernel)
-	{
-	}
+	public function boot () {}
 }

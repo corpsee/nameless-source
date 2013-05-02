@@ -108,7 +108,7 @@ class Controller implements ControllerInterface
 	{
 		$template_instance = new Template
 		(
-			$this->container['templates_path'],
+			TEMPLATE_PATH,
 			$this->container['templates_extension'],
 			$data,
 			$template,
