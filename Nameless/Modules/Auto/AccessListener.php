@@ -1,24 +1,20 @@
 <?php
 
-/*
- * This file is part of the Nameless framework package.
- * (c) Corpsee <poisoncorpsee@gmail.com>
+/**
+ * This file is part of the Nameless framework.
+ *
+ * @package    Nameless
+ * @author     Corpsee <poisoncorpsee@gmail.com>
+ * @copyright  2012 - 2013. Corpsee <poisoncorpsee@gmail.com>
+ * @link       https://github.com/corpsee/Nameless
  */
+
 namespace Nameless\Modules\Auto;
 
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpKernel\Log\LoggerInterface;
 
-/**
- * FrameworkListener class
- *
- * @author Corpsee <poisoncorpsee@gmail.com>
- */
 class NamelessListener implements EventSubscriberInterface
 {
 	/**
