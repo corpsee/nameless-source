@@ -2,36 +2,37 @@
 
 namespace Nameless\Modules\Logger;
 
-use Nameless\Core\Kernel;
-use Nameless\Core\ModuleProviderInterface;
+use Nameless\Core\ModuleProvider as BaseModuleProvider;
 use Monolog\Handler\StreamHandler;
 
-class ModuleProvider implements ModuleProviderInterface
+class ModuleProvider extends BaseModuleProvider
 {
-	public function register (\Pimple $container)
+	const MODULE_NAME = 'Logger';
+
+	public function register ()
 	{
-		$container['logger'] = $container->share(function ($c)
+		parent::register();
+
+		$this->container['logger'] = $this->container->share(function ($c)
 		{
 			$logger = new Logger($c['logger_name']);
 			$logger->pushHandler($c-['logger_handler']);
 			return $logger;
 		});
 
-		$container['logger_handler'] = $container->share(function ($c)
+		$this->container['logger_handler'] = $this->container->share(function ($c)
 		{
 			return new StreamHandler($c['log_file'], $c['log_level']);
 		});
 
-		$container['log_level'] = function ()
+		$this->container['log_level'] = function ()
 		{
 			return Logger::DEBUG;
 		};
 
-		$container['logger_name'] = 'application';
-		$container['log_file'] = $container['log_path'] . $container['logger_name'] . '.log';
+		$this->container['logger_name'] = 'application';
+		$this->container['log_file'] = $this->container['log_path'] . $this->container['logger_name'] . '.log';
 	}
 
-	public function boot (Kernel $kernel)
-	{
-	}
+	public function boot () {}
 }

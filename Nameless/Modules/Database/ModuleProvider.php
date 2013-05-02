@@ -2,26 +2,21 @@
 
 namespace Nameless\Modules\Database;
 
-use Nameless\Core\Kernel;
-use Nameless\Core\ModuleProviderInterface;
+use Nameless\Core\ModuleProvider as BaseModuleProvider;
 
-class ModuleProvider implements ModuleProviderInterface
+class ModuleProvider extends BaseModuleProvider
 {
-	/**
-	 * @param \Pimple $container
-	 */
-	public function register (\Pimple $container)
+	const MODULE_NAME = 'Database';
+
+	public function register ()
 	{
-		$container['database'] = $container->share(function ($c)
+		parent::register();
+
+		$this->container['database'] = $this->container->share(function ($c)
 		{
 			return new Database($c['database_settings']);
 		});
 	}
 
-	/**
-	 * @param Kernel $kernel
-	 */
-	public function boot (Kernel $kernel)
-	{
-	}
+	public function boot () {}
 }

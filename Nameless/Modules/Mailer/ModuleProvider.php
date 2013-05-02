@@ -2,41 +2,36 @@
 
 namespace Nameless\Modules\Mailer;
 
-use Nameless\Core\Kernel;
-use Nameless\Core\ModuleProviderInterface;
+use Nameless\Core\ModuleProvider as BaseModuleProvider;
 
-class ModuleProvider implements ModuleProviderInterface
+class ModuleProvider extends BaseModuleProvider
 {
-	/**
-	 * @param \Pimple $container
-	 */
-	public function register (\Pimple $container)
+	const MODULE_NAME = 'Mailer';
+
+	public function register ()
 	{
-		$container['mailer'] = $container->share(function ($c)
+		parent::register();
+
+		$this->container['mailer'] = $this->container->share(function ($c)
 		{
 			return new \Swift_Mailer($c['mailer_transport']);
 		});
 
-		$container['mailer_transport'] = $container->share(function ($c)
+		$this->container['mailer_transport'] = $this->container->share(function ($c)
 		{
 			return new \Swift_Transport_MailTransport($c['mailer_transport_invoker'], $c['mailer_transport_eventdispatcher']);
 		});
 
-		$container['mailer_transport_invoker'] = $container->share(function ()
+		$this->container['mailer_transport_invoker'] = $this->container->share(function ()
 		{
 			return new \Swift_Transport_SimpleMailInvoker();
 		});
 
-		$container['mailer_transport_eventdispatcher'] = $container->share(function ()
+		$this->container['mailer_transport_eventdispatcher'] = $this->container->share(function ()
 		{
 			return new \Swift_Events_SimpleEventDispatcher();
 		});
 	}
 
-	/**
-	 * @param Kernel $kernel
-	 */
-	public function boot (Kernel $kernel)
-	{
-	}
+	public function boot () {}
 }
