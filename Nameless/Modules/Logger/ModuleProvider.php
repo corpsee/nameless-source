@@ -34,9 +34,16 @@ class ModuleProvider extends BaseModuleProvider
 			return new StreamHandler($c['log_file'], $c['log_level']);
 		});
 
-		$this->container['log_level'] = function ()
+		$this->container['log_level'] = function ($c)
 		{
-			return Logger::DEBUG;
+			if ($c['environment'] == 'production')
+			{
+				return Logger::ERROR;
+			}
+			else
+			{
+				return Logger::DEBUG;
+			}
 		};
 
 		$this->container['logger_name'] = 'application';
