@@ -22,12 +22,28 @@ class Database extends \PDO
 	//result->rowCount();
 
 	/**
-	 * @param string $path
+	 * @param string $db_type
+	 * @param string $dns
+	 * @param string $user
+	 * @param string $password
+	 * @param boolean $persistent
+	 * @param boolean $compress
 	 */
-	public function __construct($path)
+	public function __construct($db_type, $dns, $user = NULL, $password = NULL, $persistent = FALSE, $compress = FALSE)
 	{
-		parent::__construct($path);
-		$this->setAttribute(parent::ATTR_ERRMODE, parent::ERRMODE_EXCEPTION);
+		$attributes = array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION);
+
+		if ($persistent)
+		{
+			$attributes[\PDO::ATTR_PERSISTENT] = TRUE;
+		}
+
+		if (in_array(strtolower($db_type), array('mysql', 'mysqli')) and $compress)
+		{
+			$attributes[\PDO::MYSQL_ATTR_COMPRESS] = TRUE;
+		}
+
+		parent::__construct($dns, $user, $password, $attributes);
 	}
 
 	/**
