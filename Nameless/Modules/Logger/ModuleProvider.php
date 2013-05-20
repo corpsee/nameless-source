@@ -25,7 +25,7 @@ class ModuleProvider extends BaseModuleProvider
 		$this->container['logger'] = $this->container->share(function ($c)
 		{
 			$logger = new Logger($c['logger_name']);
-			$logger->pushHandler($c-['logger_handler']);
+			$logger->pushHandler($c['logger_handler']);
 			return $logger;
 		});
 
