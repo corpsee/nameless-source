@@ -302,24 +302,6 @@ function standardize_unicode ($str)
 }
 
 /**
- * @param string $first
- * @param string $second
- *
- * @return integer
- */
-function PicturesSort ($first, $second)
-{
-	$first_date  = \DateTime::createFromFormat('d.m.Y:H.i.s', $first['create_date'] . ':00.00.00');
-	$second_date = \DateTime::createFromFormat('d.m.Y:H.i.s', $second['create_date'] . ':00.00.00');
-
-	if ($first_date == $second_date)
-	{
-		return 0;
-	}
-	return ($first_date > $second_date) ? -1 : 1;
-}
-
-/**
  * @param string $string
  * @param string $delimiter
  *
