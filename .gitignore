@@ -2,9 +2,3 @@
 /composer.lock
 /.idea
 /.git
-/Bin/*
-/Vendors/*
-/Application/Sessions/*
-/Application/Temp/*
-/Application/Logs/*
-/Application/Cache/*
