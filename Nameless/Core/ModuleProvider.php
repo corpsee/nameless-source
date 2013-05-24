@@ -13,8 +13,6 @@ namespace Nameless\Core;
 
 abstract class ModuleProvider
 {
-	const MODULE_NAME = '';
-
 	/**
 	 * @var \Pimple
 	 */
@@ -42,7 +40,8 @@ abstract class ModuleProvider
 
 		foreach ($config as $option => $value)
 		{
-			$this->container[strtolower(static::MODULE_NAME)][$option] = $value;
+			//TODO: $this->container[strtolower(static::MODULE_NAME)][$option] = $value;
+			$this->container[$option] = $value;
 		}
 	}
 

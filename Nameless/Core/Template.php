@@ -322,7 +322,7 @@ class Template
 			$this->response = $response;
 		}
 
-		$response->setContent($this->renderTemplate());
-		return $response;
+		$this->response->setContent($this->renderTemplate());
+		return $this->response;
 	}
 }
