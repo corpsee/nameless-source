@@ -136,7 +136,7 @@ class ExceptionHandler
 					$this->templates_extension
 				);
 
-				return $template_obj->renderResponse($exception->getStatusCode(), array(), $response);
+				return $template_obj->render($exception->getStatusCode(), array(), $response);
 			}
 		}
 		catch (\Exception $e)
