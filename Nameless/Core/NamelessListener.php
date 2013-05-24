@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Log\LoggerInterface;
 
 /**
- * FrameworkListener class
+ * NamelessListener class
  *
  * @author Corpsee <poisoncorpsee@gmail.com>
  */
