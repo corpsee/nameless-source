@@ -336,3 +336,39 @@ function arrayToString (array $array, $delimiter = ', ')
 	}
 	return $string;
 }
+
+// перевод размера вида 100MB, 10.5GB в байты
+function size_unhumanize ($size_string)
+{
+	$bytes = 0;
+
+	$sizes = array
+	(
+		'B'  => 1,
+		'KB' => 1024,
+		'MB' => pow(1024, 2),
+		'GB' => pow(1024, 3),
+		'TB' => pow(1024, 4),
+		'PB' => pow(1024, 5),
+	);
+
+	$bytes = (float)$size_string;
+
+	if (preg_match('#([KMGTP]?B)$#si', $size_string, $matches) && !empty($sizes[$matches[1]]))
+	{
+		$bytes = (integer)($bytes * $sizes[$matches[1]]);
+	}
+
+	$bytes = (integer)round($bytes);
+
+	return $bytes;
+}
+
+// переводит размер из Б в человекочитаемый формат
+function size_humanize ($bytes, $decimals = 2)
+{
+	$sizes = array('B', 'KB', 'MB', 'GB', 'TB', 'PB');
+
+	$power  = floor((strlen($bytes) - 1) / 3);
+	return sprintf("%.{$decimals}f", $bytes / pow(1024, $power)) . $sizes[$power];
+}
