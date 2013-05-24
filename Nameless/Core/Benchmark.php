@@ -18,50 +18,205 @@ namespace Nameless\Core;
  */
 class Benchmark
 {
-	protected $start_time;
-	protected $markers;
+	const APPLICATION_MARKER = '_application_';
 
-	public function __construct ($start_time, array &$markers)
+	/**
+	 * @var array
+	 */
+	protected $markers = array();
+
+	//TODO: делать группы маркеров
+	/**
+	 * @param string $marker
+	 */
+	public function startMarker ($marker)
 	{
-		$this->start_time = $start_time;
-		$this->markers    = $markers;
+		$this->markers[$marker]['start']['time']   = microtime(TRUE);
+		$this->markers[$marker]['start']['memory'] = memory_get_usage();
 	}
 
-	public function start ($marker)
+	/**
+	 * @param string $marker
+	 */
+	public function stopMarker ($marker)
 	{
-		$this->markers[$marker]['start_time']   = microtime(TRUE);
-		$this->markers[$marker]['start_memory'] = memory_get_usage();
-
-		$this->markers[$marker]['stop_time']   = NULL;
-		$this->markers[$marker]['stop_memory'] = NULL;
+		$this->markers[$marker]['stop']['time']   = microtime(TRUE);
+		$this->markers[$marker]['stop']['memory'] = memory_get_usage();
 	}
 
-	public function stop ($marker)
+	/**
+	 * @param string $marker
+	 */
+	public function deleteMarker ($marker)
 	{
-		$this->markers[$marker]['stop_time']   = microtime(TRUE);
-		$this->markers[$marker]['stop_memory'] = memory_get_usage();
+		unset($this->markers[$marker]);
 	}
 
-	/*public function mark ($mark_name)
+	/**
+	 * @param string $marker
+	 *
+	 * @return array
+	 */
+	public function getTotal ($marker)
 	{
-		$this->markers[$mark_name] = microtime(TRUE);
-	}
-
-	function elapsed_time($actual_mark = NULL, $preview_mark = NULL)
-	{
-		if ($preview_mark !== NULL && !isset($this->markers[$preview_mark]))
+		if (isset($this->markers[$marker]['total']))
 		{
-			throw new \InvalidArgumentException('Mark ' . $preview_mark . ' don`t exist!');
+			return $this->markers[$marker]['total'];
 		}
 
-		if ($actual_mark !== NULL && !isset($this->markers[$actual_mark]))
+		if ($marker === self::APPLICATION_MARKER)
 		{
-			throw new \InvalidArgumentException('Mark ' . $actual_mark . ' don`t exist!');
+			$this->markers[self::APPLICATION_MARKER]['total']['time']   = microtime(TRUE) - START_TIME;
+			$this->markers[self::APPLICATION_MARKER]['total']['memory'] = memory_get_usage() - START_MEMORY;
+
+			return $this->markers[self::APPLICATION_MARKER]['total'];
 		}
 
-		$preview_mark  = is_null($preview_mark) ? $this->start_time : $this->markers[$preview_mark];
-		$actual_mark   = is_null($actual_mark) ? microtime(TRUE) : $this->markers[$actual_mark];
+		if (!isset($this->markers[$marker]['stop']))
+		{
+			$marker_array = $this->markers[$marker];
 
-		return $actual_mark - $preview_mark;
-	}*/
+			$marker_array['total']['time']   = microtime(TRUE)   - $marker_array['start']['time'];
+			$marker_array['total']['memory'] = memory_get_usage() - $marker_array['memory']['time'];
+
+			return $marker_array['total'];
+		}
+		else
+		{
+			$this->markers[$marker]['total']['time']   = $this->markers[$marker]['stop']['time']   - $this->markers[$marker]['start']['time'];
+			$this->markers[$marker]['total']['memory'] = $this->markers[$marker]['stop']['memory'] - $this->markers[$marker]['memory']['time'];
+
+			return $this->markers[$marker]['total'];
+		}
+	}
+
+	/**
+	 * @param array $markers
+	 *
+	 * @return array
+	 */
+	public function getMax (array $markers)
+	{
+		//TODO: сделать кэширование запросов статистики
+		$max = array
+		(
+			'time'   => 0,
+			'memory' => 0,
+		);
+
+		foreach ($markers as $marker)
+		{
+			$total = $this->getTotal($marker);
+
+			if ($total['time'] > $max['time'])
+			{
+				$max['time'] = $total['time'];
+			}
+
+			if ($total['memory'] > $max['memory'])
+			{
+				$max['memory'] = $total['memory'];
+			}
+		}
+
+		return $max;
+	}
+
+	/**
+	 * @param array $markers
+	 *
+	 * @return array
+	 */
+	public function getMin (array $markers)
+	{
+		$min = array
+		(
+			'time'   => 0,
+			'memory' => 0,
+		);
+
+		foreach ($markers as $marker)
+		{
+			$total = $this->getTotal($marker);
+
+			if ($min['time'] === 0 || $total['time'] < $min['time'])
+			{
+				$min['time'] = $total['time'];
+			}
+
+			if ($min['memory'] === 0 || $total['memory'] < $min['memory'])
+			{
+				$min['memory'] = $total['memory'];
+			}
+		}
+
+		return $min;
+	}
+
+	/**
+	 * @param array $markers
+	 *
+	 * @return array
+	 */
+	public function getTotals (array $markers)
+	{
+		$totals = array
+		(
+			'time'   => 0,
+			'memory' => 0,
+		);
+
+		foreach ($markers as $marker)
+		{
+			$total = $this->getTotal($marker);
+
+			$totals['time']   += $total['time'];
+			$totals['memory'] += $total['memory'];
+		}
+
+		return $totals;
+	}
+
+	/**
+	 * @param array $markers
+	 *
+	 * @return array
+	 */
+	public function getAverage (array $markers)
+	{
+		$count = count($markers);
+		$total = $this->getTotals($markers);
+
+		$average = array
+		(
+			'time'   => $total['time'] / $count,
+			'memory' => $total['memory'] / $count,
+		);
+
+		return $average;
+	}
+
+	/**
+	 * @param array $markers
+	 *
+	 * @return array
+	 */
+	public function getStatistic (array $markers)
+	{
+		return array
+		(
+			'min'     => $this->getMax($markers),
+			'max'     => $this->getMin($markers),
+			'total'   => $this->getTotals($markers),
+			'average' => $this->getAverage($markers),
+		);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getAppStatistic ()
+	{
+		return $this->getTotals(array(self::APPLICATION_MARKER));
+	}
 }
