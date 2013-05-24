@@ -13,6 +13,7 @@ namespace Nameless\Core;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -57,9 +58,10 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 	public function __construct()
 	{
 		// container/kernel
-		$this->container           = new \Pimple();
-		$this->container['kernel'] = $this;
-		$this->container['logger'] = NULL;
+		$this->container              = new \Pimple();
+		$this->container['kernel']    = $this;
+		$this->container['logger']    = NULL;
+		$this->container['benchmark'] = NULL;
 
 		$this->configurationInit();
 		$this->routerInit();
@@ -103,11 +105,11 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 
 		foreach ($routes as $route_name => $route_value)
 		{
-			$defaults     = isset($route['defaults']) ? $route['defaults'] : array();
-			$requirements = isset($route['requirements']) ? $route['requirements'] : array();
-			$options      = isset($route['options']) ? $route['options'] : array();
+			$defaults     = isset($route_value['defaults']) ? $route_value['defaults'] : array();
+			$requirements = isset($route_value['requirements']) ? $route_value['requirements'] : array();
+			$options      = isset($route_value['options']) ? $route_value['options'] : array();
 
-			$this->container['routes']->add($route_name, new Route($route['pattern'], $defaults, $requirements, $options));
+			$this->container['routes']->add($route_name, new Route($route_value['pattern'], $defaults, $requirements, $options));
 		}
 
 		$this->container['matcher'] = $this->container->share(function ($c)
@@ -129,9 +131,9 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 			$module_provider_name = 'Nameless\\Modules\\' . $module . '\\ModuleProvider';
 			$module_provider      = new $module_provider_name($this->container);
 
-			if (!$module_provider instanceof ModuleProviderInterface)
+			if (!$module_provider instanceof ModuleProvider)
 			{
-				throw new \RuntimeException($module_provider_name . ' must be instance of ModuleProviderInterface');
+				throw new \RuntimeException($module_provider_name . ' must be instance of ModuleProvider');
 			}
 
 			$this->modules[$module] = $module_provider;
@@ -187,15 +189,15 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		// Установка часового пояса
 		date_default_timezone_set($this->container['timezone']);
 
-		if (!function_exists('mb_strlen'))
+		/*if (!function_exists('mb_strlen'))
 		{
 			throw new \RuntimeException('Need mb_string extension');
-		}
+		}*/
 
 		mb_internal_encoding('UTF-8');
 
 		// error/exception reporting
-		if ($this->container['environment'] == 'debug')
+		if ($this->container['environment'] === 'debug')
 		{
 			error_reporting(-1);
 			ini_set('display_errors', 1);
@@ -205,9 +207,9 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 			error_reporting(E_ALL ^ (E_STRICT | E_NOTICE | E_DEPRECATED));
 			ini_set('display_errors', 0);
 		}
-		//die($this->container->environment);
-		ErrorHandler::register();
 
+		ErrorHandler::register();
+		//TODO: не передавать аргументом константу
 		ExceptionHandler::register(TEMPLATE_PATH, $this->container['templates_extension'], $this->container['environment'], 'UTF-8', $this->container['logger']);
 	}
 
@@ -268,6 +270,6 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		$response = $this->handle($request);
 		$response->send();
 		$this->terminate($request, $response);
-    }
+	}
 
 }

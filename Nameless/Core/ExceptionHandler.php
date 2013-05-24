@@ -50,7 +50,7 @@ class ExceptionHandler
 	/**
 	 * @param string          $templates_path
 	 * @param string          $templates_extension
-	 * @param bool            $debug
+	 * @param string          $environment
 	 * @param string          $charset
 	 * @param LoggerInterface $logger
 	 */
@@ -67,7 +67,7 @@ class ExceptionHandler
 	/**
 	 * @param string          $templates_path
 	 * @param string          $templates_extension
-	 * @param bool            $debug
+	 * @param string          $environment
 	 * @param string          $charset
 	 * @param LoggerInterface $logger
 	 *
