@@ -13,7 +13,6 @@ namespace Nameless\Core;
 
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -77,7 +76,7 @@ class NamelessListener implements EventSubscriberInterface
 
 		if (!is_null($this->logger))
 		{
-			$this->logger->info('> '.$request->getMethod().' '.$request->getRequestUri());
+			$this->logger->info('> ' . $request->getMethod() . ' ' . $request->getRequestUri());
 		}
 	}
 
@@ -86,11 +85,14 @@ class NamelessListener implements EventSubscriberInterface
 	 */
 	public function onTerminate (PostResponseEvent $event)
 	{
-		$response = $event->getResponse();
+		$response  = $event->getResponse();
+		$benchmark = $event->getBenchmark();
+		$total = $benchmark->getAppStatistic();
 
 		if (!is_null($this->logger))
 		{
-			$this->logger->info('< '.$response->getStatusCode());
+			$this->logger->info('< ' . $response->getStatusCode());
+			$this->logger->info('= Time: ' . $total['time'] . ', Memory: ' . $total['memory']);
 		}
 	}
 
