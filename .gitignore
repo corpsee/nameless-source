@@ -1,9 +1,10 @@
-/Bin
-/Vendors
-/.idea
 /composer.phar
 /composer.lock
-/Application/Sessions
-/Application/Temp
-/Application/Logs
-/Application/Cache
+/.idea
+/.git
+/Bin/*
+/Vendors/*
+/Application/Sessions/*
+/Application/Temp/*
+/Application/Logs/*
+/Application/Cache/*
