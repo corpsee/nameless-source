@@ -201,6 +201,11 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		{
 			error_reporting(-1);
 			ini_set('display_errors', 1);
+
+			$this->container['benchmark'] = $this->container->share(function ()
+			{
+				return new Benchmark();
+			});
 		}
 		else
 		{
