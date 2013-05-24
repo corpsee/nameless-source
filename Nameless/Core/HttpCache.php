@@ -14,6 +14,11 @@ namespace Nameless\Core;
 use Symfony\Component\HttpKernel\HttpCache\HttpCache as BaseHttpCache;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * HttpCache class
+ *
+ * @author Corpsee <poisoncorpsee@gmail.com>
+ */
 class HttpCache extends BaseHttpCache
 {
 	/**

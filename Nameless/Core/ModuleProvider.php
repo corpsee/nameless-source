@@ -11,6 +11,11 @@
 
 namespace Nameless\Core;
 
+/**
+ * ModuleProvider class
+ *
+ * @author Corpsee <poisoncorpsee@gmail.com>
+ */
 abstract class ModuleProvider
 {
 	/**

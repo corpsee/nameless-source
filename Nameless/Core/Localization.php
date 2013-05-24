@@ -11,6 +11,11 @@
 
 namespace Nameless\Core;
 
+/**
+ * Localization class
+ *
+ * @author Corpsee <poisoncorpsee@gmail.com>
+ */
 class Localization
 {
 
