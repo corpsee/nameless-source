@@ -10,8 +10,8 @@ class IndexController extends Controller
 
 	public function index ()
 	{
-		$this->container['localization']->load('core');
-		$this->container['localization']->load('core', 'core', 'en');
+		$this->container['localization']->load('index');
+		$this->container['localization']->load('index', 'application', 'en');
 
 		$data = array
 		(

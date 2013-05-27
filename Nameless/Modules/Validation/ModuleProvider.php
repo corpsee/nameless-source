@@ -31,6 +31,7 @@ class ModuleProvider extends BaseModuleProvider
 		{
 			return new Validator($c);
 		});
+		$this->container['localization']->load('messages', 'validation');
 	}
 
 	public function boot () {}
