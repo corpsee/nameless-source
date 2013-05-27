@@ -25,12 +25,12 @@ class ModuleProvider extends BaseModuleProvider
 		{
 			return new Database
 			(
-				$c['database_settings']['type'],
-				$c['database_settings']['dns'],
-				$c['database_settings']['user'],
-				$c['database_settings']['password'],
-				$c['database_settings']['persistent'],
-				$c['database_settings']['compress']
+				$c['database']['type'],
+				$c['database']['dns'],
+				$c['database']['user'],
+				$c['database']['password'],
+				$c['database']['persistent'],
+				$c['database']['compress']
 			);
 		});
 	}

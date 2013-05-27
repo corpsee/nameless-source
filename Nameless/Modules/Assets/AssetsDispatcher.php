@@ -68,6 +68,7 @@ class AssetsDispatcher
 			$hash .= md5_file(URLToPath($asset));
 		}
 
+		//TODO: сделать версии сжатых файлов (иначе они кэшируются на клиенте и не обновляются)
 		$canonical_hash = '';
 		if (file_exists($hash_path))
 		{
