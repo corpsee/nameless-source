@@ -19,42 +19,9 @@ class Validator
 	private $container;
 
 	/**
-	 * @var array
+	 * @param Container $container
 	 */
-	private $errors = array
-	(
-		'noempty'     => 'The field "%s" can\'t be empty',
-		'number'      => 'The field "%s" isn\'t a number',
-		'decimal'     => 'The field "%s" isn\'t a decimal',
-		'alpha'       => 'The field "%s" may only contain alphabetical characters',
-		'alpha_ext'   => 'The field "%s" isn\'t a extend alphabetic',
-		'email'       => 'The field "%s" isn\'t a valid url',
-		'phone'       => 'The field "%s" isn\'t a valid phone number',
-		'url'         => 'The field "%s" isn\'t a valid url',
-		'length'      => 'The field "%s" must contain %d characters',
-		'min_lehgth'  => 'The field "%s" must contain at least %d characters',
-		'max_length'  => 'The field "%s" can\'t contain more than %d characters',
-		'equal_field' => 'The field "%s" and the field "%s" must be equal',
-
-		/*'noempty'     => 'Поле %s не может быть пустым',
-		'number'      => 'Поле %s не является целым числом',
-		'decimal'     => 'Поле %s не является десятичным числом',
-		'alpha'       => 'Поле %s не является десятичным числом',
-		'alpha_ext'   => 'Поле %s не является десятичным числом',
-		'email'       => 'Поле %s не является почтой',
-		'phone'       => 'Поле %s не является целым числом',
-		'url'         => 'Поле %s не является url',
-		'length'      => 'Поле %s не может содержать не %s символов',
-		'min_lehgth'  => 'Поле %s не может содержать меньше %s символов',
-		'max_length'  => 'Поле %s не может содержать больше %s символов',
-		'equal_field' => 'Поле %s должно быть идентичным полю %s',*/
-	);
-
-	//TODO: не передавать контейнер целиком
-	/**
-	 * @param \Pimple $container
-	 */
-	function __construct(\Pimple $container)
+	public function __construct($container)
 	{
 		$this->container = $container;
 	}
@@ -254,14 +221,14 @@ class Validator
 			{
 				if (!$error = $this->{$rule[0]}($value))
 				{
-					$errors[] = sprintf($this->errors[$rule[0]], $key, $rule[1]);
+					$errors[] = $this->container['localization']->get($rule[0], array('field' => $key, 'param2' => $rule[1]));
 				}
 			}
 			elseif (is_string($rule))
 			{
 				if (!$error = $this->{$rule}($value))
 				{
-					$errors[] = sprintf($this->errors[$rule], $key);
+					$errors[] = $this->container['localization']->get($rule, array('field' => $key));
 				}
 			}
 			else

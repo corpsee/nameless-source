@@ -1,17 +1,16 @@
 <?php
 
+/**
+ * Default Nameless configuration
+ */
 return array
 (
-	// production, test, debug
-	'environment'         => 'debug',
+	'environment'         => 'production',
 	'timezone'            => 'UTC',
 	'locale'              => 'en',
+	'language'            => 'en',
 	'http_port'           => 80,
 	'https_port'          => 443,
 	'templates_extension' => 'tpl',
-	'modules'            => array
-	(
-		//'Database','Validation','Auto','Mailer','Logger','Assets',
-	),
 	'cache_path'          => APPLICATION_PATH . 'Cache' . DS,
 );

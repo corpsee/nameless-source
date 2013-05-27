@@ -9,6 +9,7 @@
 	</head>
 	<body>
 		<h1><?= $headline; ?></h1>
-		<p><?= $paragraph; ?></p>
+		<p><?= $paragraph1; ?></p>
+		<p><?= $paragraph2; ?></p>
 	</body>
 </html>

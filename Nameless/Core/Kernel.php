@@ -29,6 +29,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Route;
 use Nameless\Modules\Auto\User;
+use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 
 /**
  * Kernel class
@@ -48,19 +49,11 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 	private $booted = FALSE;
 
 	/**
-	 * @var integer
-	 */
-	private $start_time;
-
-	/**
 	 * @var Container
 	 */
 	private $container;
 
-	/**
-	 *
-	 */
-	public function __construct()
+	public function __construct ()
 	{
 		// container/kernel
 		$this->container              = new \Pimple();
@@ -74,6 +67,7 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		$this->sessionInit();
 		$this->dispatcherInit();
 		$this->environmentInit();
+		$this->localizationInit();
 
 		parent::__construct($this->container['dispatcher'], $this->container['resolver']);
 	}
@@ -86,7 +80,7 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 			$app_config = include_once(CONFIG_PATH . 'configuration.php');
 		}
 
-		$default_config = include_once(ROOT_PATH . 'Nameless' . DS . 'Configs' . DS . 'configuration.php');
+		$default_config = include_once(ROOT_PATH . 'Nameless' . DS . 'Core' . DS . 'Configs' . DS . 'configuration.php');
 		$config         = array_merge($default_config, $app_config);
 
 		foreach ($config as $config_option => $config_value)
@@ -178,12 +172,21 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 			// локаль
 			$dispatcher->addSubscriber(new LocaleListener($c['locale']));
 			// подписчик для before
-			$dispatcher->addSubscriber(new NamelessListener($c['session'], $c['logger']));
+			$dispatcher->addSubscriber(new NamelessListener($c['session'], $c['benchmark'], $c['logger']));
 			// приведение респонса к стандартизованному виду
 			$dispatcher->addSubscriber(new ResponseListener('UTF-8'));
 
 			return $dispatcher;
 		});
+	}
+
+	private function localizationInit ()
+	{
+		$this->container['localization'] = $this->container->share(function ($c)
+		{
+			return new Localization($c['language']);
+		});
+		$this->container['localization']->load('core', 'core');
 	}
 
 	/**
@@ -282,4 +285,12 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		$this->terminate($request, $response);
 	}
 
+	/**
+	 * @param Request  $request
+	 * @param Response $response
+	 */
+	public function terminate (Request $request, Response $response)
+	{
+		$this->dispatcher->dispatch(KernelEvents::TERMINATE, new PostResponseEvent($this, $request, $response));
+	}
 }
