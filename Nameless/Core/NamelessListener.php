@@ -102,7 +102,7 @@ class NamelessListener implements EventSubscriberInterface
 			if (!is_null($this->benchmark))
 			{
 				$total = $this->benchmark->getAppStatistic();
-				$this->logger->info('= Time: ' . $total['time'] . ', Memory: ' . $total['memory']);
+				$this->logger->info('= Time: ' . $total['time'] . ', Memory: ' . size_humanize($total['memory']));
 			}
 		}
 	}
