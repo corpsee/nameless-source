@@ -20,6 +20,11 @@ if (!defined('ENT_SUBSTITUTE'))
 	define('ENT_SUBSTITUTE', 8);
 }
 
+/**
+ * ExceptionHandler class
+ *
+ * @author Corpsee <poisoncorpsee@gmail.com>
+ */
 class ExceptionHandler
 {
 	/**

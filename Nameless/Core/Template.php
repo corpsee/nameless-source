@@ -13,8 +13,12 @@ namespace Nameless\Core;
 
 use Symfony\Component\HttpFoundation\Response;
 
-//TODO: getVar/setVar, get/setTemplate, get/setGlobal, bind/bindGlobal
 //TODO: подумать над фильтрами (анти-xss/экранирование)
+/**
+ * Template class
+ *
+ * @author Corpsee <poisoncorpsee@gmail.com>
+ */
 class Template
 {
 	/**
@@ -124,7 +128,7 @@ class Template
 	 */
 	public function bindData ($data_name, &$data_value)
 	{
-		$this->data[$data_name] = &$data_value;
+		$this->data[$data_name] = $data_value;
 		return $this;
 	}
 
@@ -180,7 +184,7 @@ class Template
 	 */
 	public static function bindGlobalData ($data_name, &$data_value)
 	{
-		self::$global_data[$data_name] = &$data_value;
+		self::$global_data[$data_name] = $data_value;
 	}
 
 	/**
