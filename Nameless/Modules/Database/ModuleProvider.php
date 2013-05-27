@@ -23,7 +23,15 @@ class ModuleProvider extends BaseModuleProvider
 
 		$this->container['database'] = $this->container->share(function ($c)
 		{
-			return new Database($c['database_settings']);
+			return new Database
+			(
+				$c['database_settings']['type'],
+				$c['database_settings']['dns'],
+				$c['database_settings']['user'],
+				$c['database_settings']['password'],
+				$c['database_settings']['persistent'],
+				$c['database_settings']['compress']
+			);
 		});
 	}
 

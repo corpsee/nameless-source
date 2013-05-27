@@ -30,6 +30,11 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Route;
 use Nameless\Modules\Auto\User;
 
+/**
+ * Kernel class
+ *
+ * @author Corpsee <poisoncorpsee@gmail.com>
+ */
 class Kernel extends HttpKernel implements HttpKernelInterface
 {
 	/**
