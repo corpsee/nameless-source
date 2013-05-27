@@ -2,10 +2,13 @@
 
 return array
 (
-	'timezone'            => 'Asia/Novosibirsk',
-	'locale'              => 'ru',
-	'modules'            => array
+	// production, test, debug
+	'environment' => 'debug',
+	'timezone'    => 'Asia/Novosibirsk',
+	'locale'      => 'ru',
+	'language'    => 'ru',
+	'modules'     => array
 	(
-		'Logger',
+		'Logger', //'Database','Validation','Auto','Mailer','Assets',
 	),
 );

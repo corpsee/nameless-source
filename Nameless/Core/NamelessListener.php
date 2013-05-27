@@ -13,6 +13,7 @@ namespace Nameless\Core;
 
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -36,13 +37,20 @@ class NamelessListener implements EventSubscriberInterface
 	protected $logger;
 
 	/**
-	 * @param SessionInterface $session
-	 * @param LoggerInterface|null $logger
+	 * @var Benchmark
 	 */
-	public function __construct (SessionInterface $session, LoggerInterface $logger = NULL)
+	protected $benchmark;
+
+	/**
+	 * @param SessionInterface $session
+	 * @param Benchmark        $benchmark
+	 * @param LoggerInterface  $logger
+	 */
+	public function __construct (SessionInterface $session, Benchmark $benchmark = NULL, LoggerInterface $logger = NULL)
 	{
-		$this->session = $session;
-		$this->logger  = $logger;
+		$this->session   = $session;
+		$this->logger    = $logger;
+		$this->benchmark = $benchmark;
 	}
 
 	/**
@@ -86,13 +94,16 @@ class NamelessListener implements EventSubscriberInterface
 	public function onTerminate (PostResponseEvent $event)
 	{
 		$response  = $event->getResponse();
-		$benchmark = $event->getBenchmark();
-		$total = $benchmark->getAppStatistic();
 
 		if (!is_null($this->logger))
 		{
 			$this->logger->info('< ' . $response->getStatusCode());
-			$this->logger->info('= Time: ' . $total['time'] . ', Memory: ' . $total['memory']);
+
+			if (!is_null($this->benchmark))
+			{
+				$total = $this->benchmark->getAppStatistic();
+				$this->logger->info('= Time: ' . $total['time'] . ', Memory: ' . size_humanize($total['memory']));
+			}
 		}
 	}
 
