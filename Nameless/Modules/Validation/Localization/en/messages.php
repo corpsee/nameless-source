@@ -10,8 +10,8 @@ return array
 	'email'       => 'The field ":field:" isn\'t a valid url',
 	'phone'       => 'The field ":field:" isn\'t a valid phone number',
 	'url'         => 'The field ":field:" isn\'t a valid url',
-	'length'      => 'The field ":field:" must contain :length: characters',
-	'min_lehgth'  => 'The field ":field:" must contain at least :length: characters',
-	'max_length'  => 'The field ":field:" can\'t contain more than :length: characters',
-	'equal_field' => 'The field ":field:" and the field ":field2:" must be equal',
+	'length'      => 'The field ":field:" must contain :param2: characters',
+	'min_lehgth'  => 'The field ":field:" must contain at least :param2: characters',
+	'max_length'  => 'The field ":field:" can\'t contain more than :param2: characters',
+	'equal_field' => 'The field ":field:" and the field ":param2:" must be equal',
 );

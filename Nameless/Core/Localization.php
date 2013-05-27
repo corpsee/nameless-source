@@ -51,9 +51,14 @@ class Localization
 	 *
 	 * @throws \RuntimeException
 	 */
-	public function load ($file, $module = 'core', $language = NULL, $overwrite = FALSE)
+	public function load ($file, $module = 'application', $language = NULL, $overwrite = FALSE)
 	{
-		if ($module === 'core')
+		if ($module === 'application')
+		{
+			$file_path         = APPLICATION_PATH . 'Localization' . DS . $language . DS . $file . '.php';
+			$default_file_path = APPLICATION_PATH . 'Localization' . DS . $this->default_language . DS . $file . '.php';
+		}
+		elseif ($module === 'core')
 		{
 			$file_path         = NAMELESS_PATH . ucfirst($module) . DS . 'Localization' . DS . $language . DS . $file . '.php';
 			$default_file_path = NAMELESS_PATH . ucfirst($module) . DS . 'Localization' . DS . $this->default_language . DS . $file . '.php';
@@ -127,6 +132,5 @@ class Localization
 		{
 			throw new \RuntimeException('Don`t find language line');
 		}
-		return FALSE;
 	}
 }

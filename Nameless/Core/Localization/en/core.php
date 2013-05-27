@@ -1,6 +1,3 @@
 <?php
 
-return array
-(
-	'paragraph' => 'Page text paragraph',
-);
+return array();

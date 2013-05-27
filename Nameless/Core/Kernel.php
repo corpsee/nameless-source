@@ -49,19 +49,11 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 	private $booted = FALSE;
 
 	/**
-	 * @var integer
-	 */
-	private $start_time;
-
-	/**
 	 * @var Container
 	 */
 	private $container;
 
-	/**
-	 *
-	 */
-	public function __construct()
+	public function __construct ()
 	{
 		// container/kernel
 		$this->container              = new \Pimple();
@@ -69,17 +61,13 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		$this->container['logger']    = NULL;
 		$this->container['benchmark'] = NULL;
 
-		$this->container['localization'] = $this->container->share(function ($c)
-		{
-			return new Localization($c['language']);
-		});
-
 		$this->configurationInit();
 		$this->routerInit();
 		$this->modulesInit();
 		$this->sessionInit();
 		$this->dispatcherInit();
 		$this->environmentInit();
+		$this->localizationInit();
 
 		parent::__construct($this->container['dispatcher'], $this->container['resolver']);
 	}
@@ -192,6 +180,15 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		});
 	}
 
+	private function localizationInit ()
+	{
+		$this->container['localization'] = $this->container->share(function ($c)
+		{
+			return new Localization($c['language']);
+		});
+		$this->container['localization']->load('core', 'core');
+	}
+
 	/**
 	 * @throws \RuntimeException
 	 */
@@ -288,6 +285,10 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		$this->terminate($request, $response);
 	}
 
+	/**
+	 * @param Request  $request
+	 * @param Response $response
+	 */
 	public function terminate (Request $request, Response $response)
 	{
 		$this->dispatcher->dispatch(KernelEvents::TERMINATE, new PostResponseEvent($this, $request, $response));
