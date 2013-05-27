@@ -10,13 +10,17 @@ class IndexController extends Controller
 
 	public function index ()
 	{
+		$this->container['localization']->load('core');
+		$this->container['localization']->load('core', 'core', 'en');
+
 		$data = array
 		(
 			'title'       => 'Page title',
 			'description' => 'Page description',
 			'keywords'    => 'page, keywords',
 			'headline'    => 'Page headline',
-			'paragraph'   => 'Page text paragraph',
+			'paragraph1'  => $this->container['localization']->get('paragraph'),
+			'paragraph2'  => $this->container['localization']->get('paragraph', array(), 'en'),
 		);
 		return $this->render('index', $data);
 	}

@@ -29,6 +29,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Route;
 use Nameless\Modules\Auto\User;
+use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 
 /**
  * Kernel class
@@ -68,6 +69,11 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		$this->container['logger']    = NULL;
 		$this->container['benchmark'] = NULL;
 
+		$this->container['localization'] = $this->container->share(function ($c)
+		{
+			return new Localization($c['language']);
+		});
+
 		$this->configurationInit();
 		$this->routerInit();
 		$this->modulesInit();
@@ -86,7 +92,7 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 			$app_config = include_once(CONFIG_PATH . 'configuration.php');
 		}
 
-		$default_config = include_once(ROOT_PATH . 'Nameless' . DS . 'Configs' . DS . 'configuration.php');
+		$default_config = include_once(ROOT_PATH . 'Nameless' . DS . 'Core' . DS . 'Configs' . DS . 'configuration.php');
 		$config         = array_merge($default_config, $app_config);
 
 		foreach ($config as $config_option => $config_value)
@@ -178,7 +184,7 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 			// локаль
 			$dispatcher->addSubscriber(new LocaleListener($c['locale']));
 			// подписчик для before
-			$dispatcher->addSubscriber(new NamelessListener($c['session'], $c['logger']));
+			$dispatcher->addSubscriber(new NamelessListener($c['session'], $c['benchmark'], $c['logger']));
 			// приведение респонса к стандартизованному виду
 			$dispatcher->addSubscriber(new ResponseListener('UTF-8'));
 
@@ -282,4 +288,8 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		$this->terminate($request, $response);
 	}
 
+	public function terminate (Request $request, Response $response)
+	{
+		$this->dispatcher->dispatch(KernelEvents::TERMINATE, new PostResponseEvent($this, $request, $response));
+	}
 }
