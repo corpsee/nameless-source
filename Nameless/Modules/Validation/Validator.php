@@ -50,10 +50,11 @@ class Validator
 		'equal_field' => 'Поле %s должно быть идентичным полю %s',*/
 	);
 
+	//TODO: не передавать контейнер целиком
 	/**
-	 * @param Container $container
+	 * @param \Pimple $container
 	 */
-	public function __construct($container)
+	function __construct(\Pimple $container)
 	{
 		$this->container = $container;
 	}
