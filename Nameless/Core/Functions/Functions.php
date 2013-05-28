@@ -367,8 +367,15 @@ function size_unhumanize ($size_string)
 // переводит размер из Б в человекочитаемый формат
 function size_humanize ($bytes, $decimals = 2)
 {
-	$sizes = array('B', 'KB', 'MB', 'GB', 'TB', 'PB');
+	$sizes = array('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
 
 	$power  = floor((strlen($bytes) - 1) / 3);
-	return sprintf("%.{$decimals}f", $bytes / pow(1024, $power)) . $sizes[$power];
+	if (isset($sizes[$power]))
+	{
+		return sprintf("%.{$decimals}f", $bytes / pow(1024, $power)) . $sizes[$power];
+	}
+	else
+	{
+		return sprintf("%i", $bytes) . 'B';
+	}
 }
