@@ -45,7 +45,6 @@ abstract class ModuleProvider
 
 		foreach ($config as $option => $value)
 		{
-			//TODO: $this->container[strtolower(static::MODULE_NAME)][$option] = $value;
 			$this->container[$option] = $value;
 		}
 	}

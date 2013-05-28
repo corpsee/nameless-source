@@ -1,3 +1,6 @@
 <?php
 
-return array();
+return array
+(
+	'auto' => array(),
+);

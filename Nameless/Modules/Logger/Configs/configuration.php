@@ -2,5 +2,9 @@
 
 return array
 (
-	'log_path' => APPLICATION_PATH . 'Logs' . DS,
+	'logger' => array
+	(
+		'path' => APPLICATION_PATH . 'Logs' . DS,
+		'name' => 'application',
+	),
 );
