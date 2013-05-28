@@ -21,7 +21,7 @@ class ModuleProvider extends BaseModuleProvider
 	{
 		parent::register();
 
-		$this->container['database'] = $this->container->share(function ($c)
+		$this->container['database']['database'] = $this->container->share(function ($c)
 		{
 			return new Database
 			(

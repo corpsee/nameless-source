@@ -2,5 +2,9 @@
 
 return array
 (
-	'auto' => array(),
+	'auto' => array
+	(
+		'users'  => array(),
+		'access' => array(),
+	),
 );

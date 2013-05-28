@@ -1,3 +1,9 @@
 <?php
 
-return array();
+return array
+(
+	'validation' => array
+	(
+		'rules' => array(),
+	),
+);

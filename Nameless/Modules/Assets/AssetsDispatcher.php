@@ -20,7 +20,6 @@ class AssetsDispatcher
 {
 	protected $container;
 
-	//TODO: нужен ModuleProvider ($container->assets_path)
 	public function __construct(\Pimple $container)
 	{
 		$this->container = $container;
@@ -32,23 +31,21 @@ class AssetsDispatcher
 		switch ($type)
 		{
 			case 'js':
-				//TODO: вынести пути в настройки приложения
-				//$result_path = SCRIPT_PATH . $name . '.' . $type;
-				$result_path = $this->container->assets_path . $name . '.' . $type;
+				$result_path = $this->container['assets']['path'] . $name . '.' . $type;
 				break;
 			case 'css':
 			default:
 				//$result_path = STYLE_PATH . $name . '.' . $type;
-				$result_path = $this->container->assets_path . $name . '.' . $type;
+				$result_path = $this->container['assets']['path'] . $name . '.' . $type;
 		}
 
 		// debug
-		if ($this->container->environment === 'debug')
+		if ($this->container['environment'] === 'debug')
 		{
 			return $assets;
 		}
 		// production
-		elseif ($this->container->environment === 'production')
+		elseif ($this->container['environment'] === 'production')
 		{
 			if (file_exists($result_path))
 			{
@@ -59,10 +56,9 @@ class AssetsDispatcher
 		}
 
 		// $this->container->environment === test
-		$hash_path = $this->container->cache_path . $name . '-' . $type;
+		$hash_path = $this->container['cache_path'] . $name . '-' . $type;
 
 		$hash = '';
-		//echo '<pre>'; print_r($assets); exit;
 		foreach ($assets as $asset)
 		{
 			$hash .= md5_file(URLToPath($asset));
@@ -86,11 +82,11 @@ class AssetsDispatcher
 			switch ($type)
 			{
 				case 'js':
-					$filter = new JsCompressorFilter($this->container->yuicompressor_path, $this->container->java_path);
+					$filter = new JsCompressorFilter($this->container['assets']['yuicompressor_path'], $this->container['assets']['java_path']);
 					break;
 				case 'css':
 				default:
-					$filter = new CssCompressorFilter($this->container->yuicompressor_path, $this->container->java_path);
+					$filter = new CssCompressorFilter($this->container['assets']['yuicompressor_path'], $this->container['assets']['java_path']);
 			}
 
 			$collection = new AssetCollection
