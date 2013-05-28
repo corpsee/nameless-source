@@ -24,10 +24,10 @@ class ModuleProvider extends BaseModuleProvider
 		//TODO: вынести в общие настройки модуля
 		if (file_exists(CONFIG_PATH . 'validation.php'))
 		{
-			$this->container['validation_rules'] = include_once(CONFIG_PATH . 'validation.php');
+			$this->container['validation']['rules'] = include_once(CONFIG_PATH . 'validation.php');
 		}
 
-		$this->container['validator'] = $this->container->share(function ($c)
+		$this->container['validation']['validator'] = $this->container->share(function ($c)
 		{
 			return new Validator($c);
 		});

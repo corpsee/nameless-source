@@ -22,19 +22,20 @@ class ModuleProvider extends BaseModuleProvider
 	{
 		parent::register();
 
-		$this->container['logger'] = $this->container->share(function ($c)
+		//TODO: вызывать исключение, если не заданы необходимые настройки (['logger']['name'] например)
+		$this->container['logger']['logger'] = $this->container->share(function ($c)
 		{
-			$logger = new Logger($c['logger_name']);
-			$logger->pushHandler($c['logger_handler']);
+			$logger = new Logger($c['logger']['name']);
+			$logger->pushHandler($c['logger']['handler']);
 			return $logger;
 		});
 
-		$this->container['logger_handler'] = $this->container->share(function ($c)
+		$this->container['logger']['handler'] = $this->container->share(function ($c)
 		{
-			return new StreamHandler($c['log_file'], $c['log_level']);
+			return new StreamHandler($c['logger']['file'], $c['logger']['level']);
 		});
 
-		$this->container['log_level'] = function ($c)
+		$this->container['logger']['level'] = function ($c)
 		{
 			if ($c['environment'] == 'production')
 			{
@@ -46,8 +47,7 @@ class ModuleProvider extends BaseModuleProvider
 			}
 		};
 
-		$this->container['logger_name'] = 'application';
-		$this->container['log_file'] = $this->container['log_path'] . $this->container['logger_name'] . '.log';
+		$this->container['logger']['file'] = $this->container['logger']['path'] . $this->container['logger']['name'] . '.log';
 	}
 
 	public function boot () {}
