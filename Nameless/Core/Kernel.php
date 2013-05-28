@@ -56,10 +56,10 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 	public function __construct ()
 	{
 		// container/kernel
-		$this->container              = new \Pimple();
-		$this->container['kernel']    = $this;
-		$this->container['logger']    = NULL;
-		$this->container['benchmark'] = NULL;
+		$this->container                     = new \Pimple();
+		$this->container['kernel']           = $this;
+		$this->container['logger']['logger'] = NULL;
+		$this->container['benchmark']        = NULL;
 
 		$this->configurationInit();
 		$this->routerInit();
@@ -119,7 +119,7 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 
 		$this->container['resolver'] = $this->container->share(function ($c)
 		{
-			return new ControllerResolver($c, $c['logger']);
+			return new ControllerResolver($c, $c['logger']['logger']);
 		});
 	}
 
@@ -168,11 +168,11 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		{
 			$dispatcher = new EventDispatcher();
 			// матчинг путей, определение контроллера
-			$dispatcher->addSubscriber(new RouterListener($c['matcher'], NULL, $c['logger']));
+			$dispatcher->addSubscriber(new RouterListener($c['matcher'], NULL, $c['logger']['logger']));
 			// локаль
 			$dispatcher->addSubscriber(new LocaleListener($c['locale']));
 			// подписчик для before
-			$dispatcher->addSubscriber(new NamelessListener($c['session'], $c['benchmark'], $c['logger']));
+			$dispatcher->addSubscriber(new NamelessListener($c['session'], $c['benchmark'], $c['logger']['logger']));
 			// приведение респонса к стандартизованному виду
 			$dispatcher->addSubscriber(new ResponseListener('UTF-8'));
 
@@ -223,7 +223,7 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 
 		ErrorHandler::register();
 		//TODO: не передавать аргументом константу
-		ExceptionHandler::register(TEMPLATE_PATH, $this->container['templates_extension'], $this->container['environment'], 'UTF-8', $this->container['logger']);
+		ExceptionHandler::register(TEMPLATE_PATH, $this->container['templates_extension'], $this->container['environment'], 'UTF-8', $this->container['logger']['logger']);
 	}
 
 	//TODO: boot -> initializeModules
