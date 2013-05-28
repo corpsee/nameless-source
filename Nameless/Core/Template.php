@@ -68,8 +68,8 @@ class Template
 		$this->template_path      = $template_path;
 		$this->template_extension = $template_extension;
 		$this->data               = $data;
-		$this->response           = $response;
 		$this->template           = $template;
+		$this->response           = $response;
 	}
 
 	/**

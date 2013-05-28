@@ -19,7 +19,7 @@ namespace Nameless\Core;
 interface ControllerInterface
 {
 	/**
-	 * @param Container $container
+	 * @param \Pimple $container
 	 */
-	function setContainer(\Pimple $container = NULL);
+	function setContainer(\Pimple $container);
 }

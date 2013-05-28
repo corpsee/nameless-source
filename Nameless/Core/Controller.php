@@ -29,9 +29,9 @@ class Controller implements ControllerInterface
 	protected $container;
 
 	/**
-	 * @param Container $container
+	 * @param \Pimple $container
 	 */
-	public function setContainer(\Pimple $container = NULL)
+	public function setContainer(\Pimple $container)
 	{
 		$this->container = $container;
 	}
@@ -42,14 +42,6 @@ class Controller implements ControllerInterface
 	public function getRequest ()
 	{
 		return $this->container['request'];
-	}
-
-	/**
-	 * @return Database
-	 */
-	public function getDatabase ()
-	{
-		return $this->container['database'];
 	}
 
 	/**
@@ -64,8 +56,8 @@ class Controller implements ControllerInterface
 	 * Internal redirect without creating an instance of kernel
 	 *
 	 * @param string $route
-	 * @param array $attributes
-	 * @param array $query
+	 * @param array  $attributes
+	 * @param array  $query
 	 *
 	 * @return Response
 	 */
@@ -78,20 +70,21 @@ class Controller implements ControllerInterface
 	 * External redirect
 	 *
 	 * @param string $url
-	 * @param integer $status
+	 * @param int    $status
+	 * @param array  $headers
 	 *
 	 * @return RedirectResponse
 	 */
-	public function redirect ($url, $status = 302)
+	public function redirect ($url, $status = 302, $headers = array())
 	{
-		return new RedirectResponse($url, $status);
+		return new RedirectResponse($url, $status, $headers);
 	}
 
 	/**
 	 * Exception for 404 error
 	 *
-	 * @param string $message
-	 * @param \Exception|null $previous
+	 * @param string     $message
+	 * @param \Exception $previous
 	 *
 	 * @throws NotFoundHttpException
 	 */
@@ -103,9 +96,9 @@ class Controller implements ControllerInterface
 	/**
 	 * Template render method
 	 *
-	 * @param string $template
-	 * @param array $data
-	 * @param Response|null $response
+	 * @param string   $template
+	 * @param array    $data
+	 * @param Response $response
 	 *
 	 * @return Response
 	 */
@@ -125,8 +118,8 @@ class Controller implements ControllerInterface
 	/**
 	 * Get "parameter" value. Order: GET, PATH, POST, COOKIE
 	 *
-	 * @param string $key
-	 * @param mixed $default
+	 * @param string  $key
+	 * @param mixed   $default
 	 * @param boolean $deep
 	 *
 	 * @return mixed
@@ -139,8 +132,8 @@ class Controller implements ControllerInterface
 	/**
 	 * Get value from POST array by key. If $key is NULL then method returns all POST array
 	 *
-	 * @param string|null $key
-	 * @param mixed $default
+	 * @param string  $key
+	 * @param mixed   $default
 	 * @param boolean $deep
 	 *
 	 * @return mixed
@@ -157,8 +150,8 @@ class Controller implements ControllerInterface
 	/**
 	 * Get value from GET array by key. If $key is NULL then method returns all GET array
 	 *
-	 * @param string|null $key
-	 * @param mixed $default
+	 * @param string  $key
+	 * @param mixed   $default
 	 * @param boolean $deep
 	 *
 	 * @return mixed
@@ -175,8 +168,8 @@ class Controller implements ControllerInterface
 	/**
 	 * Get value from FILES array by key. If $key is NULL then method returns all FILES array
 	 *
-	 * @param string|null $key
-	 * @param mixed $default
+	 * @param string  $key
+	 * @param mixed   $default
 	 * @param boolean $deep
 	 *
 	 * @return mixed
@@ -193,8 +186,8 @@ class Controller implements ControllerInterface
 	/**
 	 * Get value from COOKIES array by key. If $key is NULL then method returns all COOKIES array
 	 *
-	 * @param string|null $key
-	 * @param mixed $default
+	 * @param string  $key
+	 * @param mixed   $default
 	 * @param boolean $deep
 	 *
 	 * @return mixed
@@ -211,8 +204,8 @@ class Controller implements ControllerInterface
 	/**
 	 * Get value from SERVER array by key. If $key is NULL then method returns all SERVER array
 	 *
-	 * @param string|null $key
-	 * @param mixed $default
+	 * @param string  $key
+	 * @param mixed   $default
 	 * @param boolean $deep
 	 *
 	 * @return mixed
@@ -229,8 +222,8 @@ class Controller implements ControllerInterface
 	/**
 	 * Get http-header value by key. If $key is NULL then method returns all http-headers
 	 *
-	 * @param string|null $key
-	 * @param mixed $default
+	 * @param string  $key
+	 * @param mixed   $default
 	 * @param boolean $deep
 	 *
 	 * @return mixed
@@ -247,8 +240,8 @@ class Controller implements ControllerInterface
 	/**
 	 * Get request attribute value by key. If $key is NULL then method returns all request attributes
 	 *
-	 * @param string|null $key
-	 * @param mixed $default
+	 * @param string  $key
+	 * @param mixed   $default
 	 * @param boolean $deep
 	 *
 	 * @return mixed
@@ -281,6 +274,6 @@ class Controller implements ControllerInterface
 	 */
 	public function isAjax ()
 	{
-		return $this->container['request']->isXmlHttpRequest();
+		return $this->getRequest()->isXmlHttpRequest();
 	}
 }
