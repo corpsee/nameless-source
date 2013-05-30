@@ -20,85 +20,121 @@ class AssetsDispatcher
 {
 	protected $container;
 
+	protected $hash_path;
+
+	protected $templates = array
+	(
+		'css'  => '<link href="%s" rel="stylesheet" type="text/css" />',
+		'less' => '<link href="%s" rel="stylesheet/less" type="text/css" />',
+		'js'   => '<script src="%s" type="text/javascript"></script>',
+	);
+
 	public function __construct(\Pimple $container)
 	{
 		$this->container = $container;
 	}
 
-	//TODO: сделать обработку LESS
-	protected function generateAssets ($name, array $assets, $type = 'css')
+	protected function generateAssetsDebug (array $assets, $type = 'css')
 	{
-		switch ($type)
+		$result_assets = '';
+		if ($type === 'js')
 		{
-			case 'js':
-				$result_path = $this->container['assets']['path'] . $name . '.' . $type;
-				break;
-			case 'css':
-			default:
-				//$result_path = STYLE_PATH . $name . '.' . $type;
-				$result_path = $this->container['assets']['path'] . $name . '.' . $type;
+			$assets[] = $this->container['assets']['lessjs_url'];
 		}
 
-		// debug
-		if ($this->container['environment'] === 'debug')
+		foreach ($assets as $asset)
 		{
-			return $assets;
+			$result_assets .= sprintf($this->templates[$type], $asset);
 		}
-		// production
-		elseif ($this->container['environment'] === 'production')
-		{
-			if (file_exists($result_path))
-			{
-				return pathToURL($result_path);
-			}
+		return $result_assets;
+	}
 
-			return $assets;
-		}
-
-		// $this->container->environment === test
-		$hash_path = $this->container['cache_path'] . $name . '-' . $type;
-
+	protected function getHash (array $assets)
+	{
 		$hash = '';
 		foreach ($assets as $asset)
 		{
 			$hash .= md5_file(URLToPath($asset));
 		}
 
-		//TODO: сделать версии сжатых файлов (иначе они кэшируются на клиенте и не обновляются)
+		return $hash;
+	}
+
+	protected function getCanonicalHash ($hash_path)
+	{
 		$canonical_hash = '';
 		if (file_exists($hash_path))
 		{
 			$canonical_hash = trim(file_get_contents($hash_path));
 		}
+		return $canonical_hash;
+	}
 
-		if ($canonical_hash !== $hash || !file_exists($result_path))
+	protected function generateAssets (array $assets, $compiled_path, $type = 'css')
+	{
+		$file_filters     = array();
+		if ($type = 'less')
 		{
-			$assets_array = array();
-			foreach ($assets as $asset)
+			$file_filters[] = new LessphpFilter();
+		}
+
+		$assets_instances = array();
+		foreach ($assets as $asset)
+		{
+			$assets_instances[] = new FileAsset(URLToPath($asset), $file_filters);
+		}
+
+		$filters = array();
+		if ($type === 'js')
+		{
+			$filters[] = new JsCompressorFilter($this->container['assets']['yuicompressor_path'], $this->container['assets']['java_path']);
+		}
+		else
+		{
+			$filters[] = new CssCompressorFilter($this->container['assets']['yuicompressor_path'], $this->container['assets']['java_path']);
+		}
+
+		$collection = new AssetCollection($assets_instances, $filters);
+
+		file_put_contents($compiled_path, $collection->dump());
+	}
+
+	public function getAssets ($name, array $assets, $type = 'css')
+	{
+		if ($type)
+		{
+
+		}
+
+		$compiled_path = $this->container['assets']['path'] . $name . '.' . $type;
+
+		// debug
+		if ($this->container['environment'] === 'debug')
+		{
+			return $this->generateAssetsDebug($assets, $type);
+		}
+
+		// production
+		elseif ($this->container['environment'] === 'production')
+		{
+			if (file_exists($compiled_path))
 			{
-				$assets_array[] = new FileAsset(URLToPath($asset));
+				return pathToURL($compiled_path);
 			}
 
-			switch ($type)
-			{
-				case 'js':
-					$filter = new JsCompressorFilter($this->container['assets']['yuicompressor_path'], $this->container['assets']['java_path']);
-					break;
-				case 'css':
-				default:
-					$filter = new CssCompressorFilter($this->container['assets']['yuicompressor_path'], $this->container['assets']['java_path']);
-			}
+			return $this->generateAssetsDebug($assets, $type);
+		}
 
-			$collection = new AssetCollection
-			(
-				$assets_array,
-				array($filter)
-			);
+		$hash_path      = $this->container['cache_path'] . $name . '-' . $type;
+		$hash           = $this->getHash($assets);
+		$canonical_hash = $this->getCanonicalHash($hash_path);
 
-			file_put_contents($result_path, $collection->dump());
+		if ($canonical_hash !== $hash || !file_exists($compiled_path))
+		{
+			$this->generateAssets($assets, $compiled_path, $hash_path, $hash, $type);
 			file_put_contents($hash_path, $hash);
 		}
 
-		return array(pathToURL($result_path));
+		return sprintf($this->templates[$type], pathToURL($compiled_path));
 	}
 }
