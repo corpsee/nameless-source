@@ -14,6 +14,11 @@ namespace Nameless\Modules\Auto;
 use Nameless\Core\ModuleProvider as BaseModuleProvider;
 use Nameless\Modules\Auto\User;
 
+/**
+ * Auto ModuleProvider class
+ *
+ * @author Corpsee <poisoncorpsee@gmail.com>
+ */
 class ModuleProvider extends BaseModuleProvider
 {
 	const MODULE_NAME = 'Auto';

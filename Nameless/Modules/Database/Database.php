@@ -13,7 +13,7 @@
 namespace Nameless\Modules\Database;
 
 /**
- * Base database class
+ * Database class
  *
  * @author Corpsee <poisoncorpsee@gmail.com>
  */

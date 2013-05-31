@@ -14,6 +14,11 @@ namespace Nameless\Modules\Logger;
 use Nameless\Core\ModuleProvider as BaseModuleProvider;
 use Monolog\Handler\StreamHandler;
 
+/**
+ * Logger ModuleProvider class
+ *
+ * @author Corpsee <poisoncorpsee@gmail.com>
+ */
 class ModuleProvider extends BaseModuleProvider
 {
 	const MODULE_NAME = 'Logger';

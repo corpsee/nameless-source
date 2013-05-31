@@ -16,12 +16,26 @@ use Assetic\Filter\Yui\CssCompressorFilter;
 use Assetic\Filter\Yui\JsCompressorFilter;
 use Assetic\Asset\FileAsset;
 
+/**
+ * AssetsDispatcher class
+ *
+ * @author Corpsee <poisoncorpsee@gmail.com>
+ */
 class AssetsDispatcher
 {
+	/**
+	 * @var \Pimple
+	 */
 	protected $container;
 
+	/**
+	 * @var string
+	 */
 	protected $hash_path;
 
+	/**
+	 * @var array
+	 */
 	protected $templates = array
 	(
 		'css'  => '<link href="%s" rel="stylesheet" type="text/css" />',
@@ -29,11 +43,20 @@ class AssetsDispatcher
 		'js'   => '<script src="%s" type="text/javascript"></script>',
 	);
 
+	/**
+	 * @param \Pimple $container
+	 */
 	public function __construct(\Pimple $container)
 	{
 		$this->container = $container;
 	}
 
+	/**
+	 * @param array  $assets
+	 * @param string $type
+	 *
+	 * @return string
+	 */
 	protected function generateAssetsDebug (array $assets, $type = 'css')
 	{
 		$result_assets = '';
@@ -49,6 +72,11 @@ class AssetsDispatcher
 		return $result_assets;
 	}
 
+	/**
+	 * @param array $assets
+	 *
+	 * @return string
+	 */
 	protected function getHash (array $assets)
 	{
 		$hash = '';
@@ -60,6 +88,11 @@ class AssetsDispatcher
 		return $hash;
 	}
 
+	/**
+	 * @param string $hash_path
+	 *
+	 * @return string
+	 */
 	protected function getCanonicalHash ($hash_path)
 	{
 		$canonical_hash = '';
@@ -70,6 +103,11 @@ class AssetsDispatcher
 		return $canonical_hash;
 	}
 
+	/**
+	 * @param array  $assets
+	 * @param string $compiled_path
+	 * @param string $type
+	 */
 	protected function generateAssets (array $assets, $compiled_path, $type = 'css')
 	{
 		$file_filters     = array();
@@ -99,11 +137,19 @@ class AssetsDispatcher
 		file_put_contents($compiled_path, $collection->dump());
 	}
 
+	/**
+	 * @param string $name
+	 * @param array  $assets
+	 * @param string $type
+	 *
+	 * @return string
+	 * @throws \LogicException
+	 */
 	public function getAssets ($name, array $assets, $type = 'css')
 	{
-		if ($type)
+		if (!in_array($type, array('css,', 'less', 'js')))
 		{
-
+			throw new \LogicException('Invalid asset type: ' . $type);
 		}
 
 		$compiled_path = $this->container['assets']['path'] . $name . '.' . $type;

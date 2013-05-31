@@ -13,6 +13,11 @@ namespace Nameless\Modules\Mailer;
 
 use Nameless\Core\ModuleProvider as BaseModuleProvider;
 
+/**
+ * Mailer ModuleProvider class
+ *
+ * @author Corpsee <poisoncorpsee@gmail.com>
+ */
 class ModuleProvider extends BaseModuleProvider
 {
 	const MODULE_NAME = 'Mailer';

@@ -1,9 +1,23 @@
 <?php
 
+/**
+ * This file is part of the Nameless framework.
+ *
+ * @package    Nameless
+ * @author     Corpsee <poisoncorpsee@gmail.com>
+ * @copyright  2012 - 2013. Corpsee <poisoncorpsee@gmail.com>
+ * @link       https://github.com/corpsee/Nameless
+ */
+
 namespace Nameless\Modules\Auto\Providers;
 
 use Nameless\Modules\Database;
 
+/**
+ * DBUserProvider class
+ *
+ * @author Corpsee <poisoncorpsee@gmail.com>
+ */
 class DBUserProvider implements UserProviderInterface
 {
 	/**
@@ -20,15 +34,20 @@ class DBUserProvider implements UserProviderInterface
 	}
 
 	/**
-	 * @param $username
+	 * @param string $user_name
 	 *
-	 * @return array|false
+	 * @return array|FALSE
 	 */
 	public function getUserByName ($user_name)
 	{
 		return $this->database->selectOne("SELECT `id`, `password` FROM `tbl_users` WHERE `username` = ?", array($user_name));
 	}
 
+	/**
+	 * @param string $user_name
+	 *
+	 * @return array|false
+	 */
 	public function getUserGroups ($user_name)
 	{
 		$groups = $this->database->selectOne("SELECT `groups` FROM `tbl_users` WHERE `username` = ?", array($user_name));
