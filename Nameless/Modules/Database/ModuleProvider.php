@@ -13,6 +13,11 @@ namespace Nameless\Modules\Database;
 
 use Nameless\Core\ModuleProvider as BaseModuleProvider;
 
+/**
+ * Database ModuleProvider class
+ *
+ * @author Corpsee <poisoncorpsee@gmail.com>
+ */
 class ModuleProvider extends BaseModuleProvider
 {
 	const MODULE_NAME = 'Database';

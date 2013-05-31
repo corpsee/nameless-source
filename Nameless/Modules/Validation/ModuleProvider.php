@@ -13,6 +13,11 @@ namespace Nameless\Modules\Validation;
 
 use Nameless\Core\ModuleProvider as BaseModuleProvider;
 
+/**
+ * Validation ModuleProvider class
+ *
+ * @author Corpsee <poisoncorpsee@gmail.com>
+ */
 class ModuleProvider extends BaseModuleProvider
 {
 	const MODULE_NAME = 'Validation';

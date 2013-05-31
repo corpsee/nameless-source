@@ -14,6 +14,11 @@ namespace Nameless\Modules\Auto;
 use Nameless\Modules\Auto\Providers\UserProviderInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 
+/**
+ * Auto class
+ *
+ * @author Corpsee <poisoncorpsee@gmail.com>
+ */
 class Auto
 {
 	const ERROR_NONE             = 0;

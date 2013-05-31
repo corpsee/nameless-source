@@ -15,6 +15,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\RouteCollection;
 
+/**
+ * User class
+ *
+ * @author Corpsee <poisoncorpsee@gmail.com>
+ */
 class User
 {
 	/**

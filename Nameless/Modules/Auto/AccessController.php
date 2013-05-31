@@ -14,7 +14,12 @@ namespace Nameless\Modules\Auto;
 use Symfony\Component\HttpFoundation\Response;
 use Nameless\Core\Controller;
 
-class BackendController extends Controller
+/**
+ * AccessController class
+ *
+ * @author Corpsee <poisoncorpsee@gmail.com>
+ */
+class AccessController extends Controller
 {
 	public function before()
 	{

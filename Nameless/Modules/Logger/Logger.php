@@ -15,7 +15,7 @@ use Monolog\Logger as BaseLogger;
 use Symfony\Component\HttpKernel\Log\LoggerInterface;
 
 /**
- * Logger
+ * Logger class
  *
  * @author Corpsee <poisoncorpsee@gmail.com>
  */

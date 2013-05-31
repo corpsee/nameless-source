@@ -11,6 +11,11 @@
 
 namespace Nameless\Modules\Validation;
 
+/**
+ * Validator class
+ *
+ * @author Corpsee <poisoncorpsee@gmail.com>
+ */
 class Validator
 {
 	/**

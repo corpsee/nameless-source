@@ -12,11 +12,16 @@
 namespace Nameless\Modules\Auto;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
+/**
+ * AccessDeniedException class
+ *
+ * @author Corpsee <poisoncorpsee@gmail.com>
+ */
 class AccessDeniedException extends HttpException
 {
 	/**
-	 * @param string|null $message
-	 * @param \Exception|null $previous
+	 * @param string $message
+	 * @param \Exception $previous
 	 * @param integer $code
 	 */
 	public function __construct($message = NULL, \Exception $previous = NULL, $code = 0)

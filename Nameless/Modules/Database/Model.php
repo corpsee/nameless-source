@@ -11,6 +11,11 @@
 
 namespace Nameless\Modules\Database;
 
+/**
+ * Model class
+ *
+ * @author Corpsee <poisoncorpsee@gmail.com>
+ */
 class Model
 {
 	/**
