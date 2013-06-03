@@ -1,6 +1,3 @@
 <?php
 
-return array
-(
-	'mailer' => array(),
-);
+return array();

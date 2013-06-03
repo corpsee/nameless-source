@@ -2,11 +2,8 @@
 
 return array
 (
-	'assets' => array
-	(
-		'yuicompressor_path'  => ROOT_PATH . 'Nameless' . DS . 'Modules' . DS . 'Assets' . DS . 'yuicompressor-2.4.7.jar',
-		'java_path'           => '/usr/bin/java',
-		'path'                => FILE_PATH . 'compiled' . DS,
-		'lessjs_url'          => FILE_PATH_URL . 'scripts/less-1.3.3.min.js'
-	),
+	'assets.yuicompressor_path'  => ROOT_PATH . 'Nameless' . DS . 'Modules' . DS . 'Assets' . DS . 'yuicompressor-2.4.7.jar',
+	'assets.java_path'           => '/usr/bin/java',
+	'assets.path'                => FILE_PATH . 'compiled' . DS,
+	'assets.lessjs_url'          => FILE_PATH_URL . 'scripts/less-1.3.3.min.js'
 );

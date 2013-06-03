@@ -28,31 +28,31 @@ class ModuleProvider extends BaseModuleProvider
 		parent::register();
 
 		//TODO: вызывать исключение, если не заданы необходимые настройки (['logger']['name'] например)
-		$this->container['logger'] = array
-		(
-			'logger'  => $this->container->share(function ($c)
+		$this->container['logger.logger'] = $this->container->share(function ($c)
+		{
+			$logger = new Logger($c['logger.name']);
+			$logger->pushHandler($c['logger.handler']);
+			return $logger;
+		});
+
+		$this->container['logger.handler'] = $this->container->share(function ($c)
+		{
+			return new StreamHandler($c['logger.file'], $c['logger.level']);
+		});
+
+		$this->container['logger.level'] = function ($c)
+		{
+			if ($c['environment'] == 'production')
 			{
-				$logger = new Logger($c['logger']['name']);
-				$logger->pushHandler($c['logger']['handler']);
-				return $logger;
-			}),
-			'handler' => $this->container->share(function ($c)
+				return Logger::ERROR;
+			}
+			else
 			{
-				return new StreamHandler($c['logger']['file'], $c['logger']['level']);
-			}),
-			'level'   => function ($c)
-			{
-				if ($c['environment'] == 'production')
-				{
-					return Logger::ERROR;
-				}
-				else
-				{
-					return Logger::DEBUG;
-				}
-			},
-			'file'    => $this->container['logger']['path'] . $this->container['logger']['name'] . '.log',
-		);
+				return Logger::DEBUG;
+			}
+		};
+
+		$this->container['logger.file'] = $this->container['logger.path'] . $this->container['logger.name'] . '.log';
 	}
 
 	public function boot () {}

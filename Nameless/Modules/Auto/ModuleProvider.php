@@ -27,9 +27,9 @@ class ModuleProvider extends BaseModuleProvider
 	{
 		parent::register();
 
-		$this->container['auto']['user'] = $this->container->share(function ($c)
+		$this->container['auto.user'] = $this->container->share(function ($c)
 		{
-			return new User($c['session'], $c['routes'], $c['auto']['access']);
+			return new User($c['session'], $c['routes'], $c['auto.access']);
 		});
 	}
 

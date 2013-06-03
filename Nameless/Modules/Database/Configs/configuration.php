@@ -2,13 +2,10 @@
 
 return array
 (
-	'database' => array
-	(
-		'type'       => 'sqlite',
-		'dns'        => 'sqlite:/dbname.sqlite',
-		'user'       => 'dbuser',
-		'password'   => 'dbpassword',
-		'persistent' => FALSE,
-		'compress'   => FALSE,
-	),
+	'database.type'       => 'sqlite',
+	'database.dns'        => 'sqlite:/dbname.sqlite',
+	'database.user'       => 'dbuser',
+	'database.password'   => 'dbpassword',
+	'database.persistent' => FALSE,
+	'database.compress'   => FALSE,
 );

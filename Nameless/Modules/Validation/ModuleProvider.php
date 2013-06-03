@@ -26,7 +26,7 @@ class ModuleProvider extends BaseModuleProvider
 	{
 		parent::register();
 
-		$this->container['validation']['validator'] = $this->container->share(function ($c)
+		$this->container['validation.validator'] = $this->container->share(function ($c)
 		{
 			return new Validator($c);
 		});
