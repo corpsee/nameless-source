@@ -89,8 +89,8 @@ class IndexController extends Controller
 
 		$data = array
 		(
-			'styles'       => $this->container['assets']['dispatcher']->getAssets('frontend.min', $styles, 'less'),
-			'scripts'      => $this->container['assets']['dispatcher']->getAssets('frontend.min', $scripts, 'js'),
+			'styles'       => $this->container['assets.dispatcher']->getAssets('frontend.min', $styles, 'less'),
+			'scripts'      => $this->container['assets.dispatcher']->getAssets('frontend.min', $scripts, 'js'),
 		);
 		return $this->render('index', $data);
 	}

@@ -2,8 +2,5 @@
 
 return array
 (
-	'validation' => array
-	(
-		'rules' => array(),
-	),
+	'validation.rules' => array(),
 );

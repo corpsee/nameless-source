@@ -27,13 +27,10 @@ class ModuleProvider extends BaseModuleProvider
 	{
 		parent::register();
 
-		$this->container['assets'] = array
-		(
-			'dispatcher' => $this->container->share(function ($c)
-			{
+		$this->container['assets.dispatcher'] = $this->container->share(function ($c)
+		{
 				return new AssetsDispatcher($c);
-			}),
-		);
+		});
 	}
 
 	public function boot () {}

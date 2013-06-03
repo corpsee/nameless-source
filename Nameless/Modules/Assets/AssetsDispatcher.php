@@ -62,11 +62,12 @@ class AssetsDispatcher
 		$result_assets = '';
 		if ($type === 'js')
 		{
-			$assets[] = $this->container['assets']['lessjs_url'];
+			$assets[] = $this->container['assets.lessjs_url'];
 		}
 
 		foreach ($assets as $asset)
 		{
+			//TODO: if (file_exists())
 			$result_assets .= sprintf($this->templates[$type], $asset);
 		}
 		return $result_assets;
@@ -122,14 +123,15 @@ class AssetsDispatcher
 			$assets_instances[] = new FileAsset(URLToPath($asset), $file_filters);
 		}
 
+		//print_r($this->container['assets.java_path']);
 		$filters = array();
 		if ($type === 'js')
 		{
-			$filters[] = new JsCompressorFilter($this->container['assets']['yuicompressor_path'], $this->container['assets']['java_path']);
+			$filters[] = new JsCompressorFilter($this->container['assets.yuicompressor_path'], $this->container['assets.java_path']);
 		}
 		else
 		{
-			$filters[] = new CssCompressorFilter($this->container['assets']['yuicompressor_path'], $this->container['assets']['java_path']);
+			$filters[] = new CssCompressorFilter($this->container['assets.yuicompressor_path'], $this->container['assets.java_path']);
 		}
 
 		$collection = new AssetCollection($assets_instances, $filters);
@@ -152,16 +154,16 @@ class AssetsDispatcher
 			throw new \LogicException('Invalid asset type: ' . $type);
 		}
 
-		$compiled_path = $this->container['assets']['path'] . $name . '.' . $type;
+		$compiled_path = $this->container['assets.path'] . $name . '.' . $type;
 
 		// debug
-		if ($this->container['environment'] === 'debug')
+		/*if ($this->container['environment'] === 'debug')
 		{
 			return $this->generateAssetsDebug($assets, $type);
-		}
+		}*/
 
 		// production
-		elseif ($this->container['environment'] === 'production')
+		if ($this->container['environment'] === 'production')
 		{
 			if (file_exists($compiled_path))
 			{
