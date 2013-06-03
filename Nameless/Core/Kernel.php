@@ -58,7 +58,10 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		// container/kernel
 		$this->container                     = new \Pimple();
 		$this->container['kernel']           = $this;
-		$this->container['logger']['logger'] = NULL;
+		$this->container['logger'] = array
+		(
+			'logger' => NULL,
+		);
 		$this->container['benchmark']        = NULL;
 
 		$this->configurationInit();

@@ -9,6 +9,6 @@ return array
 	'language'    => 'ru',
 	'modules'     => array
 	(
-		'Logger', //'Database','Validation','Auto','Mailer','Assets',
+		'Logger', 'Assets', //'Database','Validation','Auto','Mailer',
 	),
 );

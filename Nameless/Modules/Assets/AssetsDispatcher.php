@@ -111,7 +111,7 @@ class AssetsDispatcher
 	protected function generateAssets (array $assets, $compiled_path, $type = 'css')
 	{
 		$file_filters     = array();
-		if ($type = 'less')
+		if ($type == 'less')
 		{
 			$file_filters[] = new LessphpFilter();
 		}
