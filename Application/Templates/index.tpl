@@ -10,13 +10,7 @@
 	<?= $styles; ?>
 
 	<style type="text/css">body { padding-top: 60px; padding-bottom: 40px; }</style>
-
-	<!-- Fav and touch icons -->
-	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/files/bootstrap/assets/ico/apple-touch-icon-144-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/files/bootstrap/assets/ico/apple-touch-icon-114-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/files/bootstrap/assets/ico/apple-touch-icon-72-precomposed.png">
-	<link rel="apple-touch-icon-precomposed" href="/files/bootstrap/assets/ico/apple-touch-icon-57-precomposed.png">
-	<link rel="shortcut icon" href="/files/bootstrap/assets/ico/favicon.png">
+	<link rel="shortcut icon" href="/files/bootstrap/img/favicon.png">
 </head>
 
 <body>
