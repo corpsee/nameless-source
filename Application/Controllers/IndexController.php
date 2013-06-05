@@ -10,7 +10,8 @@ class IndexController extends Controller
 
 	public function index ()
 	{
-		/*$this->container['localization']->load('index');
+		/*
+		$this->container['localization']->load('index');
 		$this->container['localization']->load('index', 'application', 'en');
 
 		$data = array
@@ -22,24 +23,25 @@ class IndexController extends Controller
 			'paragraph1'  => $this->container['localization']->get('paragraph'),
 			'paragraph2'  => $this->container['localization']->get('paragraph', array(), 'en'),
 		);
-		return $this->render('index', $data);*/
+		return $this->render('index', $data);
+		*/
 
 		$styles = array
 		(
-			'/files/bootstrap/css/bootstrap.min.css',
-			'/files/bootstrap/css/bootstrap-responsive.min.css',
+			'/files/css/bootstrap.css',
+			'/files/css/bootstrap-responsive.css',
 		);
 
 		$scripts = array
 		(
-			'/files/scripts/jquery-1.10.1.min.js',
-			'/files/bootstrap/js/bootstrap.min.js',
+			'/files/js/jquery-1.10.1.js',
+			'/files/js/bootstrap.js',
 		);
 
 		$data = array
 		(
-			'styles'       => $this->container['assets.dispatcher']->getAssets('frontend.min', $styles, 'css', FALSE),
-			'scripts'      => $this->container['assets.dispatcher']->getAssets('frontend.min', $scripts, 'js', FALSE),
+			'styles'       => $this->container['assets.dispatcher']->getAssets('frontend', $styles),
+			'scripts'      => $this->container['assets.dispatcher']->getAssets('frontend', $scripts),
 		);
 		return $this->render('index', $data);
 	}

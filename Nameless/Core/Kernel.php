@@ -205,7 +205,7 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		mb_internal_encoding('UTF-8');
 
 		// error/exception reporting
-		if ($this->container['environment'] === 'debug')
+		if ($this->container['environment'] === 'debug' || $this->container['environment'] === 'test')
 		{
 			error_reporting(-1);
 			ini_set('display_errors', 1);

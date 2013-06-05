@@ -59,6 +59,9 @@ $ac_css = new AssetCollection(
 		new CssCompressorFilter(ROOT_PATH . 'Nameless' . DS . 'Modules' . DS . 'Assets' . DS . 'yuicompressor-2.4.7.jar', 'C:\\Program files\\Java\\jre6\\bin\\java.exe'),
 	)*/
 );
+$ac_css->setValues(array('Y' => '2013'));
+
+echo '<pre>';
 
 $am = new AssetManager();
 $am->set('frontend_js', $ac_js);
@@ -71,15 +74,14 @@ $fm->set('js', new JsCompressorFilter(ROOT_PATH . 'Nameless' . DS . 'Modules' . 
 $factory = new AssetFactory($root_path, TRUE);
 $factory->setAssetManager($am);
 $factory->setFilterManager($fm);
-$factory->setDefaultOutput('compiled/*');
+$factory->setDefaultOutput('compiled/*.css');
 $factory->addWorker(new CacheBustingWorker(new LazyAssetManager($factory)));
 
-$css = $factory->createAsset(array('@frontend_css'), array('css'));
-$js  = $factory->createAsset(array('@frontend_js'), array('js'));
-
-$css_path = $css->getTargetPath();
-$js_path  = $css->getTargetPath();
+$css = $factory->createAsset(array('@frontend_css'), array('css'), array('name' => 'frontend.min', 'vars' => array('Y')));
+//$js  = $factory->createAsset(array('@frontend_js'), array('js'));
+echo $css->getTargetPath();
 
 $writer = new AssetWriter(dirname(__DIR__) . DS  . 'Public' . DS . 'files');
-$writer->writeAsset($css);
-$writer->writeAsset($js);
+$writer->writeAsset()
+//$writer->writeAsset($css);
+//$writer->writeAsset($js);

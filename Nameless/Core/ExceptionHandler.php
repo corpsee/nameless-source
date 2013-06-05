@@ -129,7 +129,7 @@ class ExceptionHandler
 		{
 			$this->log($exception);
 
-			if ($this->environment == 'debug')
+			if ($this->environment == 'debug' || $this->environment == 'test')
 			{
 				$response_raw = $this->decorate($this->getContent($exception), $title);
 			}
