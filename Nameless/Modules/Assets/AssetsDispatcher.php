@@ -62,11 +62,11 @@ class AssetsDispatcher
 	protected function getAssetType ($asset_url)
 	{
 		$type = 'css';
-		if (stripos($asset_url, 'js') !== FALSE)
+		if (stripos($asset_url, '.js') !== FALSE)
 		{
 			$type = 'js';
 		}
-		elseif (stripos($asset_url, 'less') !== FALSE)
+		elseif (stripos($asset_url, '.less') !== FALSE)
 		{
 			$type = 'less';
 		}

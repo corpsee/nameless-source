@@ -10,26 +10,16 @@ class IndexController extends Controller
 
 	public function index ()
 	{
-		/*
 		$this->container['localization']->load('index');
 		$this->container['localization']->load('index', 'application', 'en');
 
-		$data = array
-		(
-			'title'       => 'Page title',
-			'description' => 'Page description',
-			'keywords'    => 'page, keywords',
-			'headline'    => 'Page headline',
-			'paragraph1'  => $this->container['localization']->get('paragraph'),
-			'paragraph2'  => $this->container['localization']->get('paragraph', array(), 'en'),
-		);
-		return $this->render('index', $data);
-		*/
-
+		//TODO: сделать параметр compress для отдельных скриптов
+		//TODO: сделать параметр для набора: объеденять ли файлы? (combine)
 		$styles = array
 		(
 			'/files/css/bootstrap.css',
 			'/files/css/bootstrap-responsive.css',
+			'/files/css/nameless.less',
 		);
 
 		$scripts = array
@@ -40,8 +30,17 @@ class IndexController extends Controller
 
 		$data = array
 		(
-			'styles'       => $this->container['assets.dispatcher']->getAssets('frontend', $styles),
-			'scripts'      => $this->container['assets.dispatcher']->getAssets('frontend', $scripts),
+			'title'       => 'Nameless framework demo page',
+			'description' => 'Nameless framework demo page',
+			'keywords'    => 'Nameless framework demo page',
+			'h2_en'       => $this->container['localization']->get('h2', array(), 'en'),
+			'p_en'        => $this->container['localization']->get('p', array(), 'en'),
+			'btn_en'      => $this->container['localization']->get('btn', array(), 'en'),
+			'h2_ru'       => $this->container['localization']->get('h2'),
+			'p_ru'        => $this->container['localization']->get('p'),
+			'btn_ru'      => $this->container['localization']->get('btn'),
+			'styles'      => $this->container['assets.dispatcher']->getAssets('frontend', $styles),
+			'scripts'     => $this->container['assets.dispatcher']->getAssets('frontend', $scripts),
 		);
 		return $this->render('index', $data);
 	}

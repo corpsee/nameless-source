@@ -2,15 +2,13 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Bootstrap, from Twitter</title>
+	<title><?= $title; ?></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="">
-	<meta name="author" content="">
+	<meta name="description" content="<?= $description; ?>">
+	<meta name="keywords" content="<?= $keywords; ?>">
+	<link rel="shortcut icon" href="/files/bootstrap/img/favicon.png">
 
 	<?= $styles; ?>
-
-	<style type="text/css">body { padding-top: 60px; padding-bottom: 40px; }</style>
-	<link rel="shortcut icon" href="/files/bootstrap/img/favicon.png">
 </head>
 
 <body>
@@ -23,7 +21,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="brand" href="#">Project name</a>
+			<a class="brand" href="#">Nameless Framework</a>
 
 			<div class="nav-collapse collapse">
 				<ul class="nav">
@@ -58,50 +56,31 @@
 
 	<!-- Main hero unit for a primary marketing message or call to action -->
 	<div class="hero-unit">
-		<h1>Hello, world!</h1>
+		<h1>Nameless Framework</h1>
 
-		<p>This is a template for a simple marketing or informational website. It includes a large callout called the
-			hero unit and three supporting pieces of content. Use it as a starting point to create something more
-			unique.</p>
+		<p>It is just another framework based on Symphony Components.</p>
 
 		<p><a href="#" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
 	</div>
 
 	<!-- Example row of columns -->
 	<div class="row">
-		<div class="span4">
-			<h2>Heading</h2>
-
-			<p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris
-				condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis
-				euismod. Donec sed odio dui. </p>
-
-			<p><a class="btn" href="#">View details &raquo;</a></p>
+		<div class="span6">
+			<h2><?= $h2_en; ?></h2>
+			<p><?= $p_en; ?></p>
+			<p><a class="btn" href="#"><?= $btn_en; ?></a></p>
 		</div>
-		<div class="span4">
-			<h2>Heading</h2>
-
-			<p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris
-				condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis
-				euismod. Donec sed odio dui. </p>
-
-			<p><a class="btn" href="#">View details &raquo;</a></p>
-		</div>
-		<div class="span4">
-			<h2>Heading</h2>
-
-			<p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula
-				porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut
-				fermentum massa justo sit amet risus.</p>
-
-			<p><a class="btn" href="#">View details &raquo;</a></p>
+		<div class="span6">
+			<h2><?= $h2_ru; ?></h2>
+			<p><?= $p_ru; ?></p>
+			<p><a class="btn" href="#"><?= $btn_ru; ?></a></p>
 		</div>
 	</div>
 
 	<hr>
 
 	<footer>
-		<p>&copy; Company 2013</p>
+		<p>&copy; Corpsee. 2013.</p>
 	</footer>
 
 </div>
