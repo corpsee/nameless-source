@@ -10,7 +10,6 @@ class ErrorController extends Controller
 {
 	public function errorServer ($code)
 	{
-		//print_r($code); exit;
 		switch ((int)$code)
 		{
 			case 403:
