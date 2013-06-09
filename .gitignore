@@ -1,7 +1,7 @@
-/Temp
-/Sessions
-/composer.phar
-/composer.lock
-/.idea
-/.git
-/.gitignore
+Vendors
+composer.lock
+composer.phar
+.idea
+Bin
+Sessions
+Temp
