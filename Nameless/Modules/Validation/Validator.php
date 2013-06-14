@@ -19,12 +19,12 @@ namespace Nameless\Modules\Validation;
 class Validator
 {
 	/**
-	 * @var Container
+	 * @var \Pimple
 	 */
 	private $container;
 
 	/**
-	 * @param Container $container
+	 * @param \Pimple $container
 	 */
 	public function __construct($container)
 	{
@@ -92,6 +92,20 @@ class Validator
 	private function alpha_ext ($value)
 	{
 		if ($value && !preg_match('!^[\p{L}\p{P}\p{Nd} ]+$!iu', $value))
+		{
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+	/**
+	 * @param string $value
+	 *
+	 * @return boolean
+	 */
+	private function email_simple ($value)
+	{
+		if ($value && !preg_match('!^[^@]*@[^@]*$!iu', $value))
 		{
 			return FALSE;
 		}
@@ -234,6 +248,36 @@ class Validator
 				if (!$error = $this->{$rule}($value))
 				{
 					$errors[] = $this->container['localization']->get($rule, array('field' => $key));
+				}
+			}
+			else
+			{
+				throw new \InvalidArgumentException('Invalid validation rule');
+			}
+		}
+
+		return $errors;
+	}
+
+	public function validateFieldTest ($value, $rules)
+	{
+		$errors = array();
+		$value = trim($value);
+
+		foreach ($rules as $rule)
+		{
+			if (is_array($rule) && count($rule) == 2)
+			{
+				if (!$error = $this->{$rule[0]}($value))
+				{
+					$errors[] = 'error';
+				}
+			}
+			elseif (is_string($rule))
+			{
+				if (!$error = $this->{$rule}($value))
+				{
+					$errors[] = 'error';
 				}
 			}
 			else
