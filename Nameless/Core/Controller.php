@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Nameless\Modules\Database\Database;
 
 /**
  * Base controller class
@@ -42,6 +43,19 @@ class Controller implements ControllerInterface
 	public function getRequest ()
 	{
 		return $this->container['request'];
+	}
+
+	/**
+	 * @return Database
+	 * @throws \RuntimeException
+	 */
+	protected function getDatabase ()
+	{
+		if (isset($this->container['database.database']))
+		{
+			return $this->container['database.database'];
+		}
+		throw new \RuntimeException('Don`t load module Database');
 	}
 
 	/**
@@ -88,7 +102,7 @@ class Controller implements ControllerInterface
 	 *
 	 * @throws NotFoundHttpException
 	 */
-	public function notFound($message = 'Not Found', \Exception $previous = NULL)
+	public function notFound($message = 'Page not found', \Exception $previous = NULL)
 	{
 		throw new NotFoundHttpException($message, $previous);
 	}
