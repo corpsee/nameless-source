@@ -11,5 +11,4 @@ return array
 	(
 		'Logger', 'Assets', //'Database','Validation','Auto','Mailer',
 	),
-	'templates_error_path' => APPLICATION_PATH . 'Templates' . DS,
 );
