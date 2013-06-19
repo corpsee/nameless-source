@@ -114,15 +114,26 @@ class Controller implements ControllerInterface
 	 * @param string   $template
 	 * @param array    $data
 	 * @param Response $response
+	 * @param string   $template_extension
+	 * @param string   $template_path
 	 *
 	 * @return Response
 	 */
-	public function render ($template, array $data = array(), Response $response = NULL)
+	public function render ($template, array $data = array(), Response $response = NULL, $template_extension = NULL, $template_path = NULL)
 	{
+		if (is_null($template_extension))
+		{
+			$template_extension = $this->container['templates_extension'];
+		}
+		if (is_null($template_path))
+		{
+			$template_path = $this->container['templates_path'];
+		}
+
 		$template_instance = new Template
 		(
-			TEMPLATE_PATH,
-			$this->container['templates_extension'],
+			$template_path,
+			$template_extension,
 			$data,
 			$template,
 			$response

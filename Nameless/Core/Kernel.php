@@ -14,6 +14,7 @@ namespace Nameless\Core;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\EventListener\ExceptionListener;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
@@ -37,7 +38,7 @@ use Symfony\Component\HttpKernel\Event\PostResponseEvent;
  *
  * @author Corpsee <poisoncorpsee@gmail.com>
  */
-class Kernel extends HttpKernel implements HttpKernelInterface
+class Kernel extends HttpKernel
 {
 	/**
 	 * @var array
@@ -56,7 +57,6 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 
 	public function __construct ()
 	{
-		// container/kernel
 		$this->container                  = new \Pimple();
 		$this->container['kernel']        = $this;
 		$this->container['logger.logger'] = NULL;
@@ -220,11 +220,12 @@ class Kernel extends HttpKernel implements HttpKernelInterface
 		{
 			error_reporting(E_ALL ^ (E_STRICT | E_NOTICE | E_DEPRECATED));
 			ini_set('display_errors', 0);
+
+			$this->container['dispatcher']->addSubscriber(new ResponseListener('UTF-8'));
 		}
 
 		ErrorHandler::register();
-		//TODO: не передавать аргументом константу
-		ExceptionHandler::register(TEMPLATE_PATH, $this->container['templates_extension'], $this->container['environment'], 'UTF-8', $this->container['logger.logger']);
+		ExceptionHandler::register($this->container['templates_error_path'], $this->container['templates_extension'], $this->container['environment'], 'UTF-8', $this->container['logger.logger']);
 	}
 
 	//TODO: boot -> initializeModules
