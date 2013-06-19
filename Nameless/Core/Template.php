@@ -15,6 +15,7 @@ namespace Nameless\Core;
 use Symfony\Component\HttpFoundation\Response;
 
 //TODO: подумать над фильтрами (анти-xss/экранирование)
+//TODO: сжатие HTML (удаление пробелов/табов)
 /**
  * Template class
  *

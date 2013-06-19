@@ -6,6 +6,7 @@ use Nameless\Modules\Auto\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Nameless\Core\Controller;
 
+//TODO: сделать слушателем (вынести функционал для продакшена из ExceptionHandler)
 class ErrorController extends Controller
 {
 	public function errorServer ($code)
