@@ -155,7 +155,6 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 	public function testTrueEmail ($string)
 	{
 		$this->init();
-		//print_r($this->validator->validateField('test_field', $string, array('email'))); exit;
 		$this->assertEmpty($this->validator->validateFieldTest($string, array('email')));
 	}
 
