@@ -2,6 +2,7 @@
 
 /**
  * This file is part of the Nameless framework.
+ * For the full copyright and license information, please view the LICENSE
  *
  * @package    Nameless
  * @author     Corpsee <poisoncorpsee@gmail.com>
@@ -15,6 +16,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Nameless\Modules\Database\Database;
 
 /**
  * Base controller class
@@ -42,6 +44,19 @@ class Controller implements ControllerInterface
 	public function getRequest ()
 	{
 		return $this->container['request'];
+	}
+
+	/**
+	 * @return Database
+	 * @throws \RuntimeException
+	 */
+	protected function getDatabase ()
+	{
+		if (isset($this->container['database.database']))
+		{
+			return $this->container['database.database'];
+		}
+		throw new \RuntimeException('Don`t load module Database');
 	}
 
 	/**
@@ -88,7 +103,7 @@ class Controller implements ControllerInterface
 	 *
 	 * @throws NotFoundHttpException
 	 */
-	public function notFound($message = 'Not Found', \Exception $previous = NULL)
+	public function notFound($message = 'Page not found', \Exception $previous = NULL)
 	{
 		throw new NotFoundHttpException($message, $previous);
 	}
@@ -99,15 +114,26 @@ class Controller implements ControllerInterface
 	 * @param string   $template
 	 * @param array    $data
 	 * @param Response $response
+	 * @param string   $template_extension
+	 * @param string   $template_path
 	 *
 	 * @return Response
 	 */
-	public function render ($template, array $data = array(), Response $response = NULL)
+	public function render ($template, array $data = array(), Response $response = NULL, $template_extension = NULL, $template_path = NULL)
 	{
+		if (is_null($template_extension))
+		{
+			$template_extension = $this->container['templates_extension'];
+		}
+		if (is_null($template_path))
+		{
+			$template_path = $this->container['templates_path'];
+		}
+
 		$template_instance = new Template
 		(
-			TEMPLATE_PATH,
-			$this->container['templates_extension'],
+			$template_path,
+			$template_extension,
 			$data,
 			$template,
 			$response

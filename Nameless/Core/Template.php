@@ -2,6 +2,7 @@
 
 /**
  * This file is part of the Nameless framework.
+ * For the full copyright and license information, please view the LICENSE
  *
  * @package    Nameless
  * @author     Corpsee <poisoncorpsee@gmail.com>
@@ -14,6 +15,7 @@ namespace Nameless\Core;
 use Symfony\Component\HttpFoundation\Response;
 
 //TODO: подумать над фильтрами (анти-xss/экранирование)
+//TODO: сжатие HTML (удаление пробелов/табов)
 /**
  * Template class
  *
