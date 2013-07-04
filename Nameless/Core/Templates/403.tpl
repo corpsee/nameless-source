@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>Error 403</title>
-		<meta http-equiv="content-Language" content="ru" />
+		<meta http-equiv="content-Language" content="en" />
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		<meta name="description" content="Error 403" />
 		<meta name="keywords" content="" />

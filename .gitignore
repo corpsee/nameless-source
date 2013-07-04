@@ -1,8 +1,8 @@
+composer.phar
+.git
 .idea
-Temp
-Logs
+Bin
 Sessions
-/composer.phar
+Temp
 Vendors
 composer.lock
-Bin

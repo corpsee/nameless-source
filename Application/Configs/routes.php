@@ -3,7 +3,7 @@
 return array
 (
 	// ErrorController
-	'server_error' => array
+	/*'server_error' => array
 	(
 		'pattern'      => '/error/{code}',
 		'defaults'     => array
@@ -20,7 +20,7 @@ return array
 			'_controller' => 'Application\\Controllers\\ErrorController::errorServer',
 			'code'       => 500,
 		),
-	),
+	),*/
 
 	// IndexController
 	'index' => array
