@@ -284,7 +284,7 @@ class Template
 
 		try
 		{
-			include $this->template_fullpath;
+			include_once $this->template_fullpath;
 		}
 		catch (\Exception $exception)
 		{
@@ -294,7 +294,7 @@ class Template
 		return ob_get_clean();
 	}
 
-	public function subtemplate ($subtamplate)
+	public function subTemplate ($subtamplate)
 	{
 		$subtamplate_instance = new static($this->template_path, $this->template_extension, $this->data, $subtamplate);
 		return $subtamplate_instance->renderTemplate();
