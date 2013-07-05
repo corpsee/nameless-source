@@ -63,11 +63,11 @@ class Kernel extends HttpKernel
 
 		$this->configurationInit();
 		$this->routerInit();
+		$this->localizationInit();
 		$this->modulesInit();
 		$this->sessionInit();
 		$this->dispatcherInit();
 		$this->environmentInit();
-		$this->localizationInit();
 
 		parent::__construct($this->container['dispatcher'], $this->container['resolver']);
 	}
