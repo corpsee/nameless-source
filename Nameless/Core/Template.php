@@ -297,7 +297,7 @@ class Template
 	public function subTemplate ($subtamplate)
 	{
 		$subtamplate_instance = new static($this->template_path, $this->template_extension, $this->data, $subtamplate);
-		return $subtamplate_instance->renderTemplate();
+		echo $subtamplate_instance->renderTemplate();
 	}
 
 	/**
