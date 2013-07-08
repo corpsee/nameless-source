@@ -113,6 +113,16 @@ class AssetsDispatcher
 		return $assets;
 	}
 
+	/**
+	 * @param string $name
+	 * @param array  $assets
+	 * @param bool   $compress
+	 * @param string $assets_path
+	 *
+	 * @return string
+	 *
+	 * @throws \RuntimeException
+	 */
 	public function getAssets ($name, array $assets, $compress = TRUE, $assets_path = NULL)
 	{
 		$assets = $this->assetsNormalize($assets);
@@ -136,9 +146,6 @@ class AssetsDispatcher
 		}
 		else
 		{
-			//$last_modify_path   = $this->container['cache_path'] . $name . '_' . $type;
-			//$last_modify_result = $this->getLastModifiedResult($last_modify_path);
-
 			if (!file_exists($compiled_path))
 			{
 				$dump = $this->generateAssets($assets, $compress);
@@ -147,11 +154,6 @@ class AssetsDispatcher
 				{
 					throw new \RuntimeException('Unable to write file ' . $compiled_path);
 				}
-
-				/*if (FALSE === @file_put_contents($last_modify_path, $last_modify))
-				{
-					throw new \RuntimeException('Unable to write file ' . $last_modify_path);
-				}*/
 			}
 			$result_assets = sprintf($this->templates[$type], pathToURL($compiled_path));
 		}
