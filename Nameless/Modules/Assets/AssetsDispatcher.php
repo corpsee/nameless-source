@@ -123,6 +123,8 @@ class AssetsDispatcher
 	 *
 	 * @throws \RuntimeException
 	 */
+	//TODO: не сжимать .min. файлы
+	//TODO: переписывать пути на абсолютные (для url())
 	public function getAssets ($name, array $assets, $compress = TRUE, $assets_path = NULL)
 	{
 		$assets = $this->assetsNormalize($assets);
