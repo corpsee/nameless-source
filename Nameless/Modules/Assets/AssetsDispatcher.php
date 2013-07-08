@@ -134,7 +134,7 @@ class AssetsDispatcher
 
 		$last_modify    = $this->getLastModified($assets);
 		$type           = $this->getAssetGlobalType($assets[0]['type']);
-		$compiled_path  = $assets_path . $name . '.' . ($last_modify - 1370019600) . '.' . $type;
+		$compiled_path  = $assets_path . $name . '.' . $last_modify . '.' . $type;
 
 		if ($this->container['environment'] === 'production' && file_exists($compiled_path))
 		{
