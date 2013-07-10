@@ -9,73 +9,6 @@
  * @link       https://github.com/corpsee/Nameless
  */
 
-/*function utf8_chr($dec)
-{
-	if ($dec < 128)
-		return chr($dec);
-
-    if ($dec < 2048)
-    	return chr(($dec >> 6) + 192) . chr(($dec & 63) + 128);
-
-    if ($dec < 65536)
-    	return chr(($dec >> 12) + 224) . chr((($dec >> 6) & 63) + 128) . chr(($dec & 63) + 128);
-
-    if ($dec < 2097152)
-    	return chr(($dec >> 18) + 240) . chr((($dec >> 12) & 63) + 128) . chr((($dec >> 6) & 63) + 128) . chr(($dec & 63) + 128);
-
-    return '';
-}
-
-function utf8_ord($str)
-{
-	if (ord($str{0}) >= 0 && ord($str{0}) <= 127)
-		return ord($str{0});
-
-	if (ord($str{0}) >= 192 && ord($str{0}) <= 223)
-		return (ord($str{0})-192)*64 + (ord($str{1})-128);
-
-	if (ord($str{0}) >= 224 && ord($str{0}) <= 239)
-		return (ord($str{0})-224)*4096 + (ord($str{1})-128)*64 + (ord($str{2})-128);
-
-	if (ord($str{0}) >= 240 && ord($str{0}) <= 247)
-		return (ord($str{0})-240)*262144 + (ord($str{1})-128)*4096 + (ord($str{2})-128)*64 + (ord($str{3})-128);
-
-	if (ord($str{0}) >= 248 && ord($str{0}) <= 251)
-		return (ord($str{0})-248)*16777216 + (ord($str{1})-128)*262144 + (ord($str{2})-128)*4096 + (ord($str{3})-128)*64 + (ord($str{4})-128);
-
-	if (ord($str{0}) >= 252 && ord($str{0}) <= 253)
-		return (ord($str{0})-252)*1073741824 + (ord($str{1})-128)*16777216 + (ord($str{2})-128)*262144 + (ord($str{3})-128)*4096 + (ord($str{4})-128)*64 + (ord($str{5})-128);
-
-	if (ord($str{0}) >= 254 && ord($str{0}) <= 255) //error
-		return false;
-
-	return 0;
-}
-
-function utf8_decode_entities($str)
-{
-	$str = preg_replace_callback('~&#x([0-9a-f]+);~i', 'utf8_hexchr_callback', $str);
-	$str = preg_replace_callback('~&#([0-9]+);~', 'utf8_chr_callback', $str);
-
-	return $str;
-}
-
-function utf8_chr_callback($matches)
-{
-	return utf8_chr($matches[1]);
-}
-
-function utf8_hexchr_callback($matches)
-{
-	return utf8_chr(hexdec($matches[1]));
-}
-
-function utf8_convert_encoding ($str, $to, $from = NULL)
-{
-	mb_substitute_character('none');
-	return mb_convert_encoding($str, $to, $from);
-}*/
-
 /**
  * @param string $value
  * @param int $rounds
@@ -275,39 +208,39 @@ function romanize ($str)
 	return strtr($str, $romanize);
 }
 
-/*function utf8_ucfirst($str)
-{
-	$str = mb_strtoupper(mb_substr($str, 0, 1)) . mb_substr($str, 1);
-	return $str;
-}*/
-
-// приведение строки к латинице + _
 /**
- * @param string $str
+ * @param string $string
  *
  * @return string
  */
-function standardize ($str)
+function utf8_ucfirst($string)
 {
-	return standardize_unicode(romanize($str));
+	$string = mb_strtoupper(mb_substr($string, 0, 1)) . mb_substr($string, 1);
+	return $string;
+}
+
+// приведение строки к латинице + _
+/**
+ * @param string $string
+ *
+ * @return string
+ */
+function standardize ($string)
+{
+	return standardize_unicode(romanize($string));
 }
 
 // приведение строки к буквам + цифрам + _
 /**
- * @param string $str
+ * @param string $string
  *
  * @return string
  */
-function standardize_unicode ($str)
+function standardize_unicode ($string)
 {
-	$str = trim($str);
-	$str = preg_replace
-	(
-		array('#[- \\/+\.,:;=]#iu', '#[^\p{L}\p{Nd}_]+#iu'),
-		array('_', ''),
-		$str
-	);
-	return mb_strtolower(trim($str));
+	$string = trim($string);
+	$string = preg_replace(array('#[- \\/+\.,:;=]#iu', '#[^\p{L}\p{Nd}_]+#iu'), array('_', ''), $string);
+	return mb_strtolower(trim($string));
 }
 
 /**
@@ -326,7 +259,6 @@ function stringToArray ($string, $delimiter = ',')
 	return $array;
 }
 
-//TODO: проверить с пустыми значениями и запятой в конце
 /**
  * @param $array
  * @param string $delimiter
@@ -335,22 +267,17 @@ function stringToArray ($string, $delimiter = ',')
  */
 function arrayToString (array $array, $delimiter = ', ')
 {
-	$string = '';
-
-	if ($array)
-	{
-		$last_item = array_pop($array);
-		foreach ($array as $item) { $string .= $item . $delimiter; }
-		$string .= $last_item;
-	}
-	return $string;
+	return implode($delimiter, $array);
 }
 
+/**
+ * @param string $size_string
+ *
+ * @return integer
+ */
 // перевод размера вида 100MB, 10.5GB в байты
 function size_unhumanize ($size_string)
 {
-	$bytes = 0;
-
 	$sizes = array
 	(
 		'B'  => 1,
@@ -373,6 +300,12 @@ function size_unhumanize ($size_string)
 	return $bytes;
 }
 
+/**
+ * @param integer $bytes
+ * @param integer $decimals
+ *
+ * @return string
+ */
 // переводит размер из Б в человекочитаемый формат
 function size_humanize ($bytes, $decimals = 2)
 {

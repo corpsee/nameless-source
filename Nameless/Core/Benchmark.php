@@ -98,7 +98,6 @@ class Benchmark
 	 */
 	public function getMax (array $markers)
 	{
-		//TODO: сделать кэширование запросов статистики
 		$max = array
 		(
 			'time'   => 0,
