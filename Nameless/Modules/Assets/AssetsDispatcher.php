@@ -117,6 +117,7 @@ class AssetsDispatcher
 	 * @param string $name
 	 * @param array  $assets
 	 * @param bool   $compress
+	 * @param bool   $combine
 	 * @param string $assets_path
 	 *
 	 * @return string
@@ -125,7 +126,7 @@ class AssetsDispatcher
 	 */
 	//TODO: не сжимать .min. файлы
 	//TODO: переписывать пути на абсолютные (для url())
-	public function getAssets ($name, array $assets, $compress = TRUE, $assets_path = NULL)
+	public function getAssets ($name, array $assets, $compress = TRUE, $combine = TRUE, $assets_path = NULL)
 	{
 		$assets = $this->assetsNormalize($assets);
 
@@ -140,13 +141,13 @@ class AssetsDispatcher
 		$compress_postfix = $compress ? 'min.' : '';
 		$compiled_path    = $assets_path . $name . '.' . $last_modify . '.' . $compress_postfix . $type;
 
-		if ($this->container['environment'] === 'production' && file_exists($compiled_path))
-		{
-			$result_assets = sprintf($this->templates[$type], pathToURL($compiled_path));
-		}
-		elseif ($this->container['environment'] === 'debug' || $this->container['environment'] === 'production')
+		if (!$combine || $this->container['environment'] === 'debug' || ($this->container['environment'] === 'production' && !file_exists($compiled_path)))
 		{
 			$result_assets = $this->generateAssetsDebug($assets);
+		}
+		elseif ($this->container['environment'] === 'production')
+		{
+			$result_assets = sprintf($this->templates[$type], pathToURL($compiled_path));
 		}
 		else
 		{
