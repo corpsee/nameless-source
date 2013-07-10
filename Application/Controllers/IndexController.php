@@ -13,8 +13,6 @@ class IndexController extends Controller
 		$this->container['localization']->load('index');
 		$this->container['localization']->load('index', 'application', 'en');
 
-		//TODO: сделать параметр compress для отдельных скриптов
-		//TODO: сделать параметр для набора: объеденять ли файлы? (combine)
 		$styles = array
 		(
 			'/files/css/bootstrap.css',
