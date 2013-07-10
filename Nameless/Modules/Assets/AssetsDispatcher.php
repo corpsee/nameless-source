@@ -124,7 +124,6 @@ class AssetsDispatcher
 	 *
 	 * @throws \RuntimeException
 	 */
-	//TODO: не сжимать .min. файлы
 	//TODO: переписывать пути на абсолютные (для url())
 	public function getAssets ($name, array $assets, $compress = TRUE, $combine = TRUE, $assets_path = NULL)
 	{
@@ -202,6 +201,7 @@ class AssetsDispatcher
 	protected function generateAssets (array $assets, $compress = TRUE)
 	{
 		$assets_instances = array();
+
 		foreach ($assets as $asset)
 		{
 			$file_filters = array();
@@ -210,21 +210,20 @@ class AssetsDispatcher
 				$file_filters[] = new LessphpFilter();
 			}
 			$assets_instances[] = new FileAsset($asset['asset_path'], $file_filters);
-		}
 
-		$collection_filters = array();
-		if ($compress)
-		{
-			if ($assets[0]['type'] === 'js')
+			if ($compress && (FALSE === stripos($asset['asset_path'], '.min.')))
 			{
-				$collection_filters[] = new JsCompressorFilter($this->container['assets.yuicompressor_path'], $this->container['assets.java_path']);
-			}
-			else
-			{
-				$collection_filters[] = new CssCompressorFilter($this->container['assets.yuicompressor_path'], $this->container['assets.java_path']);
+				if ($asset['type'] === 'js')
+				{
+					$file_filters[] = new JsCompressorFilter($this->container['assets.yuicompressor_path'], $this->container['assets.java_path']);
+				}
+				else
+				{
+					$file_filters[] = new CssCompressorFilter($this->container['assets.yuicompressor_path'], $this->container['assets.java_path']);
+				}
 			}
 		}
-		$collection = new AssetCollection($assets_instances, $collection_filters);
+		$collection = new AssetCollection($assets_instances);
 		return $collection->dump();
 	}
 
