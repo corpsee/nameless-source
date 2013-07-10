@@ -57,11 +57,11 @@ function URLToPath ($path)
 }
 
 /**
- * @param string $str
+ * @param string $string
  *
  * @return string
  */
-function romanize ($str)
+function romanizeString ($string)
 {
 	$romanize = array
 	(
@@ -205,7 +205,7 @@ function romanize ($str)
 		'ㅜ'=>'wu','ㅡ'=>'u','ㅣ'=>'i','ㅐ'=>'ay','ㅔ'=>'ey','ㅚ'=>'oy','ㅘ'=>'wa','ㅝ'=>'we','ㅟ'=>'wi','ㅙ'=>'way',
 		'ㅞ'=>'wey','ㅢ'=>'uy','ㅑ'=>'ya','ㅕ'=>'ye','ㅛ'=>'oy','ㅠ'=>'yu','ㅒ'=>'yay','ㅖ'=>'yey'
 	);
-	return strtr($str, $romanize);
+	return strtr($string, $romanize);
 }
 
 /**
@@ -213,7 +213,7 @@ function romanize ($str)
  *
  * @return string
  */
-function utf8_ucfirst($string)
+function UTF8Ucfirst($string)
 {
 	$string = mb_strtoupper(mb_substr($string, 0, 1)) . mb_substr($string, 1);
 	return $string;
@@ -225,9 +225,9 @@ function utf8_ucfirst($string)
  *
  * @return string
  */
-function standardize ($string)
+function standardizeFilename ($string)
 {
-	return standardize_unicode(romanize($string));
+	return standardizeString(romanizeString($string));
 }
 
 // приведение строки к буквам + цифрам + _
@@ -236,7 +236,7 @@ function standardize ($string)
  *
  * @return string
  */
-function standardize_unicode ($string)
+function standardizeString ($string)
 {
 	$string = trim($string);
 	$string = preg_replace(array('#[- \\/+\.,:;=]#iu', '#[^\p{L}\p{Nd}_]+#iu'), array('_', ''), $string);
@@ -276,7 +276,7 @@ function arrayToString (array $array, $delimiter = ', ')
  * @return integer
  */
 // перевод размера вида 100MB, 10.5GB в байты
-function size_unhumanize ($size_string)
+function sizeUnhumanize ($size_string)
 {
 	$sizes = array
 	(
@@ -307,7 +307,7 @@ function size_unhumanize ($size_string)
  * @return string
  */
 // переводит размер из Б в человекочитаемый формат
-function size_humanize ($bytes, $decimals = 2)
+function sizeHumanize ($bytes, $decimals = 2)
 {
 	$sizes = array('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
 

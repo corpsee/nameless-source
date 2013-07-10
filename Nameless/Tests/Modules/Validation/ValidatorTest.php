@@ -1,9 +1,8 @@
 <?php
 
-namespace Nameless\Modules\Validation\Tests;
+namespace Nameless\Modules\Tests\Modules\Validation;
 
 use Nameless\Modules\Validation\Validator;
-use Nameless\Core\Localization;
 
 class ValidatorTest extends \PHPUnit_Framework_TestCase
 {
