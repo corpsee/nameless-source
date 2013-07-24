@@ -1,9 +1,11 @@
 Nameless Framework
 ==================
 Yet another framework based on Symfony Components.
+
 Examples
 --------
 For examples please see the Application directory.
+
 Tests
 -----
 Run tests:
