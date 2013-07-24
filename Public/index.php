@@ -16,10 +16,9 @@ define('APPLICATION_PATH', ROOT_PATH . 'Application' . DS);
 define('CONFIG_PATH',      APPLICATION_PATH . 'Configs' . DS);
 define('PUBLIC_PATH',      ROOT_PATH . 'Public' . DS);
 define('FILE_PATH',        PUBLIC_PATH . 'files' . DS);
+define('FILE_PATH_URL',    '/files/');
 
-define('FILE_PATH_URL',   '/files/');
-
-require_once(ROOT_PATH . 'Vendors' . DS . 'autoload.php');
+require_once ROOT_PATH . 'Vendors' . DS . 'autoload.php';
 
 use Nameless\Core\Kernel;
 
