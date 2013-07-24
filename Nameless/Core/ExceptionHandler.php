@@ -136,18 +136,28 @@ class ExceptionHandler
 			}
 			else
 			{
-				$template_name = $exception->getStatusCode();
-				if (!file_exists($this->templates_path . $template_name . '.' . $this->templates_extension))
+				$template_name      = $exception->getStatusCode();
+				$template_path      = $this->templates_path;
+				$template_extension = $this->templates_extension;
+
+				if (!file_exists($template_path . $template_name . '.' . $template_extension))
 				{
 					$template_name = '500';
+
+					if (!file_exists($template_path . $template_name . '.' . $template_extension))
+					{
+						$template_name      = $exception->getStatusCode();
+						$template_path      = NAMELESS_PATH . 'Core' . DS . 'Templates' . DS;
+						$template_extension = 'tpl';
+
+						if (!file_exists($template_path . $template_name . '.' . $template_extension))
+						{
+							$template_name = '500';
+						}
+					}
 				}
 
-				$template_obj = new Template
-				(
-					$this->templates_path,
-					$this->templates_extension
-				);
-
+				$template_obj = new Template($template_path, $template_extension);
 				return $template_obj->render($template_name, array(), $response);
 			}
 		}
