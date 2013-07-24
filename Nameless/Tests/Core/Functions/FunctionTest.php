@@ -4,7 +4,6 @@ namespace Nameless\Tests\Core\Functions;
 
 class FunctionTest extends \PHPUnit_Framework_TestCase
 {
-
 	public function pathToURLProvider ()
 	{
 		return array
