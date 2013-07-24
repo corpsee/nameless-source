@@ -117,16 +117,19 @@ class AssetsDispatcher
 	 * @param string $name
 	 * @param array  $assets
 	 * @param bool   $compress
-	 * @param bool   $combine
 	 * @param string $assets_path
 	 *
 	 * @return string
 	 *
 	 * @throws \RuntimeException
 	 */
-	//TODO: переписывать пути на абсолютные (для url())
-	public function getAssets ($name, array $assets, $compress = TRUE, $combine = TRUE, $assets_path = NULL)
+	public function getAssets ($name, array $assets, $compress = TRUE, $assets_path = NULL)
 	{
+		if (empty($assets))
+		{
+			$type = 'js';
+		}
+
 		$assets = $this->assetsNormalize($assets);
 
 		if (is_null($assets_path))
@@ -135,18 +138,18 @@ class AssetsDispatcher
 		}
 
 		$last_modify    = $this->getLastModified($assets);
-		$type           = $this->getAssetGlobalType($assets[0]['type']);
+		$type           = empty($assets) ? 'js' : $this->getAssetGlobalType($assets[0]['type']);
 
 		$compress_postfix = $compress ? 'min.' : '';
 		$compiled_path    = $assets_path . $name . '.' . $last_modify . '.' . $compress_postfix . $type;
 
-		if (!$combine || $this->container['environment'] === 'debug' || ($this->container['environment'] === 'production' && !file_exists($compiled_path)))
-		{
-			$result_assets = $this->generateAssetsDebug($assets);
-		}
-		elseif ($this->container['environment'] === 'production')
+		if ($this->container['environment'] === 'production' && file_exists($compiled_path))
 		{
 			$result_assets = sprintf($this->templates[$type], pathToURL($compiled_path));
+		}
+		elseif ($this->container['environment'] === 'debug' || $this->container['environment'] === 'production')
+		{
+			$result_assets = $this->generateAssetsDebug($assets, $type);
 		}
 		else
 		{
@@ -165,14 +168,15 @@ class AssetsDispatcher
 	}
 
 	/**
-	 * @param array $assets
+	 * @param array  $assets
+	 * @param string $type
 	 *
 	 * @return string
 	 */
-	protected function generateAssetsDebug (array $assets)
+	protected function generateAssetsDebug (array $assets, $type)
 	{
 		$result_assets = '';
-		if ($this->getAssetGlobalType($assets[0]['type']) === 'js' && $this->container['assets.less'])
+		if ($type === 'js' && $this->container['assets.less'])
 		{
 			$assets[] = array
 			(
@@ -201,7 +205,6 @@ class AssetsDispatcher
 	protected function generateAssets (array $assets, $compress = TRUE)
 	{
 		$assets_instances = array();
-
 		foreach ($assets as $asset)
 		{
 			$file_filters = array();
@@ -210,20 +213,21 @@ class AssetsDispatcher
 				$file_filters[] = new LessphpFilter();
 			}
 			$assets_instances[] = new FileAsset($asset['asset_path'], $file_filters);
+		}
 
-			if ($compress && (FALSE === stripos($asset['asset_path'], '.min.')))
+		$collection_filters = array();
+		if ($compress)
+		{
+			if ($assets[0]['type'] === 'js')
 			{
-				if ($asset['type'] === 'js')
-				{
-					$file_filters[] = new JsCompressorFilter($this->container['assets.yuicompressor_path'], $this->container['assets.java_path']);
-				}
-				else
-				{
-					$file_filters[] = new CssCompressorFilter($this->container['assets.yuicompressor_path'], $this->container['assets.java_path']);
-				}
+				$collection_filters[] = new JsCompressorFilter($this->container['assets.yuicompressor_path'], $this->container['assets.java_path']);
+			}
+			else
+			{
+				$collection_filters[] = new CssCompressorFilter($this->container['assets.yuicompressor_path'], $this->container['assets.java_path']);
 			}
 		}
-		$collection = new AssetCollection($assets_instances);
+		$collection = new AssetCollection($assets_instances, $collection_filters);
 		return $collection->dump();
 	}
 
