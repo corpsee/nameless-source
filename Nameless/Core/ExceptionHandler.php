@@ -60,7 +60,7 @@ class ExceptionHandler
 	 * @param string          $charset
 	 * @param LoggerInterface $logger
 	 */
-	public function __construct ($templates_path, $templates_extension = '.tpl', $environment = 'debug', $charset = 'UTF-8', LoggerInterface $logger = NULL)
+	public function __construct ($templates_path, $templates_extension = 'tpl', $environment = 'debug', $charset = 'UTF-8', LoggerInterface $logger = NULL)
 	{
 		$this->environment = $environment;
 		$this->charset     = $charset;
@@ -79,7 +79,7 @@ class ExceptionHandler
 	 *
 	 * @return ExceptionHandler
 	 */
-	public static function register ($templates_path, $templates_extension = '.tpl', $environment = 'debug', $charset = 'UTF-8', LoggerInterface $logger = NULL)
+	public static function register ($templates_path, $templates_extension = 'tpl', $environment = 'debug', $charset = 'UTF-8', LoggerInterface $logger = NULL)
 	{
 		$handler = new static($templates_path, $templates_extension, $environment, $charset, $logger);
 		set_exception_handler(array($handler, 'handle'));
@@ -137,7 +137,7 @@ class ExceptionHandler
 			else
 			{
 				$template_name = $exception->getStatusCode();
-				if (!file_exists($this->templates_path . $template_name . $this->templates_extension))
+				if (!file_exists($this->templates_path . $template_name . '.' . $this->templates_extension))
 				{
 					$template_name = '500';
 				}
