@@ -9,8 +9,10 @@ For examples please see the Application directory.
 Tests
 -----
 Run tests:
-    cd /var/www/nameless.local/Bin
-    phpunit -c ../Nameless/phpunit.xml
+
+`cd /var/www/nameless.local/Bin`
+
+`phpunit -c ../Nameless/phpunit.xml`
 
 License
 -------
