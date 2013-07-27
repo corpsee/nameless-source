@@ -251,11 +251,17 @@ function standardizeString ($string)
  */
 function stringToArray ($string, $delimiter = ',')
 {
-	$array = explode($delimiter, $string);
+	$array_temp = explode($delimiter, $string);
+	$array      = array();
 
-	foreach ($array as &$item) { $item = trim($item); }
-	unset($item);
-
+	foreach ($array_temp as $item)
+	{
+		$item_clear = trim($item);
+		if (!empty($item_clear))
+		{
+			$array[] = trim($item_clear);
+		}
+	}
 	return $array;
 }
 
@@ -267,6 +273,10 @@ function stringToArray ($string, $delimiter = ',')
  */
 function arrayToString (array $array, $delimiter = ', ')
 {
+	if (empty($array))
+	{
+		return '';
+	}
 	return implode($delimiter, $array);
 }
 
