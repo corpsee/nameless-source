@@ -35,7 +35,7 @@ abstract class ModuleProvider
 	protected function configurationInit ()
 	{
 		$app_config      = array();
-		$app_config_file = CONFIG_PATH . static::MODULE_NAME . '_configuration.php';
+		$app_config_file = CONFIG_PATH . strtolower(static::MODULE_NAME) . '_configuration.php';
 		if (file_exists($app_config_file))
 		{
 			$app_config = include_once($app_config_file);
