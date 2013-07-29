@@ -260,7 +260,6 @@ class Validator
 		return $errors;
 	}
 
-	//TODO: remove this method
 	public function validateFieldTest ($value, $rules)
 	{
 		$errors = array();
@@ -292,23 +291,23 @@ class Validator
 	}
 
 	/**
-	 * @param string $form_name
+	 * @param string $form
 	 *
 	 * @return array
 	 *
 	 * @throws \InvalidArgumentException
 	 */
-	public function validate ($form_name)
+	public function validate ($form)
 	{
 		$errors = array();
-		if (isset($this->container['validation_rules'][$form_name]))
+		if (isset($this->container['validation.rules'][$form]))
 		{
 			$post = $this->container['request']->request->all();
 			foreach ($post as $key => $value)
 			{
-				if (isset($this->container['validation_rules'][$form_name][$key]))
+				if (isset($this->container['validation.rules'][$form][$key]))
 				{
-					if ($validate = $this->validateField($key, $value, $this->container['validation_rules'][$form_name][$key]))
+					if ($validate = $this->validateField($key, $value, $this->container['validation.rules'][$form][$key]))
 					{
 						$errors[] = $validate;
 					}
