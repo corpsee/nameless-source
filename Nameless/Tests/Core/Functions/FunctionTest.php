@@ -4,14 +4,6 @@ namespace Nameless\Tests\Core\Functions;
 
 class FunctionTest extends \PHPUnit_Framework_TestCase
 {
-	public function hashMakeCheckProvider ()
-	{
-		return array
-		(
-			array(FILE_PATH . 'password'),
-		);
-	}
-
 	public function pathToURLProvider ()
 	{
 		return array
@@ -34,13 +26,13 @@ class FunctionTest extends \PHPUnit_Framework_TestCase
 	{
 		return array
 		(
-			array('string_part, string_part'),
-			array('string part, string part'),
-			array('string_part, string_part,'),
-			array('string_part, string_part,,'),
-			array(''),
-			array(','),
-			array(' , '),
+			array('string_part, string_part', 2),
+			array('string part, string part', 2),
+			array('string_part, string_part,', 2),
+			array('string_part, string_part,,', 2),
+			array('', 0),
+			array(',', 0),
+			array(' , ', 0),
 		);
 	}
 
@@ -48,19 +40,16 @@ class FunctionTest extends \PHPUnit_Framework_TestCase
 	{
 		return array
 		(
-			array(array('string', 'string')),
-			array(array('string',)),
-			array(array()),
+			array(array('string', 'string'), 'string, string'),
+			array(array('string'), 'string'),
+			array(array(), ''),
 		);
 	}
 
-	/**
-	 * @dataProvider hashMakeCheckProvider
-	 */
-	public function testHashMakeCheck ($string)
+	public function testHashMakeCheck ()
 	{
-		$hash = hashMake($string);
-		$this->assertTrue(hashCheck($string, $hash));
+		$hash = hashMake('password');
+		$this->assertTrue(hashCheck('password', $hash));
 	}
 
 	/**
@@ -83,17 +72,16 @@ class FunctionTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @dataProvider stringToArrayProvider
 	 */
-	public function testStringToArray ($string)
+	public function testStringToArray ($string, $count)
 	{
-
+		$this->assertCount($count, stringToArray($string));
 	}
-
 
 	/**
 	 * @dataProvider arrayToStringProvider
 	 */
-	public function testArrayToString (array $array)
+	public function testArrayToString ($array, $string)
 	{
-
+		$this->assertEquals($string, arrayToString($array));
 	}
 }
