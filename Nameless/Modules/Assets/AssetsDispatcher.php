@@ -116,27 +116,21 @@ class AssetsDispatcher
 	/**
 	 * @param string $name
 	 * @param array  $assets
+	 * @param bool   $debug
 	 * @param bool   $compress
-	 * @param string $assets_path
 	 *
 	 * @return string
-	 *
 	 * @throws \RuntimeException
 	 */
-	public function getAssets ($name, array $assets, $debug = FALSE, $compress = TRUE, $assets_path = NULL)
+	public function getAssets ($name, array $assets, $debug = FALSE, $compress = TRUE)
 	{
 		$assets = $this->assetsNormalize($assets);
-
-		if (is_null($assets_path))
-		{
-			$assets_path = $this->container['assets.path'];
-		}
 
 		$last_modify    = $this->getLastModified($assets);
 		$type           = empty($assets) ? 'js' : $this->getAssetGlobalType($assets[0]['type']);
 
 		$compress_postfix = $compress ? 'min.' : '';
-		$compiled_path    = $assets_path . $name . '.' . $last_modify . '.' . $compress_postfix . $type;
+		$compiled_path    = $this->container['assets.path'] . $name . '.' . $last_modify . '.' . $compress_postfix . $type;
 
 		if
 		(
@@ -208,14 +202,24 @@ class AssetsDispatcher
 	protected function generateAssets (array $assets, $compress = TRUE)
 	{
 		$assets_instances = array();
-		foreach ($assets as $asset)
+		$assets_pathes    = array();
+
+		foreach ($assets as $key => $asset)
 		{
 			$file_filters = array();
+			if ($asset['type'] === 'js')
+			{
+				$assets_instances[] = new FileAsset($asset['asset_path'], $file_filters);
+				continue;
+			}
+
+			$assets_pathes[$key] = $this->replaceURLs($asset);
+
 			if ($asset['type'] === 'less')
 			{
 				$file_filters[] = new LessphpFilter();
 			}
-			$assets_instances[] = new FileAsset($asset['asset_path'], $file_filters);
+			$assets_instances[] = new FileAsset($assets_pathes[$key], $file_filters);
 		}
 
 		$collection_filters = array();
@@ -231,7 +235,37 @@ class AssetsDispatcher
 			}
 		}
 		$collection = new AssetCollection($assets_instances, $collection_filters);
-		return $collection->dump();
+		$collection_dump = $collection->dump();
+
+		foreach ($assets_pathes as $asset_path)
+		{
+			unlink($asset_path);
+		}
+
+		return $collection_dump;
+	}
+
+	protected function replaceURLs ($asset)
+	{
+		$asset_text = file_get_contents($asset['asset_path']);
+
+		chdir(dirname($asset['asset_path']));
+
+		$urls_old = array();
+		$urls_new = array();
+
+		preg_match_all('#url\((.*)\)#im', $asset_text, $urls_old);
+
+		foreach ($urls_old[1] as $url)
+		{
+			$urls_new[] = '\'' . pathToURL(realpath(trim($url, '"\''))) . '\'';
+		}
+
+		$asset_text = str_replace($urls_old[1], $urls_new, $asset_text);
+		$asset_path = $this->container['assets.path'] . basename($asset['asset_path']);
+
+		file_put_contents($asset_path, $asset_text);
+		return $asset_path;
 	}
 
 	/**
@@ -256,21 +290,6 @@ class AssetsDispatcher
 				$mtime = $asset_mtime;
 			}
 		}
-
 		return $mtime;
-	}
-
-	/**
-	 * @param string $hash_path
-	 *
-	 * @return string
-	 */
-	protected function getLastModifiedResult ($hash_path)
-	{
-		if (file_exists($hash_path))
-		{
-			return trim(file_get_contents($hash_path));
-		}
-		return 0;
 	}
 }
