@@ -123,13 +123,8 @@ class AssetsDispatcher
 	 *
 	 * @throws \RuntimeException
 	 */
-	public function getAssets ($name, array $assets, $compress = TRUE, $assets_path = NULL)
+	public function getAssets ($name, array $assets, $debug = FALSE, $compress = TRUE, $assets_path = NULL)
 	{
-		if (empty($assets))
-		{
-			$type = 'js';
-		}
-
 		$assets = $this->assetsNormalize($assets);
 
 		if (is_null($assets_path))
@@ -143,13 +138,21 @@ class AssetsDispatcher
 		$compress_postfix = $compress ? 'min.' : '';
 		$compiled_path    = $assets_path . $name . '.' . $last_modify . '.' . $compress_postfix . $type;
 
-		if ($this->container['environment'] === 'production' && file_exists($compiled_path))
-		{
-			$result_assets = sprintf($this->templates[$type], pathToURL($compiled_path));
-		}
-		elseif ($this->container['environment'] === 'debug' || $this->container['environment'] === 'production')
+		if
+		(
+			$this->container['environment'] === 'debug' ||
+			$debug ||
+			(
+				!file_exists($compiled_path) &&
+				$this->container['environment'] === 'production'
+			)
+		)
 		{
 			$result_assets = $this->generateAssetsDebug($assets, $type);
+		}
+		elseif ($this->container['environment'] === 'production')
+		{
+			$result_assets = sprintf($this->templates[$type], pathToURL($compiled_path));
 		}
 		else
 		{
