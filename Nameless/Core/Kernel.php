@@ -227,7 +227,6 @@ class Kernel extends HttpKernel
 		ExceptionHandler::register($this->container['templates_error_path'], $this->container['templates_extension'], $this->container['environment'], 'UTF-8', $this->container['logger.logger']);
 	}
 
-	//TODO: boot -> initializeModules
 	public function boot()
 	{
 		if (!$this->booted)
