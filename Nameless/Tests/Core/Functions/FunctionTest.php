@@ -8,9 +8,9 @@ class FunctionTest extends \PHPUnit_Framework_TestCase
 	{
 		return array
 		(
-			array(FILE_PATH . 'path/to/url'),
-			array(FILE_PATH . 'path' . DS . 'to' . DS . 'url'),
-			array(FILE_PATH . 'path\to\url'),
+			array(PUBLIC_PATH . 'files/path/to/url'),
+			array(PUBLIC_PATH . 'files' . DS . 'path' . DS . 'to' . DS . 'url'),
+			array(PUBLIC_PATH . 'files\path\to\url'),
 		);
 	}
 
@@ -18,7 +18,7 @@ class FunctionTest extends \PHPUnit_Framework_TestCase
 	{
 		return array
 		(
-			array(FILE_PATH_URL . 'path/to/url'),
+			array('/files/path/to/url'),
 		);
 	}
 
@@ -58,7 +58,7 @@ class FunctionTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testPathToURL ($string)
 	{
-		$this->assertEquals(FILE_PATH_URL . 'path/to/url', pathToURL($string));
+		$this->assertEquals('/files/path/to/url', pathToURL($string));
 	}
 
 	/**
@@ -66,7 +66,7 @@ class FunctionTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testURLToPath ($string)
 	{
-		$this->assertEquals(FILE_PATH . 'path' . DS . 'to' . DS . 'url', URLToPath($string));
+		$this->assertEquals(PUBLIC_PATH . 'files' . DS . 'path' . DS . 'to' . DS . 'url', URLToPath($string));
 	}
 
 
