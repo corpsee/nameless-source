@@ -43,7 +43,7 @@ function hashCheck($value, $hash)
  */
 function pathToURL ($path)
 {
-	return str_replace(array(FILE_PATH, DS, '\\'), array(FILE_PATH_URL, '/', '/'), $path);
+	return str_replace(array(PUBLIC_PATH, DS, '\\'), array('/', '/', '/'), $path);
 }
 
 /**
@@ -53,7 +53,7 @@ function pathToURL ($path)
  */
 function URLToPath ($path)
 {
-	return str_replace(array(FILE_PATH_URL, '/'), array(FILE_PATH, DS), $path);
+	return PUBLIC_PATH . str_replace('/', DS, ltrim($path, '/'));
 }
 
 /**
