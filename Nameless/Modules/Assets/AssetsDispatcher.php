@@ -32,11 +32,6 @@ class AssetsDispatcher
 	protected $container;
 
 	/**
-	 * @var string
-	 */
-	protected $hash_path;
-
-	/**
 	 * @var array
 	 */
 	protected $templates = array
@@ -84,7 +79,7 @@ class AssetsDispatcher
 	 *
 	 * @return string
 	 */
-	protected function getAssetGlobalType ($asset_type)
+	protected function getAssetMetaType ($asset_type)
 	{
 		if ($asset_type === 'less')
 		{
@@ -113,6 +108,16 @@ class AssetsDispatcher
 		return $assets;
 	}
 
+	protected function createAssets (array $assets)
+	{
+		foreach ($assets as &$asset)
+		{
+			$asset = new Asset($asset);
+		}
+		unset($asset);
+		return $assets;
+	}
+
 	/**
 	 * @param string $name
 	 * @param array  $assets
@@ -124,10 +129,10 @@ class AssetsDispatcher
 	 */
 	public function getAssets ($name, array $assets, $debug = FALSE, $compress = TRUE)
 	{
-		$assets = $this->assetsNormalize($assets);
+		$assets = $this->createAssets($assets);
 
 		$last_modify    = $this->getLastModified($assets);
-		$type           = empty($assets) ? 'js' : $this->getAssetGlobalType($assets[0]['type']);
+		$type           = empty($assets) ? 'js' : $assets[0]->getMetaType();
 
 		$compress_postfix = $compress ? 'min.' : '';
 		$compiled_path    = $this->container['assets.path'] . $name . '.' . $last_modify . '.' . $compress_postfix . $type;
@@ -142,7 +147,7 @@ class AssetsDispatcher
 			)
 		)
 		{
-			$result_assets = $this->generateAssetsDebug($assets, $type);
+			$result_assets = $this->generateAssetsDebug($assets);
 		}
 		elseif ($this->container['environment'] === 'production')
 		{
@@ -165,29 +170,23 @@ class AssetsDispatcher
 	}
 
 	/**
-	 * @param array  $assets
-	 * @param string $type
+	 * @param array $assets
 	 *
 	 * @return string
 	 */
-	protected function generateAssetsDebug (array $assets, $type)
+	protected function generateAssetsDebug (array $assets)
 	{
 		$result_assets = '';
-		if ($type === 'js' && $this->container['assets.less'])
+		if ($assets[0]->getMetaType() === 'js' && $this->container['assets.less'])
 		{
-			$assets[] = array
-			(
-				'asset_url' => $this->container['assets.lessjs_url'],
-				'asset_path' => URLToPath($this->container['assets.lessjs_url']),
-				'type'      => 'js',
-			);
+			$assets[] = new Asset($this->container['assets.lessjs_url']);
 		}
 
 		foreach ($assets as $asset)
 		{
-			if (file_exists($asset['asset_path']))
+			if (file_exists($asset->getPath()))
 			{
-				$result_assets .= sprintf($this->templates[$asset['type']], $asset['asset_url']);
+				$result_assets .= sprintf($this->templates[$asset->getType()], $asset->getURL());
 			}
 		}
 		return $result_assets;
@@ -245,11 +244,11 @@ class AssetsDispatcher
 		return $collection_dump;
 	}
 
-	protected function replaceURLs ($asset)
+	protected function replaceURLs (Asset $asset)
 	{
-		$asset_text = file_get_contents($asset['asset_path']);
+		$asset_text = file_get_contents($asset->getPath());
 
-		chdir(dirname($asset['asset_path']));
+		chdir(dirname($asset->getPath()));
 
 		$urls_old = array();
 		$urls_new = array();
@@ -262,7 +261,7 @@ class AssetsDispatcher
 		}
 
 		$asset_text = str_replace($urls_old[1], $urls_new, $asset_text);
-		$asset_path = $this->container['assets.path'] . basename($asset['asset_path']);
+		$asset_path = $this->container['assets.path'] . basename($asset->getPath());
 
 		file_put_contents($asset_path, $asset_text);
 		return $asset_path;
@@ -279,12 +278,12 @@ class AssetsDispatcher
 		$mtime = 0;
 		foreach ($assets as $asset)
 		{
-			if (!file_exists($asset['asset_path']))
+			if (!file_exists($asset->getPath()))
 			{
-				throw new \RuntimeException(sprintf('The source file "%s" does not exist.', $asset['asset_path']));
+				throw new \RuntimeException(sprintf('The source file "%s" doesn`t exists: ', $asset->getURL()));
 			}
 
-			$asset_mtime = filemtime($asset['asset_path']);
+			$asset_mtime = filemtime($asset->getPath());
 			if ($asset_mtime > $mtime)
 			{
 				$mtime = $asset_mtime;
