@@ -30,17 +30,22 @@ class Asset
 	/**
 	 * @var string
 	 */
-	protected $path       = NULL;
+	protected $path = NULL;
 
 	/**
 	 * @var string
 	 */
-	protected $type       = NULL;
+	protected $temp_path = NULL;
 
 	/**
 	 * @var string
 	 */
-	protected $meta_type  = NULL;
+	protected $type = NULL;
+
+	/**
+	 * @var string
+	 */
+	protected $meta_type = NULL;
 
 	/**
 	 * @var FileAsset
@@ -52,7 +57,7 @@ class Asset
 	 */
 	public function __construct ($url)
 	{
-		$this->url = $url;
+		$this->url           = $url;
 	}
 
 	/**
@@ -75,6 +80,14 @@ class Asset
 
 		$this->path = URLToPath($this->url);
 		return $this->path;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getTempPath ()
+	{
+		return $this->temp_path;
 	}
 
 	/**
@@ -162,7 +175,11 @@ class Asset
 	 */
 	protected function replaceRelativeLinks ($assets_dir)
 	{
-		$asset_text = file_get_contents($this->getPath());
+		//copy($this->getPath(), );
+
+		$file = fopen($this->getPath(), 'rb');
+		$asset_text = fread($file, filesize($this->getPath()));
+		fclose($file);
 
 		chdir(dirname($this->getPath()));
 
@@ -178,13 +195,12 @@ class Asset
 
 		$asset_text = str_replace($urls_old[1], $urls_new, $asset_text);
 
-		$this->path = $assets_dir . basename($this->getPath());
-		$this->url  = pathToURL($this->getPath());
+		$this->temp_path = $assets_dir . basename($this->getPath());
 
-		if (FALSE === @file_put_contents($this->path, $asset_text))
+		if (FALSE === @file_put_contents($this->temp_path, $asset_text))
 		{
-			throw new \RuntimeException('Unable to write file ' . $this->path);
+			throw new \RuntimeException('Unable to write file ' . $this->temp_path);
 		}
-		return $this->path;
+		return $this->temp_path;
 	}
 }
