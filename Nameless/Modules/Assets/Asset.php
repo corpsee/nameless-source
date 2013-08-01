@@ -12,6 +12,7 @@
 
 namespace Nameless\Modules\Assets;
 
+use Assetic\Filter\LessphpFilter;
 use Assetic\Asset\FileAsset;
 
 /**
@@ -21,22 +22,50 @@ use Assetic\Asset\FileAsset;
  */
 class Asset
 {
+	/**
+	 * @var string
+	 */
 	protected $url;
+
+	/**
+	 * @var string
+	 */
 	protected $path       = NULL;
+
+	/**
+	 * @var string
+	 */
 	protected $type       = NULL;
+
+	/**
+	 * @var string
+	 */
 	protected $meta_type  = NULL;
+
+	/**
+	 * @var FileAsset
+	 */
 	protected $file_asset = NULL;
 
+	/**
+	 * @param string $url
+	 */
 	public function __construct ($url)
 	{
 		$this->url = $url;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getURL ()
 	{
 		return $this->url;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getPath ()
 	{
 		if (!is_null($this->path))
@@ -48,6 +77,11 @@ class Asset
 		return $this->path;
 	}
 
+	/**
+	 * @return string
+	 *
+	 * @throws \LogicException
+	 */
 	public function getType ()
 	{
 		if (!is_null($this->type))
@@ -68,6 +102,9 @@ class Asset
 		return $this->type;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getMetaType ()
 	{
 		if (!is_null($this->meta_type))
@@ -87,18 +124,43 @@ class Asset
 		return $this->meta_type;
 	}
 
-	public function getFileAsset(array $filters = array())
+	/**
+	 * @param string $assets_dir
+	 *
+	 * @return FileAsset
+	 */
+	public function getFileAsset($assets_dir)
 	{
 		if (!is_null($this->file_asset))
 		{
 			return $this->file_asset;
 		}
 
-		$this->file_asset = new FileAsset($this->getPath(), $filters);
+		$filters = array();
+		if ($this->getType() === 'js')
+		{
+			$this->file_asset = new FileAsset($this->getPath(), $filters);
+			return $this->file_asset;
+		}
+
+		$asset_path_temp = $this->replaceRelativeLinks($assets_dir);
+
+		if ($this->getType() === 'less')
+		{
+			$filters[] = new LessphpFilter();
+		}
+		$this->file_asset = new FileAsset($asset_path_temp, $filters);
 		return $this->file_asset;
 	}
 
-	public function replaceURLs ()
+	/**
+	 * @param string $assets_dir
+	 *
+	 * @return string
+	 *
+	 * @throws \RuntimeException
+	 */
+	protected function replaceRelativeLinks ($assets_dir)
 	{
 		$asset_text = file_get_contents($this->getPath());
 
@@ -115,12 +177,14 @@ class Asset
 		}
 
 		$asset_text = str_replace($urls_old[1], $urls_new, $asset_text);
-		$asset_path = $this->container['assets.path'] . basename($this->getPath());
 
-		//TODO: exception for wrong rights
-		file_put_contents($asset_path, $asset_text);
-		return $asset_path;
+		$this->path = $assets_dir . basename($this->getPath());
+		$this->url  = pathToURL($this->getPath());
+
+		if (FALSE === @file_put_contents($this->path, $asset_text))
+		{
+			throw new \RuntimeException('Unable to write file ' . $this->path);
+		}
+		return $this->path;
 	}
-
-	//TODO: addFilter method for FileAsset
 }
