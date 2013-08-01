@@ -72,26 +72,27 @@ class AssetsCollection
 
 	/**
 	 * @param string $assets_dir
+	 * @param array  $filters
 	 *
 	 * @return string
 	 */
-	public function dump ($assets_dir)
+	public function dump ($assets_dir, array $filters = array())
 	{
 		$assets        = array();
 		$assets_pathes = array();
 
 		foreach ($this->assets as $asset)
 		{
-			$assets[]       = $asset->getFileAsset($assets_dir);
-			$asset_pathes[] = $asset->getPath();
+			$assets[]        = $asset->getFileAsset($assets_dir);
+			$assets_pathes[] = $asset->getTempPath();
 		}
 
-		$collection      = new AssetCollection($assets, array());
+		$collection      = new AssetCollection($assets, $filters);
 		$collection_dump = $collection->dump();
 
 		foreach ($assets_pathes as $asset_path)
 		{
-			unlink($asset_path);
+			@unlink($asset_path);
 		}
 		return $collection_dump;
 	}
@@ -115,23 +116,7 @@ class AssetsCollection
 			$filters[] = new CssCompressorFilter($compressor_path, $java_path);
 		}
 
-		$assets        = array();
-		$assets_pathes = array();
-
-		foreach ($this->assets as $asset)
-		{
-			$assets[]        = $asset->getFileAsset($assets_dir);
-			$assets_pathes[] = $asset->getPath();
-		}
-
-		$collection      = new AssetCollection($assets, $filters);
-		$collection_dump = $collection->dump();
-
-		foreach ($assets_pathes as $asset_path)
-		{
-			unlink($asset_path);
-		}
-		return $collection_dump;
+		return $this->dump($assets_dir, $filters);
 	}
 
 	/**
@@ -149,10 +134,10 @@ class AssetsCollection
 				throw new \RuntimeException(sprintf('The source file "%s" doesn`t exists: ', $asset->getURL()));
 			}
 
-			$asset_mtime = filemtime($asset->getPath());
-			if ($asset_mtime > $last_modified)
+			$asset_last_modified = filemtime($asset->getPath());
+			if ($asset_last_modified > $last_modified)
 			{
-				$last_modified = $asset_mtime;
+				$last_modified = $asset_last_modified;
 			}
 		}
 		return $last_modified;
