@@ -12,13 +12,6 @@
 
 namespace Nameless\Modules\Assets;
 
-use Assetic\Asset\AssetCollection;
-use Assetic\Factory\AssetFactory;
-use Assetic\Filter\Yui\CssCompressorFilter;
-use Assetic\Filter\Yui\JsCompressorFilter;
-use Assetic\Filter\LessphpFilter;
-use Assetic\Asset\FileAsset;
-
 /**
  * AssetsDispatcher class
  *
