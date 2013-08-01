@@ -49,6 +49,9 @@ class AssetsCollection
 		$this->assets[] = $asset;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getAssets ()
 	{
 		return $this->assets;
@@ -121,7 +124,7 @@ class AssetsCollection
 			$asset_pathes[] = $asset->getPath();
 		}
 
-		$collection      = new BaseAssetCollection($assets, $filters);
+		$collection      = new AssetCollection($assets, $filters);
 		$collection_dump = $collection->dump();
 
 		foreach ($assets_pathes as $asset_path)
