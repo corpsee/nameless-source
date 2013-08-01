@@ -50,64 +50,10 @@ class AssetsDispatcher
 	}
 
 	/**
-	 * @param string $asset_url
-	 *
-	 * @return string
-	 * @throws \LogicException
-	 */
-	protected function getAssetType ($asset_url)
-	{
-		$type = 'css';
-		if (stripos($asset_url, '.js') !== FALSE)
-		{
-			$type = 'js';
-		}
-		elseif (stripos($asset_url, '.less') !== FALSE)
-		{
-			$type = 'less';
-		}
-
-		if (!in_array($type, array('css', 'less', 'js')))
-		{
-			throw new \LogicException('Invalid asset type: ' . $type);
-		}
-		return $type;
-	}
-
-	/**
-	 * @param string $asset_type
-	 *
-	 * @return string
-	 */
-	protected function getAssetMetaType ($asset_type)
-	{
-		if ($asset_type === 'less')
-		{
-			$asset_type = 'css';
-		}
-		return $asset_type;
-	}
-
-	/**
 	 * @param array $assets
 	 *
 	 * @return array
 	 */
-	protected function assetsNormalize (array $assets)
-	{
-		foreach ($assets as &$asset)
-		{
-			$asset = array
-			(
-				'asset_url'  => $asset,
-				'asset_path' => URLToPath($asset),
-				'type'       => $this->getAssetType($asset),
-			);
-		}
-		unset($asset);
-		return $assets;
-	}
-
 	protected function createAssets (array $assets)
 	{
 		foreach ($assets as &$asset)
@@ -130,12 +76,10 @@ class AssetsDispatcher
 	public function getAssets ($name, array $assets, $debug = FALSE, $compress = TRUE)
 	{
 		$assets = $this->createAssets($assets);
-
-		$last_modify    = $this->getLastModified($assets);
-		$type           = empty($assets) ? 'js' : $assets[0]->getMetaType();
+		$assets_collection = new AssetsCollection($assets);
 
 		$compress_postfix = $compress ? 'min.' : '';
-		$compiled_path    = $this->container['assets.path'] . $name . '.' . $last_modify . '.' . $compress_postfix . $type;
+		$compiled_path    = $this->container['assets.path'] . $name . '.' . $assets_collection->getLastModified() . '.' . $compress_postfix . $assets_collection->getMetaType();
 
 		if
 		(
@@ -147,41 +91,27 @@ class AssetsDispatcher
 			)
 		)
 		{
-			$result_assets = $this->generateAssetsDebug($assets);
+			return $this->generateAssetsDebug($assets_collection);
 		}
 		elseif ($this->container['environment'] === 'production')
 		{
-			$result_assets = sprintf($this->templates[$type], pathToURL($compiled_path));
+			return $this->generateAssets($assets_collection, $compiled_path);
 		}
 		else
 		{
-			if (!file_exists($compiled_path))
-			{
-				$dump = $this->generateAssets($assets, $compress);
-
-				if (FALSE === @file_put_contents($compiled_path, $dump))
-				{
-					throw new \RuntimeException('Unable to write file ' . $compiled_path);
-				}
-			}
-			$result_assets = sprintf($this->templates[$type], pathToURL($compiled_path));
+			return $this->generateAssetsTest($assets_collection, $compiled_path, $compress);
 		}
-		return $result_assets;
 	}
 
-	/**
-	 * @param array $assets
-	 *
-	 * @return string
-	 */
-	protected function generateAssetsDebug (array $assets)
+	protected function generateAssetsDebug (AssetsCollection $assets_collection)
 	{
 		$result_assets = '';
-		if ($assets[0]->getMetaType() === 'js' && $this->container['assets.less'])
+		if ($assets_collection->getMetaType() === 'js' && $this->container['assets.less'])
 		{
-			$assets[] = new Asset($this->container['assets.lessjs_url']);
+			$assets_collection->addAsset(new Asset($this->container['assets.lessjs_url']));
 		}
 
+		$assets = $assets_collection->getAssets();
 		foreach ($assets as $asset)
 		{
 			if (file_exists($asset->getPath()))
@@ -193,102 +123,42 @@ class AssetsDispatcher
 	}
 
 	/**
-	 * @param array   $assets
-	 * @param boolean $compress
+	 * @param AssetsCollection $assets_collection
+	 * @param string           $compiled_path
+	 * @param bool             $compress
 	 *
 	 * @return string
+	 * @throws \RuntimeException
 	 */
-	protected function generateAssets (array $assets, $compress = TRUE)
+	protected function generateAssetsTest (AssetsCollection $assets_collection, $compiled_path, $compress = TRUE)
 	{
-		$assets_instances = array();
-		$assets_pathes    = array();
-
-		foreach ($assets as $key => $asset)
+		if (!file_exists($compiled_path))
 		{
-			$file_filters = array();
-			if ($asset['type'] === 'js')
+			if ($compress)
 			{
-				$assets_instances[] = new FileAsset($asset['asset_path'], $file_filters);
-				continue;
-			}
-
-			$assets_pathes[$key] = $this->replaceURLs($asset);
-
-			if ($asset['type'] === 'less')
-			{
-				$file_filters[] = new LessphpFilter();
-			}
-			$assets_instances[] = new FileAsset($assets_pathes[$key], $file_filters);
-		}
-
-		$collection_filters = array();
-		if ($compress)
-		{
-			if ($assets[0]['type'] === 'js')
-			{
-				$collection_filters[] = new JsCompressorFilter($this->container['assets.yuicompressor_path'], $this->container['assets.java_path']);
+				$dump = $assets_collection->dumpCompress($this->container['assets.path'], $this->container['assets.yuicompressor_path'], $this->container['assets.java_path']);
 			}
 			else
 			{
-				$collection_filters[] = new CssCompressorFilter($this->container['assets.yuicompressor_path'], $this->container['assets.java_path']);
+				$dump = $assets_collection->dump($this->container['assets.path']);
+			}
+
+			if (FALSE === @file_put_contents($compiled_path, $dump))
+			{
+				throw new \RuntimeException('Unable to write file ' . $compiled_path);
 			}
 		}
-		$collection = new AssetCollection($assets_instances, $collection_filters);
-		$collection_dump = $collection->dump();
-
-		foreach ($assets_pathes as $asset_path)
-		{
-			unlink($asset_path);
-		}
-
-		return $collection_dump;
-	}
-
-	protected function replaceURLs (Asset $asset)
-	{
-		$asset_text = file_get_contents($asset->getPath());
-
-		chdir(dirname($asset->getPath()));
-
-		$urls_old = array();
-		$urls_new = array();
-
-		preg_match_all('#url\((.*)\)#im', $asset_text, $urls_old);
-
-		foreach ($urls_old[1] as $url)
-		{
-			$urls_new[] = '\'' . pathToURL(realpath(trim($url, '"\''))) . '\'';
-		}
-
-		$asset_text = str_replace($urls_old[1], $urls_new, $asset_text);
-		$asset_path = $this->container['assets.path'] . basename($asset->getPath());
-
-		file_put_contents($asset_path, $asset_text);
-		return $asset_path;
+		return sprintf($this->templates[$assets_collection->getMetaType()], pathToURL($compiled_path));
 	}
 
 	/**
-	 * @param array $assets
+	 * @param AssetsCollection $assets_collection
+	 * @param string           $compiled_path
 	 *
-	 * @return int
-	 * @throws \RuntimeException
+	 * @return string
 	 */
-	protected function getLastModified (array $assets)
+	protected function generateAssets (AssetsCollection $assets_collection, $compiled_path)
 	{
-		$mtime = 0;
-		foreach ($assets as $asset)
-		{
-			if (!file_exists($asset->getPath()))
-			{
-				throw new \RuntimeException(sprintf('The source file "%s" doesn`t exists: ', $asset->getURL()));
-			}
-
-			$asset_mtime = filemtime($asset->getPath());
-			if ($asset_mtime > $mtime)
-			{
-				$mtime = $asset_mtime;
-			}
-		}
-		return $mtime;
+		return sprintf($this->templates[$assets_collection->getMetaType()], pathToURL($compiled_path));
 	}
 }
