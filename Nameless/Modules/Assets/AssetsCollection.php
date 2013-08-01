@@ -120,8 +120,8 @@ class AssetsCollection
 
 		foreach ($this->assets as $asset)
 		{
-			$assets[]       = $asset->getFileAsset($assets_dir);
-			$asset_pathes[] = $asset->getPath();
+			$assets[]        = $asset->getFileAsset($assets_dir);
+			$assets_pathes[] = $asset->getPath();
 		}
 
 		$collection      = new AssetCollection($assets, $filters);
