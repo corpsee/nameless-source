@@ -10,26 +10,32 @@
  * @link       https://github.com/corpsee/Nameless
  */
 
-namespace Nameless\Modules\Assets;
+namespace Nameless\Modules\Imager;
 
 use Nameless\Core\ModuleProvider as BaseModuleProvider;
 
 /**
- * Assets ModuleProvider class
+ * Imager ModuleProvider class
  *
  * @author Corpsee <poisoncorpsee@gmail.com>
  */
 class ModuleProvider extends BaseModuleProvider
 {
-	const MODULE_NAME = 'Assets';
+	const MODULE_NAME = 'Imager';
 
 	public function register ()
 	{
 		parent::register();
 
-		$this->container['assets.dispatcher'] = $this->container->share(function ($c)
+		$this->container['imager.driver'] = $this->container->share(function ($c)
 		{
-			return new AssetsDispatcher($c);
+			$driver = $c['imager.driver_name'] . 'Driver';
+			return new $driver();
+		});
+
+		$this->container['imager.image'] = $this->container->share(function ($c)
+		{
+			return new Image($c['imager.driver']);
 		});
 	}
 
