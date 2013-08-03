@@ -15,15 +15,14 @@ class IndexController extends Controller
 
 		$styles = array
 		(
-			'/files/lib/bootstrap/2.3.2/css/bootstrap.min.css',
-			'/files/lib/bootstrap/2.3.2/css/bootstrap-responsive.min.css',
+			'/files/lib/bootstrap/2.3.2/css/bootstrap.css',
 			'/files/css/nameless.less',
 		);
 
 		$scripts = array
 		(
-			'/files/lib/jquery/1.10.2/jquery.min.js',
-			'/files/lib/bootstrap/2.3.2/js/bootstrap.min.js',
+			'/files/lib/jquery/1.10.2/jquery.js',
+			'/files/lib/bootstrap/2.3.2/js/bootstrap.js',
 		);
 
 		$data = array

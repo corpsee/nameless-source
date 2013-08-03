@@ -46,7 +46,7 @@ abstract class GDDriver extends ImageDriver
 		return $this;
 	}
 
-	public function create ($width, $height, $color = 0xffffff, $opacity = 0)
+	public function create ($width, $height, $color = '#FFF', $opacity = 0)
 	{
 		$image = $this->createGD($width, $height, $color, $opacity);
 		$this->setImage($image, $width, $height);
@@ -106,60 +106,6 @@ abstract class GDDriver extends ImageDriver
 		return $this;
 	}
 
-	protected function setImage ($image, $width, $height)
-	{
-		if ($this->image)
-		{
-			imagedestroy($this->image);
-		}
-
-		$this->image  = $image;
-		$this->width  = $width;
-		$this->height = $height;
-	}
-
-	protected function createGD ($width, $height)
-	{
-		$image = imagecreatetruecolor($width, $height);
-		imagealphablending($image, FALSE);
-
-		return $image;
-	}
-
-	protected function getColor ($color, $opacity)
-	{
-		$r = ($color >> 16) & 0xFF;
-		$g = ($color >> 8) & 0xFF;
-		$b = $color & 0xFF;
-
-		return imagecolorallocatealpha($this->image, $r, $g, $b, 127 * (1 - $opacity));
-	}
-
-	protected function getPixel ($x, $y)
-	{
-		$pixel = imagecolorat($this->image, $x, $y);
-		$rgba  = imagecolorsforindex($this->image, $pixel);
-
-		return array('color' => ($rgba['red'] << 16) + ($rgba['green'] << 8) + $rgba['blue'], 'opacity' => 1 - $rgba['alpha'] / 127);
-	}
-
-	protected function getJPGBackground ()
-	{
-		$background = $this->createGD($this->width, $this->height);
-		imagefilledrectangle($background, 0, 0, $this->width, $this->height, $this->getColor(0xffffff, 1));
-		imagealphablending($background, TRUE);
-		imagecopy($background, $this->image, 0, 0, 0, 0, $this->width, $this->height);
-		imagealphablending($background, FALSE);
-
-		return $background;
-	}
-
-	protected function destroy ()
-	{
-		imagedestroy($this->image);
-		unset($this->image);
-	}
-
 	public function crop ($width, $height, $x = 0, $y = 0)
 	{
 		if ($width > ($max_width = $this->width - $x))
@@ -187,7 +133,7 @@ abstract class GDDriver extends ImageDriver
 		return $this;
 	}
 
-	public function rotate ($angle, $bg_color = 0xffffff, $bg_opacity = 0)
+	public function rotate ($angle, $bg_color = '#FFF', $bg_opacity = 0)
 	{
 		$rotated = imagerotate($this->image, $angle, $this->getColor($bg_color, $bg_opacity));
 		imagealphablending($rotated, FALSE);
@@ -221,7 +167,84 @@ abstract class GDDriver extends ImageDriver
 		imagealphablending($this->image, TRUE);
 		imagecopy($this->image, $layer->image, $x, $y, 0, 0, $layer->width, $layer->height);
 		imagealphablending($this->image, FALSE);
-
 		return $this;
+	}
+
+	public function gamma ($correction)
+	{
+		if (FALSE === imagegammacorrect($this->image, 1.0, $correction))
+		{
+			throw new \RuntimeException('Failed to apply gamma correction to the image');
+		}
+		return $this;
+	}
+
+	public function negative ()
+	{
+		if (FALSE === imagefilter($this->image, IMG_FILTER_NEGATE))
+		{
+			throw new \RuntimeException('Failed to negate the image');
+		}
+		return $this;
+	}
+
+	public function grayscale ()
+	{
+		if (FALSE === imagefilter($this->image, IMG_FILTER_GRAYSCALE))
+		{
+			throw new \RuntimeException('Failed to grayscale the image');
+		}
+		return $this;
+	}
+
+	public function colorize ($color)
+	{
+		$color = $this->normalizeColor($color);
+		if (FALSE === imagefilter($this->image, IMG_FILTER_COLORIZE, $color[0], $color[1], $color[2]))
+		{
+			throw new \RuntimeException('Failed to colorize the image');
+		}
+		return $this;
+	}
+
+	protected function setImage ($image, $width, $height)
+	{
+		if ($this->image)
+		{
+			imagedestroy($this->image);
+		}
+		$this->image  = $image;
+		$this->width  = $width;
+		$this->height = $height;
+	}
+
+	protected function createGD ($width, $height)
+	{
+		$image = imagecreatetruecolor($width, $height);
+		imagealphablending($image, FALSE);
+		return $image;
+	}
+
+	protected function getColor ($color, $opacity)
+	{
+		$color = $this->normalizeColor($color);
+		return imagecolorallocatealpha($this->image, $color[0], $color[1], $color[2], 127 * (1 - $opacity));
+	}
+
+	protected function getJPGBackground ()
+	{
+		$background = $this->createGD($this->width, $this->height);
+		imagefilledrectangle($background, 0, 0, $this->width, $this->height, $this->getColor('#FFF', 1));
+		imagealphablending($background, TRUE);
+		imagecopy($background, $this->image, 0, 0, 0, 0, $this->width, $this->height);
+		imagealphablending($background, FALSE);
+
+		return $background;
+	}
+
+	protected function destroy ()
+	{
+		imagedestroy($this->image);
+		unset($this->image);
 	}
 }
