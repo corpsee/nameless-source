@@ -20,27 +20,23 @@ abstract class ImageDriver
 
 	public abstract function open ($image_path);
 
-	public abstract function create ($width, $height, $color = 0xffffff, $opacity = 0);
+	public abstract function create ($width, $height, $color = '#FFF', $opacity = 0);
 
 	public abstract function render ($format = 'png', $quality = 80);
 
 	public abstract function save ($image_path, $format = NULL, $quality = 80);
 
-	protected abstract function getPixel ($x, $y);
-
-	protected abstract function getColor ($color, $opacity);
-
-	protected abstract function destroy ();
-
 	public abstract function crop ($width, $height, $x = 0, $y = 0);
 
 	public abstract function scale ($scale);
 
-	public abstract function rotate ($angle, $bg_color = 0xffffff, $bg_opacity = 0);
+	public abstract function rotate ($angle, $bg_color = '#FFF', $bg_opacity = 0);
 
 	public abstract function flip ($flip_x = FALSE, $flip_y = FALSE);
 
 	public abstract function overlay ($layer, $x = 0, $y = 0);
+
+	protected abstract function destroy ();
 
 	public function __destruct ()
 	{
@@ -92,5 +88,19 @@ abstract class ImageDriver
 			$extension = 'jpeg';
 		}
 		return $extension;
+	}
+
+	protected function normalizeColor ($color)
+	{
+		$color = strtolower(ltrim($color, '#'));
+		if (3 !== strlen($color) && 6 !== strlen($color) && 0 === preg_match('#[0-9a-f]{3,6}#i', $color))
+		{
+			throw new \InvalidArgumentException('Invalid color argument');
+		}
+		if (strlen($color) === 3)
+		{
+			$color = $color[0] . $color[0] . $color[1] . $color[1] . $color[2] . $color[2];
+		}
+		return array_map('hexdec', str_split($color, 2));
 	}
 }

@@ -17,6 +17,7 @@ namespace Nameless\Modules\Assets;
  *
  * @author Corpsee <poisoncorpsee@gmail.com>
  */
+//TODO: don`t compress .min. files
 class AssetsDispatcher
 {
 	/**
