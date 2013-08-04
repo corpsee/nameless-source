@@ -26,7 +26,7 @@ class Image
 		return $this->driver->open($file_path);
 	}
 
-	public function create ($width, $height, $color = 0xffffff, $opacity = 0)
+	public function create ($width, $height, $color = '#FFF', $opacity = 0)
 	{
 		return $this->driver->create($width, $height, $color, $opacity);
 	}

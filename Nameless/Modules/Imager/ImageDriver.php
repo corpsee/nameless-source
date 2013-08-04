@@ -18,23 +18,31 @@ abstract class ImageDriver
 
 	protected $height;
 
-	public abstract function open ($image_path);
+	abstract public function open ($image_path);
 
-	public abstract function create ($width, $height, $color = '#FFF', $opacity = 0);
+	abstract public function create ($width, $height, $color = '#FFF', $opacity = 0);
 
-	public abstract function render ($format = 'png', $quality = 80);
+	abstract public function render ($format = 'png', $quality = 80);
 
-	public abstract function save ($image_path, $format = NULL, $quality = 80);
+	abstract public function save ($image_path, $format = NULL, $quality = 80);
 
-	public abstract function crop ($width, $height, $x = 0, $y = 0);
+	abstract public function crop ($width, $height, $x = 0, $y = 0);
 
-	public abstract function scale ($scale);
+	abstract public function scale ($scale);
 
-	public abstract function rotate ($angle, $bg_color = '#FFF', $bg_opacity = 0);
+	abstract public function rotate ($angle, $bg_color = '#FFF', $bg_opacity = 0);
 
-	public abstract function flip ($flip_x = FALSE, $flip_y = FALSE);
+	abstract public function flip ($flip_x = FALSE, $flip_y = FALSE);
 
-	public abstract function overlay ($layer, $x = 0, $y = 0);
+	abstract public function overlay ($layer, $x = 0, $y = 0);
+
+	abstract public function gamma ($correction);
+
+	abstract public function negative ();
+
+	abstract public function grayscale ();
+
+	abstract public function colorize ($color);
 
 	protected abstract function destroy ();
 

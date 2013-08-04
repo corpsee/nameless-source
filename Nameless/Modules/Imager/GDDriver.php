@@ -14,7 +14,7 @@ namespace Nameless\Modules\Imager;
 
 abstract class GDDriver extends ImageDriver
 {
-	public $image;
+	public $image_handler;
 
 	public function open ($image_path)
 	{
@@ -28,29 +28,29 @@ abstract class GDDriver extends ImageDriver
 		switch ($image_size['mime'])
 		{
 			case 'image/jpeg':
-				$image = imagecreatefromjpeg($image_path);
+				$image_handler = imagecreatefromjpeg($image_path);
 				break;
 			case 'image/png':
-				$image = imagecreatefrompng($image_path);
+				$image_handler = imagecreatefrompng($image_path);
 				break;
 			case 'image/gif':
-				$image = imagecreatefromgif($image_path);
+				$image_handler = imagecreatefromgif($image_path);
 				break;
 			default:
 				throw new \LogicException("Image mime type '" . $image_size['mime'] . "' don`t support");
 		}
 
-		imagealphablending($image, FALSE);
-		$this->setImage($image, $image_size[0], $image_size[1]);
+		imagealphablending($image_handler, FALSE);
+		$this->setImage($image_handler, $image_size[0], $image_size[1]);
 
 		return $this;
 	}
 
 	public function create ($width, $height, $color = '#FFF', $opacity = 0)
 	{
-		$image = $this->createGD($width, $height, $color, $opacity);
-		$this->setImage($image, $width, $height);
-		imagefilledrectangle($image, 0, 0, $width, $height, $this->getColor($color, $opacity));
+		$image_handler = $this->createGD($width, $height, $color, $opacity);
+		$this->setImage($image_handler, $width, $height);
+		imagefilledrectangle($image_handler, 0, 0, $width, $height, $this->getColor($color, $opacity));
 
 		return $this;
 	}
@@ -67,12 +67,12 @@ abstract class GDDriver extends ImageDriver
 				break;
 			case 'png':
 				header('Content-Type: image/png');
-				imagesavealpha($this->image, TRUE);
-				imagepng($this->image);
+				imagesavealpha($this->image_handler, TRUE);
+				imagepng($this->image_handler);
 				break;
 			case 'gif':
 				header('Content-Type: image/gif');
-				imagegif($this->image);
+				imagegif($this->image_handler);
 				break;
 			default:
 				throw new \LogicException("Image type '" . $format . "' don`t support");
@@ -94,11 +94,11 @@ abstract class GDDriver extends ImageDriver
 				imagedestroy($background);
 				break;
 			case 'png':
-				imagesavealpha($this->image, TRUE);
-				imagepng($this->image, $image_path);
+				imagesavealpha($this->image_handler, TRUE);
+				imagepng($this->image_handler, $image_path);
 				break;
 			case 'gif':
-				imagegif($this->image, $image_path);
+				imagegif($this->image_handler, $image_path);
 				break;
 			default:
 				throw new \LogicException("Image type '" . $format . "' don`t support");
@@ -115,7 +115,7 @@ abstract class GDDriver extends ImageDriver
 			$height = $max_height;
 
 		$cropped = $this->createGD($width, $height);
-		imagecopy($cropped, $this->image, 0, 0, $x, $y, $width, $height);
+		imagecopy($cropped, $this->image_handler, 0, 0, $x, $y, $width, $height);
 		$this->setImage($cropped, $width, $height);
 
 		return $this;
@@ -127,7 +127,7 @@ abstract class GDDriver extends ImageDriver
 		$height = ceil($this->height * $scale);
 
 		$resized = $this->createGD($width, $height);
-		imagecopyresampled($resized, $this->image, 0, 0, 0, 0, $width, $height, $this->width, $this->height);
+		imagecopyresampled($resized, $this->image_handler, 0, 0, 0, 0, $width, $height, $this->width, $this->height);
 		$this->setImage($resized, $width, $height);
 
 		return $this;
@@ -135,7 +135,7 @@ abstract class GDDriver extends ImageDriver
 
 	public function rotate ($angle, $bg_color = '#FFF', $bg_opacity = 0)
 	{
-		$rotated = imagerotate($this->image, $angle, $this->getColor($bg_color, $bg_opacity));
+		$rotated = imagerotate($this->image_handler, $angle, $this->getColor($bg_color, $bg_opacity));
 		imagealphablending($rotated, FALSE);
 		$this->setImage($rotated, imagesx($rotated), imagesy($rotated));
 
@@ -156,7 +156,7 @@ abstract class GDDriver extends ImageDriver
 		$height = ($flip_y ? -1 : 1) * $this->height;
 
 		$flipped = $this->createGD($this->width, $this->height);
-		imagecopyresampled($flipped, $this->image, 0, 0, $x, $y, $this->width, $this->height, $width, $height);
+		imagecopyresampled($flipped, $this->image_handler, 0, 0, $x, $y, $this->width, $this->height, $width, $height);
 		$this->setImage($flipped, $this->width, $this->height);
 
 		return $this;
@@ -164,15 +164,15 @@ abstract class GDDriver extends ImageDriver
 
 	public function overlay ($layer, $x = 0, $y = 0)
 	{
-		imagealphablending($this->image, TRUE);
-		imagecopy($this->image, $layer->image, $x, $y, 0, 0, $layer->width, $layer->height);
-		imagealphablending($this->image, FALSE);
+		imagealphablending($this->image_handler, TRUE);
+		imagecopy($this->image_handler, $layer->image, $x, $y, 0, 0, $layer->width, $layer->height);
+		imagealphablending($this->image_handler, FALSE);
 		return $this;
 	}
 
 	public function gamma ($correction)
 	{
-		if (FALSE === imagegammacorrect($this->image, 1.0, $correction))
+		if (FALSE === imagegammacorrect($this->image_handler, 1.0, $correction))
 		{
 			throw new \RuntimeException('Failed to apply gamma correction to the image');
 		}
@@ -181,7 +181,7 @@ abstract class GDDriver extends ImageDriver
 
 	public function negative ()
 	{
-		if (FALSE === imagefilter($this->image, IMG_FILTER_NEGATE))
+		if (FALSE === imagefilter($this->image_handler, IMG_FILTER_NEGATE))
 		{
 			throw new \RuntimeException('Failed to negate the image');
 		}
@@ -190,7 +190,7 @@ abstract class GDDriver extends ImageDriver
 
 	public function grayscale ()
 	{
-		if (FALSE === imagefilter($this->image, IMG_FILTER_GRAYSCALE))
+		if (FALSE === imagefilter($this->image_handler, IMG_FILTER_GRAYSCALE))
 		{
 			throw new \RuntimeException('Failed to grayscale the image');
 		}
@@ -200,35 +200,35 @@ abstract class GDDriver extends ImageDriver
 	public function colorize ($color)
 	{
 		$color = $this->normalizeColor($color);
-		if (FALSE === imagefilter($this->image, IMG_FILTER_COLORIZE, $color[0], $color[1], $color[2]))
+		if (FALSE === imagefilter($this->image_handler, IMG_FILTER_COLORIZE, $color[0], $color[1], $color[2]))
 		{
 			throw new \RuntimeException('Failed to colorize the image');
 		}
 		return $this;
 	}
 
-	protected function setImage ($image, $width, $height)
+	protected function setImage ($image_handler, $width, $height)
 	{
-		if ($this->image)
+		if ($this->image_handler)
 		{
-			imagedestroy($this->image);
+			imagedestroy($this->image_handler);
 		}
-		$this->image  = $image;
+		$this->image_handler  = $image_handler;
 		$this->width  = $width;
 		$this->height = $height;
 	}
 
 	protected function createGD ($width, $height)
 	{
-		$image = imagecreatetruecolor($width, $height);
-		imagealphablending($image, FALSE);
-		return $image;
+		$image_handler = imagecreatetruecolor($width, $height);
+		imagealphablending($image_handler, FALSE);
+		return $image_handler;
 	}
 
 	protected function getColor ($color, $opacity)
 	{
 		$color = $this->normalizeColor($color);
-		return imagecolorallocatealpha($this->image, $color[0], $color[1], $color[2], 127 * (1 - $opacity));
+		return imagecolorallocatealpha($this->image_handler, $color[0], $color[1], $color[2], 127 * (1 - $opacity));
 	}
 
 	protected function getJPGBackground ()
@@ -236,7 +236,7 @@ abstract class GDDriver extends ImageDriver
 		$background = $this->createGD($this->width, $this->height);
 		imagefilledrectangle($background, 0, 0, $this->width, $this->height, $this->getColor('#FFF', 1));
 		imagealphablending($background, TRUE);
-		imagecopy($background, $this->image, 0, 0, 0, 0, $this->width, $this->height);
+		imagecopy($background, $this->image_handler, 0, 0, 0, 0, $this->width, $this->height);
 		imagealphablending($background, FALSE);
 
 		return $background;
@@ -244,7 +244,7 @@ abstract class GDDriver extends ImageDriver
 
 	protected function destroy ()
 	{
-		imagedestroy($this->image);
-		unset($this->image);
+		imagedestroy($this->image_handler);
+		unset($this->image_handler);
 	}
 }
