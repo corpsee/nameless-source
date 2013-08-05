@@ -4,7 +4,7 @@
  * This file is part of the Nameless framework.
  * For the full copyright and license information, please view the LICENSE
  *
- * @package    Nameless
+ * @package    Nameless\Core
  * @author     Corpsee <poisoncorpsee@gmail.com>
  * @copyright  2012 - 2013. Corpsee <poisoncorpsee@gmail.com>
  * @link       https://github.com/corpsee/Nameless
@@ -16,32 +16,20 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Exception\FlattenException;
 
-if (!defined('ENT_SUBSTITUTE'))
-{
-	define('ENT_SUBSTITUTE', 8);
-}
-
 /**
  * ExceptionHandler class
- *
- * @author Corpsee <poisoncorpsee@gmail.com>
  */
 class ExceptionHandler
 {
 	/**
 	 * @var boolean
 	 */
-	private $environment;
-
-	/**
-	 * @var string
-	 */
-	private $charset;
+	protected $environment;
 
 	/**
 	 * @var LoggerInterface
 	 */
-	private $logger;
+	protected $logger;
 
 	/**
 	 * @var string
@@ -57,13 +45,25 @@ class ExceptionHandler
 	 * @param string          $templates_path
 	 * @param string          $templates_extension
 	 * @param string          $environment
-	 * @param string          $charset
+	 * @param LoggerInterface $logger
+	 *
+	 * @return ExceptionHandler
+	 */
+	public static function register ($templates_path, $templates_extension = 'tpl', $environment = 'debug', LoggerInterface $logger = NULL)
+	{
+		$handler = new static($templates_path, $templates_extension, $environment, $logger);
+		set_exception_handler(array($handler, 'handleException'));
+	}
+
+	/**
+	 * @param string          $templates_path
+	 * @param string          $templates_extension
+	 * @param string          $environment
 	 * @param LoggerInterface $logger
 	 */
-	public function __construct ($templates_path, $templates_extension = 'tpl', $environment = 'debug', $charset = 'UTF-8', LoggerInterface $logger = NULL)
+	public function __construct ($templates_path, $templates_extension = 'tpl', $environment = 'debug', LoggerInterface $logger = NULL)
 	{
 		$this->environment = $environment;
-		$this->charset     = $charset;
 		$this->logger      = $logger;
 
 		$this->templates_path      = $templates_path;
@@ -71,32 +71,64 @@ class ExceptionHandler
 	}
 
 	/**
-	 * @param string          $templates_path
-	 * @param string          $templates_extension
-	 * @param string          $environment
-	 * @param string          $charset
-	 * @param LoggerInterface $logger
-	 *
-	 * @return ExceptionHandler
+	 * @param \Exception $exception
 	 */
-	public static function register ($templates_path, $templates_extension = 'tpl', $environment = 'debug', $charset = 'UTF-8', LoggerInterface $logger = NULL)
-	{
-		$handler = new static($templates_path, $templates_extension, $environment, $charset, $logger);
-		set_exception_handler(array($handler, 'handle'));
-		return $handler;
-	}
-
-	/**
-	 * Sends a Response for the given Exception.
-	 *
-	 * @param \Exception $exception An \Exception instance
-	 */
-	public function handle (\Exception $exception)
+	public function handleException (\Exception $exception)
 	{
 		$this->createResponse($exception)->send();
 	}
 
-	private function log (FlattenException $exception)
+	/**
+	 * @param \Exception $exception
+	 *
+	 * @return Response
+	 */
+	public function createResponse ($exception)
+	{
+		if (!$exception instanceof FlattenException)
+		{
+			$exception = FlattenException::create($exception);
+		}
+
+		$this->log($exception);
+
+		if ($this->environment === 'debug')
+		{
+			$response_raw = $this->decorate($this->getContent($exception), 'Server error!');
+			return new Response($response_raw, $exception->getStatusCode(), $exception->getHeaders());
+		}
+		else
+		{
+			$template_name      = $exception->getStatusCode();
+			$template_path      = $this->templates_path;
+			$template_extension = $this->templates_extension;
+
+			if (!file_exists($template_path . $template_name . '.' . $template_extension))
+			{
+				$template_name = '500';
+
+				if (!file_exists($template_path . $template_name . '.' . $template_extension))
+				{
+					$template_name      = $exception->getStatusCode();
+					$template_path      = NAMELESS_PATH . 'Core' . DS . 'Templates' . DS;
+					$template_extension = 'tpl';
+
+					if (!file_exists($template_path . $template_name . '.' . $template_extension))
+					{
+						$template_name = '500';
+					}
+				}
+			}
+
+			$template = new Template($template_path, $template_extension);
+			return $template->render($template_name, array(), new Response('', $exception->getStatusCode(), $exception->getHeaders()));
+		}
+	}
+
+	/**
+	 * @param FlattenException $exception
+	 */
+	protected function log (FlattenException $exception)
 	{
 		$message = sprintf('%s: %s (uncaught exception) at %s line %s', get_class($exception), $exception->getMessage(), $exception->getFile(), $exception->getLine());
 		if (NULL !== $this->logger)
@@ -110,82 +142,11 @@ class ExceptionHandler
 	}
 
 	/**
-	 * Creates the error Response associated with the given Exception.
+	 * @param FlattenException $exception
 	 *
-	 * @param \Exception|FlattenException $exception An \Exception instance
-	 *
-	 * @return Response A Response instance
+	 * @return string
 	 */
-	public function createResponse ($exception)
-	{
-		if (!$exception instanceof FlattenException)
-		{
-			$exception = FlattenException::create($exception);
-		}
-
-		$title = 'Whoops, looks like something went wrong.';
-		$response = new Response('', $exception->getStatusCode(), $exception->getHeaders());
-
-		try
-		{
-			$this->log($exception);
-
-			if ($this->environment == 'debug' || $this->environment == 'test')
-			{
-				$response_raw = $this->decorate($this->getContent($exception), $title);
-			}
-			else
-			{
-				$template_name      = $exception->getStatusCode();
-				$template_path      = $this->templates_path;
-				$template_extension = $this->templates_extension;
-
-				if (!file_exists($template_path . $template_name . '.' . $template_extension))
-				{
-					$template_name = '500';
-
-					if (!file_exists($template_path . $template_name . '.' . $template_extension))
-					{
-						$template_name      = $exception->getStatusCode();
-						$template_path      = NAMELESS_PATH . 'Core' . DS . 'Templates' . DS;
-						$template_extension = 'tpl';
-
-						if (!file_exists($template_path . $template_name . '.' . $template_extension))
-						{
-							$template_name = '500';
-						}
-					}
-				}
-
-				$template_obj = new Template($template_path, $template_extension);
-				return $template_obj->render($template_name, array(), $response);
-			}
-		}
-		catch (\Exception $e)
-		{
-			if (!$e instanceof FlattenException)
-			{
-				$e = FlattenException::create($e);
-			}
-
-			$this->log($e);
-
-			// something nasty happened and we cannot throw an exception here anymore
-			if ($this->environment == 'debug')
-			{
-				$response_raw = $this->decorate('', sprintf('Exception thrown when handling an exception (%s: %s)', get_class($exception), $exception->getMessage()));
-			}
-			else
-			{
-				$title = 'Whoops, looks like something went wrong.';
-				$response_raw = $this->decorate('', 'Whoops, looks like something went wrong.');
-			}
-		}
-
-		return new Response($response_raw, $exception->getStatusCode(), $exception->getHeaders());
-	}
-
-	private function getContent ($exception)
+	protected function getContent (FlattenException $exception)
 	{
 		$message = nl2br($exception->getMessage());
 		$class   = $this->abbrClass($exception->getClass());
@@ -234,7 +195,13 @@ EOF
 		return $content;
 	}
 
-	private function decorate ($content, $title)
+	/**
+	 * @param string $content
+	 * @param string $title
+	 *
+	 * @return string
+	 */
+	protected function decorate ($content, $title)
 	{
 		return <<<EOF
 <!DOCTYPE html>
@@ -310,7 +277,12 @@ $content
 EOF;
 	}
 
-	private function abbrClass ($class)
+	/**
+	 * @param string $class
+	 *
+	 * @return string
+	 */
+	protected function abbrClass ($class)
 	{
 		$parts = explode('\\', $class);
 
@@ -318,13 +290,11 @@ EOF;
 	}
 
 	/**
-	 * Formats an array as a string.
-	 *
-	 * @param array $args The argument array
+	 * @param array $args
 	 *
 	 * @return string
 	 */
-	public function formatArgs (array $args)
+	protected function formatArgs (array $args)
 	{
 		$result = array();
 		foreach ($args as $key => $item)

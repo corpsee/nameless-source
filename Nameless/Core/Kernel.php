@@ -23,7 +23,6 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
 use Symfony\Component\HttpKernel\EventListener\ResponseListener;
 use Symfony\Component\HttpKernel\EventListener\LocaleListener;
-use Symfony\Component\HttpKernel\Debug\ErrorHandler;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
@@ -224,7 +223,7 @@ class Kernel extends HttpKernel
 		}
 
 		ErrorHandler::register();
-		ExceptionHandler::register($this->container['templates_error_path'], $this->container['templates_extension'], $this->container['environment'], 'UTF-8', $this->container['logger.logger']);
+		ExceptionHandler::register($this->container['templates_error_path'], $this->container['templates_extension'], $this->container['environment'], $this->container['logger.logger']);
 	}
 
 	public function boot()
