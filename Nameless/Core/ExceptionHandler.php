@@ -309,7 +309,7 @@ EOF;
 			}
 			elseif ('string' === $item[0])
 			{
-				$formattedValue = sprintf("'%s'", htmlspecialchars($item[1], ENT_QUOTES | ENT_SUBSTITUTE, $this->charset));
+				$formattedValue = sprintf("'%s'", htmlspecialchars($item[1], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'));
 			}
 			elseif ('null' === $item[0])
 			{
