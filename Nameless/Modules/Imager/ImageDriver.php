@@ -18,11 +18,13 @@ abstract class ImageDriver
 
 	protected $height;
 
+	protected $mime_type = 'undefined';
+
 	abstract public function open ($image_path);
 
 	abstract public function create ($width, $height, $color = '#FFF', $opacity = 0);
 
-	abstract public function render ($format = 'png', $quality = 80);
+	abstract public function render ($format = 'image/jpeg', $quality = 80);
 
 	abstract public function save ($image_path, $format = NULL, $quality = 80);
 
@@ -88,7 +90,7 @@ abstract class ImageDriver
 		return $this;
 	}
 
-	protected function getExtension ($image_path)
+	public function getExtension ($image_path)
 	{
 		$extension = strtolower(pathinfo($image_path, PATHINFO_EXTENSION));
 		if ($extension === 'jpg')

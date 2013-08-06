@@ -33,10 +33,10 @@ class ModuleProvider extends BaseModuleProvider
 			return new $driver();
 		});
 
-		$this->container['imager.image'] = $this->container->share(function ($c)
+		$this->container['imager.image'] = function ($c)
 		{
 			return new Image($c['imager.driver']);
-		});
+		};
 	}
 
 	public function boot () {}
