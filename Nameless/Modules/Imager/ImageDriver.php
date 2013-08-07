@@ -44,7 +44,7 @@ abstract class ImageDriver
 
 	abstract public function grayscale ();
 
-	abstract public function colorize ($color);
+	abstract public function colorize ($color, $opacity = 0);
 
 	protected abstract function destroy ();
 

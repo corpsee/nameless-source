@@ -12,7 +12,7 @@
 
 namespace Nameless\Modules\Imager;
 
-abstract class GDDriver extends ImageDriver
+class GDDriver extends ImageDriver
 {
 	/**
 	 * @var resource
@@ -58,10 +58,10 @@ abstract class GDDriver extends ImageDriver
 	}
 
 	/**
-	 * @param                $width
-	 * @param integer        $height
-	 * @param string         $color
-	 * @param integer|float  $opacity
+	 * @param integer       $width
+	 * @param integer       $height
+	 * @param string        $color
+	 * @param integer       $opacity
 	 *
 	 * @return $this
 	 */
@@ -102,7 +102,6 @@ abstract class GDDriver extends ImageDriver
 			default:
 				throw new \LogicException("Image type '" . $format . "' don`t support");
 		}
-		$this->mime_type = $format;
 		//exit();
 	}
 
@@ -139,7 +138,6 @@ abstract class GDDriver extends ImageDriver
 			default:
 				throw new \LogicException("Image type '" . $format . "' don`t support");
 		}
-		$this->mime_type = $format;
 		return $this;
 	}
 
@@ -186,7 +184,7 @@ abstract class GDDriver extends ImageDriver
 	/**
 	 * @param integer       $angle
 	 * @param string        $bg_color
-	 * @param integer|float $bg_opacity
+	 * @param integer       $bg_opacity
 	 *
 	 * @return $this
 	 */
@@ -212,10 +210,10 @@ abstract class GDDriver extends ImageDriver
 			return $this;
 		}
 
-		$x = $flip_x ? $this->width - 1 : 0;;
+		$x = $flip_x ? $this->width - 1 : 0;
 		$width = ($flip_x ? -1 : 1) * $this->width;
 
-		$y = $flip_y ? $this->height - 1 : 0;;
+		$y = $flip_y ? $this->height - 1 : 0;
 		$height = ($flip_y ? -1 : 1) * $this->height;
 
 		$flipped = $this->createGD($this->width, $this->height);
@@ -285,16 +283,16 @@ abstract class GDDriver extends ImageDriver
 	}
 
 	/**
-	 * @param string $color
+	 * @param string  $color
+	 * @param integer $opacity
 	 *
 	 * @return $this
-	 *
 	 * @throws \RuntimeException
 	 */
-	public function colorize ($color)
+	public function colorize ($color, $opacity = 0)
 	{
 		$color = $this->normalizeColor($color);
-		if (FALSE === imagefilter($this->image_handler, IMG_FILTER_COLORIZE, $color[0], $color[1], $color[2]))
+		if (FALSE === imagefilter($this->image_handler, IMG_FILTER_COLORIZE, $color[0], $color[1], $color[2], $opacity))
 		{
 			throw new \RuntimeException('Failed to colorize the image');
 		}
@@ -352,12 +350,12 @@ abstract class GDDriver extends ImageDriver
 	}
 
 	/**
-	 * @param string $color
-	 * @param float  $opacity
+	 * @param string  $color
+	 * @param integer $opacity
 	 *
 	 * @return integer
 	 */
-	protected function getColor ($color, $opacity)
+	protected function getColor ($color, $opacity = 0)
 	{
 		$color = $this->normalizeColor($color);
 		return imagecolorallocatealpha($this->image_handler, $color[0], $color[1], $color[2], 127 * (1 - $opacity));
