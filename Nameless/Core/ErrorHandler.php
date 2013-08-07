@@ -62,7 +62,7 @@ class ErrorHandler
 	public function handleShutdown ()
 	{
 		$error = error_get_last();
-		if (!is_null($error))
+		if ($error['type'] === E_ERROR)
 		{
 			throw new \ErrorException(sprintf('%s: %s in %s line %d', $error['type'], $error['message'], $error['file'], $error['line']), 0, $error['type'], $error['file'], $error['line']);
 		}
