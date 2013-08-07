@@ -29,7 +29,7 @@ class ModuleProvider extends BaseModuleProvider
 
 		$this->container['imager.driver'] = $this->container->share(function ($c)
 		{
-			$driver = $c['imager.driver_name'] . 'Driver';
+			$driver = '\\' . __NAMESPACE__ . '\\' . $c['imager.driver_name'] . 'Driver';
 			return new $driver();
 		});
 
