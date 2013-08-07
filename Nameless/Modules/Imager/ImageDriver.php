@@ -13,6 +13,7 @@
 namespace Nameless\Modules\Imager;
 
 //TODO: effects: brightness, contrast, blur, smooth
+//TODO: driver for Imagick
 abstract class ImageDriver
 {
 	protected $width;
