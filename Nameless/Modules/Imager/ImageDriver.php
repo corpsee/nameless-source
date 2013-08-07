@@ -12,6 +12,7 @@
 
 namespace Nameless\Modules\Imager;
 
+//TODO: effects: brightness, contrast, blur, smooth
 abstract class ImageDriver
 {
 	protected $width;
