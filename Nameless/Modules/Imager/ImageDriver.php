@@ -12,6 +12,7 @@
 
 namespace Nameless\Modules\Imager;
 
+//TODO: effects: brightness, contrast, blur, smooth
 abstract class ImageDriver
 {
 	protected $width;
@@ -44,7 +45,7 @@ abstract class ImageDriver
 
 	abstract public function grayscale ();
 
-	abstract public function colorize ($color);
+	abstract public function colorize ($color, $opacity = 0);
 
 	protected abstract function destroy ();
 
