@@ -208,11 +208,6 @@ class Kernel extends HttpKernel
 		{
 			error_reporting(-1);
 			ini_set('display_errors', 1);
-
-			$this->container['benchmark'] = $this->container->share(function ()
-			{
-				return new Benchmark();
-			});
 		}
 		else
 		{
@@ -224,6 +219,11 @@ class Kernel extends HttpKernel
 
 		ErrorHandler::register();
 		ExceptionHandler::register($this->container['templates_error_path'], $this->container['templates_extension'], $this->container['environment'], $this->container['logger.logger']);
+
+		$this->container['benchmark'] = $this->container->share(function ()
+		{
+			return new Benchmark();
+		});
 	}
 
 	public function boot()
