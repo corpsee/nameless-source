@@ -26,7 +26,7 @@ class Benchmark
 	 */
 	protected $markers = array();
 
-	//TODO: делать группы маркеров
+	//TODO: add marker groups
 	/**
 	 * @param string $marker
 	 */

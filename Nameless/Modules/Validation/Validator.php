@@ -17,6 +17,7 @@ namespace Nameless\Modules\Validation;
  *
  * @author Corpsee <poisoncorpsee@gmail.com>
  */
+//TODO: validator refactoring!
 class Validator
 {
 	/**

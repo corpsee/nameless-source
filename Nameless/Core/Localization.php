@@ -42,8 +42,8 @@ class Localization
 		$this->default_language = $default_language;
 	}
 
-	//TODO: добавить обработку массивов в $file
-	//TODO: добавить обработку абсолютных путей в $file
+	//TODO: add arrays of $file`s
+	//TODO: absolute pathes for $file`s
 	/**
 	 * @param sting   $file
 	 * @param string  $module
