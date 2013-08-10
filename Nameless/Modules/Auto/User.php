@@ -172,7 +172,6 @@ class User
 	 *
 	 * @return boolean
 	 */
-	//TODO: переименовать в checkAccess
 	public function getAccessByRoute ($route)
 	{
 		$defaults = $this->routes->get($route)->getDefaults();
