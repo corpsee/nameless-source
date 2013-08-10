@@ -186,7 +186,7 @@ class Asset
 		$urls_old = array();
 		$urls_new = array();
 
-		preg_match_all('#url\((.*)\)#im', $asset_text, $urls_old);
+		preg_match_all('#url\([\'"]?([^/\'"][^\'"]*)[\'"]?\)#im', $asset_text, $urls_old);
 
 		foreach ($urls_old[1] as $url)
 		{
