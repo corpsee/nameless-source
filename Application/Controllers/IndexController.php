@@ -39,6 +39,16 @@ class IndexController extends Controller
 			'styles'      => $this->container['assets.dispatcher']->getAssets('frontend', $styles),
 			'scripts'     => $this->container['assets.dispatcher']->getAssets('frontend', $scripts),
 		);
-		return $this->render('index', $data);
+		return $this->render('index', $data, TRUE);
+
+		/*$image = $this->container['imager.image']
+			->open(PUBLIC_PATH . 'observer_origin.jpg')
+			->resize(1000)->save(PUBLIC_PATH . 'observer_origin_resize_1000.jpg', 'image/jpeg')
+			->crop(300, 200)
+			->save(PUBLIC_PATH . 'observer_origin_crop_200x100.jpg', 'image/jpeg')
+			->grayscale()
+			->save(PUBLIC_PATH . 'observer_origin_gray.jpg', 'image/jpeg');
+		exit();*/
+
 	}
 }
