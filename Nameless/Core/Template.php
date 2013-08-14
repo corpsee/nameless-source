@@ -266,6 +266,51 @@ class Template
 		return $this->template_extension;
 	}
 
+	public function subTemplate ($subtamplate)
+	{
+		$subtamplate_instance = new static($this->template_path, $this->template_extension, $this->data, $subtamplate);
+		echo $subtamplate_instance->renderTemplate();
+	}
+
+	/**
+	 * @param string   $template
+	 * @param array    $data
+	 * @param bool     $compress
+	 * @param Response $response
+	 *
+	 * @return Response
+	 */
+	public function render($template = '', array $data = array(), $compress = FALSE, Response $response = NULL)
+	{
+		if ($data)
+		{
+			$this->data = $data;
+		}
+
+		if ($template)
+		{
+			$this->template = $template;
+		}
+
+		if (is_null($response) && is_null($this->response))
+		{
+			$this->response = new Response();
+		}
+		elseif ($response)
+		{
+			$this->response = $response;
+		}
+
+		$content = $this->renderTemplate();
+		if ($compress)
+		{
+			$content = $this->compressHTML($content);
+		}
+
+		$this->response->setContent($content);
+		return $this->response;
+	}
+
 	/**
 	 * @return string
 	 * @throws \RuntimeException
@@ -295,41 +340,57 @@ class Template
 		return ob_get_clean();
 	}
 
-	public function subTemplate ($subtamplate)
+	protected function compressHTML ($content)
 	{
-		$subtamplate_instance = new static($this->template_path, $this->template_extension, $this->data, $subtamplate);
-		echo $subtamplate_instance->renderTemplate();
-	}
+		$content_parts = preg_split
+		(
+			'#(</?pre[^>]*>)|(</?script[^>]*>)|(</?style[^>]*>)|(</?textarea[^>]*>)#i',
+			$content,
+			-1,
+			PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY
+		);
 
-	/**
-	 * @param string   $template
-	 * @param array    $data
-	 * @param Response $response
-	 *
-	 * @return Response
-	 */
-	public function render($template = '', array $data = array(), Response $response = NULL)
-	{
-		if ($data)
-		{
-			$this->data = $data;
-		}
+		$content       = '';
+		$preserve_next = FALSE;
+		$optimize_next = FALSE;
 
-		if ($template)
+		foreach ($content_parts as $part)
 		{
-			$this->template = $template;
-		}
+			if (strncasecmp($part, '<pre', 4) === 0 || strncasecmp($part, '<textarea', 9) === 0)
+			{
+				$preserve_next = TRUE;
+			}
+			elseif (strncasecmp($part, '<script', 7) === 0 || strncasecmp($part, '<style', 6) === 0)
+			{
+				$optimize_next = TRUE;
+			}
+			elseif ($preserve_next)
+			{
+				$preserve_next = FALSE;
+			}
+			elseif ($optimize_next)
+			{
+				$optimize_next = FALSE;
 
-		if (is_null($response) && is_null($this->response))
-		{
-			$this->response = new Response();
-		}
-		elseif ($response)
-		{
-			$this->response = $response;
-		}
+				$part = str_replace(array("/* <![CDATA[ */\n", "<!--\n", "\n//-->"), array('/* <![CDATA[ */', '', ''), $part);
+				$part = trim(preg_replace(array('@(?<!:)//(?!W3C|DTD|EN).*@', '/[ \n\t]*(;|=|\{|\}|\[|\]|&&|,|<|>|\',|",|\':|":|: |\|\|)[ \n\t]*/'), array('', '$1'), $part));
+			}
+			else
+			{
+				$replace_array = array
+				(
+					'/\n ?\n+/'      => "\n",   // Convert multiple line-breaks
+					'/^[\t ]+</m'    => '<',    // Remove tag indentation
+					'/>( )?\n</'     => '>$1<', // Remove line-breaks between tags
+					'/\n/'           => '',     // Remove all remaining line-breaks
+					'/ <\/(div|p)>/' => '</$1>' // Remove spaces before closing DIV and P tags
+				);
 
-		$this->response->setContent($this->renderTemplate());
-		return $this->response;
+				$part = str_replace("\r", '', $part);
+				$part = trim(preg_replace(array_keys($replace_array), array_values($replace_array), $part));
+			}
+			$content .= $part;
+		}
+		return $content;
 	}
 }

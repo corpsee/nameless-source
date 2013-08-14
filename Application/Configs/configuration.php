@@ -3,12 +3,12 @@
 return array
 (
 	// production, test, debug
-	'environment' => 'test',
+	'environment' => 'debug',
 	'timezone'    => 'Asia/Novosibirsk',
 	'locale'      => 'ru',
 	'language'    => 'ru',
 	'modules'     => array
 	(
-		'Logger', 'Assets', //'Database','Validation','Auto','Mailer',
+		'Logger', 'Assets', 'Imager', //'Database','Validation','Auto','Mailer',
 	),
 );
