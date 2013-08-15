@@ -118,7 +118,7 @@ class Localization
 		{
 			$params_temp[':' . $param_name . ':'] = $param;
 		}
-		unset($params);
+		unset($param);
 
 		if (isset($this->lines[$language][$line_name]))
 		{
@@ -126,7 +126,6 @@ class Localization
 		}
 		elseif (isset($this->lines[$this->default_language][$line_name]))
 		{
-
 			return strtr($this->lines[$this->default_language][$line_name], $params_temp);
 		}
 		else
