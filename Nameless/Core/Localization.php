@@ -42,8 +42,8 @@ class Localization
 		$this->default_language = $default_language;
 	}
 
-	//TODO: add arrays of $file`s
-	//TODO: absolute pathes for $file`s
+	//TODO: добавить обработку массивов в $file
+	//TODO: добавить обработку абсолютных путей в $file
 	/**
 	 * @param sting   $file
 	 * @param string  $module
@@ -51,50 +51,50 @@ class Localization
 	 * @param boolean $overwrite
 	 *
 	 * @throws \RuntimeException
+	 *
+	 * @return boolean
 	 */
 	public function load ($file, $module = 'application', $language = NULL, $overwrite = FALSE)
 	{
-		if ($module === 'application')
+		if (!$overwrite && isset($this->files[$module][$language][$file]))
 		{
-			$file_path         = APPLICATION_PATH . 'Localization' . DS . $language . DS . $file . '.php';
-			$default_file_path = APPLICATION_PATH . 'Localization' . DS . $this->default_language . DS . $file . '.php';
+			return;
 		}
-		elseif ($module === 'core')
+
+		switch ($module)
 		{
-			$file_path         = NAMELESS_PATH . ucfirst($module) . DS . 'Localization' . DS . $language . DS . $file . '.php';
-			$default_file_path = NAMELESS_PATH . ucfirst($module) . DS . 'Localization' . DS . $this->default_language . DS . $file . '.php';
-		}
-		else
-		{
-			$file_path         = NAMELESS_PATH . 'Modules' . DS . ucfirst($module) . DS . 'Localization' . DS . $language . DS . $file . '.php';
-			$default_file_path = NAMELESS_PATH . 'Modules' . DS . ucfirst($module) . DS . 'Localization' . DS . $this->default_language . DS . $file . '.php';
+			case 'core':
+				$file_path         = NAMELESS_PATH . ucfirst($module) . DS . 'Localization' . DS . $language . DS . $file . '.php';
+				$default_file_path = NAMELESS_PATH . ucfirst($module) . DS . 'Localization' . DS . $this->default_language . DS . $file . '.php';
+				break;
+			case 'application':
+				$file_path         = APPLICATION_PATH . 'Localization' . DS . $language . DS . $file . '.php';
+				$default_file_path = APPLICATION_PATH . 'Localization' . DS . $this->default_language . DS . $file . '.php';
+				break;
+			default:
+				$file_path         = NAMELESS_PATH . 'Modules' . DS . ucfirst($module) . DS . 'Localization' . DS . $language . DS . $file . '.php';
+				$default_file_path = NAMELESS_PATH . 'Modules' . DS . ucfirst($module) . DS . 'Localization' . DS . $this->default_language . DS . $file . '.php';
 		}
 
 		if (file_exists($file_path))
 		{
-			if (!isset($this->files[$module][$language][$file]) || $overwrite)
+			if (!isset($this->lines[$language]))
 			{
-				if (!isset($this->lines[$language]))
-				{
-					$this->lines[$language] = array();
-				}
-
-				$lines = include_once($file_path);
-				$this->lines[$language] = array_merge($this->lines[$language], $lines);
+				$this->lines[$language] = array();
 			}
+
+			$lines = include_once $file_path;
+			$this->lines[$language] = array_merge($this->lines[$language], $lines);
 		}
 		elseif (file_exists($default_file_path))
 		{
-			if (!isset($this->files[$module][$this->default_language][$file]) || $overwrite)
+			if (!isset($this->lines[$this->default_language]))
 			{
-				if (!isset($this->lines[$this->default_language]))
-				{
-					$this->lines[$this->default_language] = array();
-				}
-
-				$lines = include_once($default_file_path);
-				$this->lines[$this->default_language] = array_merge($this->lines[$this->default_language], $lines);
+				$this->lines[$this->default_language] = array();
 			}
+
+			$lines = include_once $default_file_path;
+			$this->lines[$this->default_language] = array_merge($this->lines[$this->default_language], $lines);
 		}
 		else
 		{
