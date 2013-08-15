@@ -175,8 +175,6 @@ class Asset
 	 */
 	protected function replaceRelativeLinks ($assets_dir)
 	{
-		//copy($this->getPath(), );
-
 		$file = fopen($this->getPath(), 'rb');
 		$asset_text = fread($file, filesize($this->getPath()));
 		fclose($file);
@@ -186,14 +184,15 @@ class Asset
 		$urls_old = array();
 		$urls_new = array();
 
-		preg_match_all('#url\([\'"]?([^/\'"][^\'"]*)[\'"]?\)#im', $asset_text, $urls_old);
+		preg_match_all('#url\(([\'"]?[^/\'"][^\'"]*[\'"]?)\)#imU', $asset_text, $urls_old);
+		$urls = array_unique($urls_old[1]);
 
-		foreach ($urls_old[1] as $url)
+		foreach ($urls as $url)
 		{
-			$urls_new[] = '\'' . pathToURL(realpath(trim($url, '"\''))) . '\'';
+			$urls_new[] = "'" . pathToURL(realpath(trim($url, '"\''))) . "'";
 		}
 
-		$asset_text = str_replace($urls_old[1], $urls_new, $asset_text);
+		$asset_text = str_replace($urls, $urls_new, $asset_text);
 
 		$this->temp_path = $assets_dir . basename($this->getPath());
 
