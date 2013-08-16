@@ -2,6 +2,9 @@
 
 return array
 (
-	'logger.path' => ROOT_PATH . 'Logs' . DS,
-	'logger.name' => 'nameless.local',
+	'logger' => array
+	(
+		'path' => ROOT_PATH . 'Logs' . DS,
+		'name' => 'nameless.local',
+	),
 );
