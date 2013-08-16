@@ -2,5 +2,8 @@
 
 return array
 (
-	'imager.driver_name'  => 'GD',
+	'imager' => array
+	(
+		'driver_name'  => 'GD',
+	),
 );

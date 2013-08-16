@@ -68,6 +68,8 @@ class Kernel extends HttpKernel
 		$this->dispatcherInit();
 		$this->environmentInit();
 
+		//echo '<pre>'; print_r($this->container); exit;
+
 		parent::__construct($this->container['dispatcher'], $this->container['resolver']);
 	}
 
@@ -76,14 +78,22 @@ class Kernel extends HttpKernel
 		$app_config = array();
 		if (file_exists(CONFIG_PATH . 'configuration.php'))
 		{
-			$app_config = include_once(CONFIG_PATH . 'configuration.php');
+			$app_config = include_once CONFIG_PATH . 'configuration.php';
 		}
 
-		$default_config = include_once(ROOT_PATH . 'Nameless' . DS . 'Core' . DS . 'Configs' . DS . 'configuration.php');
+		$default_config = include_once ROOT_PATH . 'Nameless' . DS . 'Core' . DS . 'Configs' . DS . 'configuration.php';
 		$config         = array_merge($default_config, $app_config);
 
 		foreach ($config as $config_option => $config_value)
 		{
+			if (is_array($config_value))
+			{
+				foreach ($config_value as $module_option => $module_value)
+				{
+					$full_module_option                   = $config_option . '.' . $module_option;
+					$this->container[$full_module_option] = $module_value;
+				}
+			}
 			$this->container[$config_option] = $config_value;
 		}
 	}
@@ -93,7 +103,7 @@ class Kernel extends HttpKernel
 		$routes = array();
 		if (file_exists(CONFIG_PATH . 'routes.php'))
 		{
-			$routes = include_once(CONFIG_PATH . 'routes.php');
+			$routes = include_once CONFIG_PATH . 'routes.php';
 		}
 
 		$this->container['routes'] = $this->container->share(function ()
