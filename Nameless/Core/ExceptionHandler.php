@@ -228,7 +228,7 @@ class ExceptionHandler
 			}
 			elseif ('string' === $item[0])
 			{
-				$formattedValue = sprintf("'%s'", htmlspecialchars($item[1], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'));
+				$formattedValue = sprintf("'%s'", htmlspecialchars($item[1], ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8'));
 			}
 			elseif ('null' === $item[0])
 			{
@@ -244,7 +244,7 @@ class ExceptionHandler
 			}
 			else
 			{
-				$formattedValue = str_replace("\n", '', var_export(htmlspecialchars((string)$item[1], ENT_QUOTES | ENT_SUBSTITUTE, $this->charset), TRUE));
+				$formattedValue = str_replace("\n", '', var_export(htmlspecialchars((string)$item[1], ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8'), TRUE));
 			}
 
 			$result[] = is_int($key) ? $formattedValue : sprintf("'%s' => %s", $key, $formattedValue);
