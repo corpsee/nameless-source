@@ -109,16 +109,17 @@ class Controller implements ControllerInterface
 	}
 
 	/**
+	 * Template render method
+	 *
 	 * @param string   $template
 	 * @param array    $data
-	 * @param bool     $compress
 	 * @param Response $response
 	 * @param string   $template_extension
 	 * @param string   $template_path
 	 *
 	 * @return Response
 	 */
-	public function render ($template, array $data = array(), $compress = FALSE, Response $response = NULL, $template_extension = NULL, $template_path = NULL)
+	public function render ($template, array $data = array(), Response $response = NULL, $template_extension = NULL, $template_path = NULL)
 	{
 		if (is_null($template_extension))
 		{
@@ -132,9 +133,12 @@ class Controller implements ControllerInterface
 		$template_instance = new Template
 		(
 			$template_path,
-			$template_extension
+			$template_extension,
+			$data,
+			$template,
+			$response
 		);
-		return $template_instance->render($template, $data, $compress, $response);
+		return $template_instance->render();
 	}
 
 	/**
