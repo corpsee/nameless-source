@@ -39,7 +39,7 @@ class IndexController extends Controller
 			'styles'      => $this->container['assets.dispatcher']->getAssets('frontend', $styles),
 			'scripts'     => $this->container['assets.dispatcher']->getAssets('frontend', $scripts),
 		);
-		return $this->render('index', $data, TRUE);
+		return $this->render('index', $data);
 
 		/*$image = $this->container['imager.image']
 			->open(PUBLIC_PATH . 'observer_origin.jpg')
