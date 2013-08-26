@@ -109,17 +109,16 @@ class Controller implements ControllerInterface
 	}
 
 	/**
-	 * Template render method
-	 *
 	 * @param string   $template
 	 * @param array    $data
+	 * @param integer  $filter
 	 * @param Response $response
 	 * @param string   $template_extension
 	 * @param string   $template_path
 	 *
 	 * @return Response
 	 */
-	public function render ($template, array $data = array(), Response $response = NULL, $template_extension = NULL, $template_path = NULL)
+	public function render ($template, array $data = array(), $filter = Template::FILTER_ESCAPE, Response $response = NULL, $template_extension = NULL, $template_path = NULL)
 	{
 		if (is_null($template_extension))
 		{
@@ -134,8 +133,9 @@ class Controller implements ControllerInterface
 		(
 			$template_path,
 			$template_extension,
-			$data,
 			$template,
+			$data,
+			$filter,
 			$response
 		);
 		return $template_instance->render();
