@@ -58,9 +58,10 @@ class Localization
 	{
 		if (!$overwrite && isset($this->files[$module][$language][$file]))
 		{
-			return;
+			return $this;
 		}
 
+		$module = strtolower($module);
 		switch ($module)
 		{
 			case 'core':
@@ -85,6 +86,8 @@ class Localization
 
 			$lines = include_once $file_path;
 			$this->lines[$language] = array_merge($this->lines[$language], $lines);
+
+			return $this;
 		}
 		elseif (file_exists($default_file_path))
 		{
@@ -95,6 +98,8 @@ class Localization
 
 			$lines = include_once $default_file_path;
 			$this->lines[$this->default_language] = array_merge($this->lines[$this->default_language], $lines);
+
+			return $this;
 		}
 		else
 		{
@@ -104,14 +109,14 @@ class Localization
 
 	/**
 	 * @param string $line_name
-	 * @param array  $params
 	 * @param string $language
+	 * @param array  $params
 	 *
 	 * @return string
 	 *
 	 * @throws \RuntimeException
 	 */
-	public function get ($line_name, array $params = array(), $language = NULL)
+	public function get ($line_name, $language = NULL, array $params = array())
 	{
 		$params_temp = array();
 		foreach ($params as $param_name => $param)
