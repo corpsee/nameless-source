@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Nameless\Modules\Database\Database;
 
 /**
@@ -225,6 +226,14 @@ class Controller implements ControllerInterface
 			return $this->getRequest()->cookies->all();
 		}
 		return $this->getRequest()->cookies->get($key, $default, $deep);
+	}
+
+	/**
+	 * @return SessionInterface
+	 */
+	public function getSession ()
+	{
+		return $this->getRequest()->getSession();
 	}
 
 	/**
