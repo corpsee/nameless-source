@@ -84,7 +84,8 @@ class Localization
 				$this->lines[$language] = array();
 			}
 
-			$lines = include_once $file_path;
+			//TODO: correct include_once
+			$lines = include $file_path;
 			$this->lines[$language] = array_merge($this->lines[$language], $lines);
 
 			return $this;
@@ -96,7 +97,7 @@ class Localization
 				$this->lines[$this->default_language] = array();
 			}
 
-			$lines = include_once $default_file_path;
+			$lines = include $default_file_path;
 			$this->lines[$this->default_language] = array_merge($this->lines[$this->default_language], $lines);
 
 			return $this;
