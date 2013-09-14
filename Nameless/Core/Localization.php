@@ -88,7 +88,7 @@ class Localization
 			$lines = include $file_path;
 			$this->lines[$language] = array_merge($this->lines[$language], $lines);
 
-			return $this;
+			return $language;
 		}
 		elseif (file_exists($default_file_path))
 		{
@@ -100,7 +100,7 @@ class Localization
 			$lines = include $default_file_path;
 			$this->lines[$this->default_language] = array_merge($this->lines[$this->default_language], $lines);
 
-			return $this;
+			return $this->default_language;
 		}
 		else
 		{
