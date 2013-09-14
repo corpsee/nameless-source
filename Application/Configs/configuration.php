@@ -8,6 +8,18 @@ return array
 	'locale'      => 'ru',
 	'language'    => 'ru',
 
+	'routes'      => array
+	(
+		'index' => array
+		(
+			'pattern'      => '/',
+			'defaults'     => array
+			(
+				'_controller' => 'Application\\Controllers\\IndexController::index',
+			),
+		),
+	),
+
 	'modules'     => array
 	(
 		'Logger', 'Assets', 'Imager', //'Database','Validation','Auto','Mailer',

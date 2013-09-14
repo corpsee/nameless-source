@@ -100,30 +100,24 @@ class Kernel extends HttpKernel
 
 	private function routerInit ()
 	{
-		$routes = array();
-		if (file_exists(CONFIG_PATH . 'routes.php'))
-		{
-			$routes = include_once CONFIG_PATH . 'routes.php';
-		}
-
-		$this->container['routes'] = $this->container->share(function ()
+		$this->container['routes.collection'] = $this->container->share(function ()
 		{
 			return new RouteCollection();
 		});
 
-		foreach ($routes as $route_name => $route_value)
+		foreach ($this->container['routes'] as $route_name => $route_value)
 		{
 			$defaults     = isset($route_value['defaults']) ? $route_value['defaults'] : array();
 			$requirements = isset($route_value['requirements']) ? $route_value['requirements'] : array();
 			$options      = isset($route_value['options']) ? $route_value['options'] : array();
 
-			$this->container['routes']->add($route_name, new Route($route_value['pattern'], $defaults, $requirements, $options));
+			$this->container['routes.collection']->add($route_name, new Route($route_value['pattern'], $defaults, $requirements, $options));
 		}
 
 		$this->container['matcher'] = $this->container->share(function ($c)
 		{
 			$context  = new RequestContext($c['http_port'], $c['https_port']);
-			return new UrlMatcher($c['routes'], $context);
+			return new UrlMatcher($c['routes.collection'], $context);
 		});
 
 		$this->container['resolver'] = $this->container->share(function ($c)
@@ -272,7 +266,7 @@ class Kernel extends HttpKernel
 	 */
 	public function forward($route, array $attributes = array(), array $query = array())
 	{
-		$defaults = $this->container['routes']->get($route)->getDefaults();
+		$defaults = $this->container['routes.collection']->get($route)->getDefaults();
 		$attributes['_controller'] = $defaults['_controller'];
 		$attributes['_route'] = $route;
 
