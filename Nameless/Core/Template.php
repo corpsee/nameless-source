@@ -284,13 +284,12 @@ class Template
 	 */
 	public function subTemplate ($template)
 	{
-		$subtamplate_instance = new static($this->template_path, $this->template_extension);
+		$subtemplate_instance = new static($this->template_path, $this->template_extension, $template);
 
-		$subtamplate_instance->setTemplate($template);
-		$subtamplate_instance->setData($this->data, $this->template_filter);
-		$subtamplate_instance->setFilters($this->filters);
+		$subtemplate_instance->setData($this->data, NULL, $this->template_filter);
+		$subtemplate_instance->setFilters($this->filters);
 
-		echo $subtamplate_instance->renderTemplate();
+		echo $subtemplate_instance->render();
 	}
 
 	/**
@@ -302,7 +301,7 @@ class Template
 	{
 		if (is_null($this->response))
 		{
-			$this->setResponse(new Response());
+			$this->response = new Response();
 		}
 
 		$content = $this->renderTemplate();
@@ -413,8 +412,8 @@ class Template
 		$value = (string)$value;
 
 		// Validate standard character entites and UTF16 two byte encoding
-		$value = preg_replace('#(&#*\w+)[\x00-\x20]+;#i', '$1;', $value);
-		$value = preg_replace('#(&#x*)([0-9a-f]+);#i', '$1$2;', $value);
+		$value = preg_replace('#(&\#*\w+)[\x00-\x20]+;#i', '$1;', $value);
+		$value = preg_replace('#(&\#x*)([0-9a-f]+);#i', '$1$2;', $value);
 
 		// Remove carriage returns
       	$value = preg_replace('#\r+#', '', $value);

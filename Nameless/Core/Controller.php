@@ -130,16 +130,10 @@ class Controller implements ControllerInterface
 			$template_path = $this->container['templates_path'];
 		}
 
-		$template_instance = new Template
-		(
-			$template_path,
-			$template_extension,
-			$template,
-			$data,
-			$filter,
-			$response
-		);
-		return $template_instance->render();
+		$template = new Template($template_path, $template_extension, $template);
+		$template->setData($data, NULL, $filter);
+
+		return $template->render();
 	}
 
 	/**
