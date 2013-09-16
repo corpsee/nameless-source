@@ -34,7 +34,7 @@ abstract class ModuleProvider
 
 	protected function configurationInit ()
 	{
-		$config = include_once NAMELESS_PATH . 'Modules' . DS . static::MODULE_NAME . DS . 'Configs' . DS . 'configuration.php';
+		$config = include_once NAMELESS_PATH . 'Modules' . DS . static::MODULE_NAME . DS . 'configs' . DS . 'configuration.php';
 
 		foreach ($config as $config_option => $config_value)
 		{

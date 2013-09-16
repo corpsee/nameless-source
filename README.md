@@ -19,8 +19,8 @@ define('START_MEMORY',     memory_get_usage());
 define('ROOT_PATH',        dirname(__DIR__) . DS);
 define('NAMELESS_PATH',    ROOT_PATH . 'Nameless' . DS);
 define('APPLICATION_PATH', ROOT_PATH . 'Application' . DS);
-define('CONFIG_PATH',      APPLICATION_PATH . 'Configs' . DS);
-define('PUBLIC_PATH',      ROOT_PATH . 'Public' . DS);
+define('CONFIG_PATH',      APPLICATION_PATH . 'configs' . DS);
+define('PUBLIC_PATH',      ROOT_PATH . 'www' . DS);
 define('FILE_PATH',        PUBLIC_PATH . 'files' . DS);
 define('FILE_PATH_URL',    '/files/');
 
@@ -39,8 +39,8 @@ define('START_MEMORY',     memory_get_usage());
 define('ROOT_PATH',        dirname(__DIR__) . DS);
 define('NAMELESS_PATH',    ROOT_PATH . 'Nameless' . DS);
 define('APPLICATION_PATH', ROOT_PATH . 'Application' . DS);
-define('CONFIG_PATH',      APPLICATION_PATH . 'Configs' . DS);
-define('PUBLIC_PATH',      ROOT_PATH . 'Public' . DS);
+define('CONFIG_PATH',      APPLICATION_PATH . 'configs' . DS);
+define('PUBLIC_PATH',      ROOT_PATH . 'www' . DS);
 define('FILE_PATH',        PUBLIC_PATH . 'files' . DS);
 define('FILE_PATH_URL',    '/files/');
 
@@ -61,7 +61,7 @@ $options = array
 );
 
 $framework = new Kernel();
-$framework = new HttpCache(new Kernel(), new Store(ROOT_PATH . 'Cache'), NULL, $options);
+$framework = new HttpCache(new Kernel(), new Store(APPLICATION_PATH . 'cache'), NULL, $options);
 ```
 For more examples please see the Application directory.
 Tests
