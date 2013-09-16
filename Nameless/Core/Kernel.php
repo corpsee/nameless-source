@@ -81,7 +81,7 @@ class Kernel extends HttpKernel
 			$app_config = include_once CONFIG_PATH . 'configuration.php';
 		}
 
-		$default_config = include_once ROOT_PATH . 'Nameless' . DS . 'Core' . DS . 'Configs' . DS . 'configuration.php';
+		$default_config = include_once ROOT_PATH . 'Nameless' . DS . 'Core' . DS . 'configs' . DS . 'configuration.php';
 		$config         = array_merge($default_config, $app_config);
 
 		foreach ($config as $config_option => $config_value)
