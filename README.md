@@ -24,7 +24,7 @@ define('PUBLIC_PATH',      ROOT_PATH . 'www' . DS);
 define('FILE_PATH',        PUBLIC_PATH . 'files' . DS);
 define('FILE_PATH_URL',    '/files/');
 
-require_once ROOT_PATH . 'Vendors' . DS . 'autoload.php';
+require_once ROOT_PATH . 'vendor' . DS . 'autoload.php';
 
 use Nameless\Core\Kernel;
 
@@ -43,6 +43,8 @@ define('CONFIG_PATH',      APPLICATION_PATH . 'configs' . DS);
 define('PUBLIC_PATH',      ROOT_PATH . 'www' . DS);
 define('FILE_PATH',        PUBLIC_PATH . 'files' . DS);
 define('FILE_PATH_URL',    '/files/');
+
+require_once ROOT_PATH . 'vendor' . DS . 'autoload.php';
 
 // production mode with cache
 use Nameless\Core\HttpCache;
