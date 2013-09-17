@@ -39,6 +39,7 @@ class IndexController extends Controller
 			'btn_ru'      => $this->container['localization']->get('btn'),
 			'styles'      => $this->container['assets.dispatcher']->getAssets('frontend', $styles),
 			'scripts'     => $this->container['assets.dispatcher']->getAssets('frontend', $scripts),
+			'subtemplate' => 'subindex',
 		);
 		return $this->render('index', $data, Template::FILTER_XSS);
 

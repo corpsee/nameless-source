@@ -289,7 +289,7 @@ class Template
 		$subtemplate_instance->setData($this->data, NULL, $this->template_filter);
 		$subtemplate_instance->setFilters($this->filters);
 
-		echo $subtemplate_instance->render();
+		return $subtemplate_instance->renderTemplate();
 	}
 
 	/**
