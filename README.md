@@ -4,12 +4,12 @@ Yet another framework based on Symfony Components.
 Examples
 --------
 Install dependencies (vendor libs):
-```
+```bash
 cd /var/www/nameless.local
 php composer.phar install
 ```
 Debug version of *index.php*:
-```
+```php
 error_reporting(-1);
 ini_set('display_errors', 1);
 
@@ -32,7 +32,7 @@ $framework = new Kernel();
 $framework->run();
 ```
 Production version of *index.php*:
-```
+```php
 define('DS',               DIRECTORY_SEPARATOR);
 define('START_TIME',       microtime(TRUE));
 define('START_MEMORY',     memory_get_usage());
@@ -69,7 +69,7 @@ For more examples please see the Application directory.
 Tests
 -----
 Run tests:
-```
+```bash
 cd /var/www/nameless.local/Bin
 phpunit -c ../Nameless/phpunit.xml
 ```
