@@ -121,6 +121,7 @@ class Controller implements ControllerInterface
 	 */
 	public function render ($template, array $data = array(), $filter = Template::FILTER_ESCAPE, Response $response = NULL, $template_extension = NULL, $template_path = NULL)
 	{
+
 		if (is_null($template_extension))
 		{
 			$template_extension = $this->container['templates_extension'];
@@ -130,8 +131,8 @@ class Controller implements ControllerInterface
 			$template_path = $this->container['templates_path'];
 		}
 
-		$template = new Template($template_path, $template_extension, $template);
-		$template->setData($data, NULL, $filter);
+		$template = new Template($template_path, $template_extension, $template, array(), $filter);
+		$template->setData($data);
 
 		return $template->render();
 	}
