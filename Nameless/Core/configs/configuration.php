@@ -11,7 +11,6 @@ return array
 	'language'                     => 'en',
 	'http_port'                    => 80,
 	'https_port'                   => 443,
-	'templates_extension'          => 'tpl',
 	'cache_path'                   => APPLICATION_PATH . 'cache' . DS,
 	'templates_path'               => APPLICATION_PATH . 'Templates' . DS,
 	'templates_error_path'         => APPLICATION_PATH . 'Templates' . DS,

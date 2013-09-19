@@ -119,21 +119,13 @@ class Controller implements ControllerInterface
 	 *
 	 * @return Response
 	 */
-	public function render ($template, array $data = array(), $filter = Template::FILTER_ESCAPE, Response $response = NULL, $template_extension = NULL, $template_path = NULL)
+	public function render ($template, array $data = array(), $filter = Template::FILTER_ESCAPE, Response $response = NULL, $template_path = NULL, $template_extension = 'tpl')
 	{
-
-		if (is_null($template_extension))
-		{
-			$template_extension = $this->container['templates_extension'];
-		}
 		if (is_null($template_path))
 		{
 			$template_path = $this->container['templates_path'];
 		}
-
-		$template = new Template($template_path, $template_extension, $template, array(), $filter);
-		$template->setData($data);
-
+		$template = new Template($template_path, $template, $data, $filter);
 		return $template->render();
 	}
 

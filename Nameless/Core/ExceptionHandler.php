@@ -43,25 +43,25 @@ class ExceptionHandler
 
 	/**
 	 * @param string          $templates_path
-	 * @param string          $templates_extension
 	 * @param string          $environment
 	 * @param LoggerInterface $logger
+	 * @param string          $templates_extension
 	 *
 	 * @return ExceptionHandler
 	 */
-	public static function register ($templates_path, $templates_extension = 'tpl', $environment = 'debug', LoggerInterface $logger = NULL)
+	public static function register ($templates_path, $environment = 'debug', LoggerInterface $logger = NULL, $templates_extension = 'tpl')
 	{
-		$handler = new static($templates_path, $templates_extension, $environment, $logger);
+		$handler = new static($templates_path, $environment, $logger, $templates_extension);
 		set_exception_handler(array($handler, 'handleException'));
 	}
 
 	/**
 	 * @param string          $templates_path
-	 * @param string          $templates_extension
 	 * @param string          $environment
 	 * @param LoggerInterface $logger
+	 * @param string          $templates_extension
 	 */
-	public function __construct ($templates_path, $templates_extension = 'tpl', $environment = 'debug', LoggerInterface $logger = NULL)
+	public function __construct ($templates_path, $environment = 'debug', LoggerInterface $logger = NULL, $templates_extension = 'tpl')
 	{
 		$this->environment = $environment;
 		$this->logger      = $logger;
@@ -85,6 +85,7 @@ class ExceptionHandler
 	 */
 	public function createResponse ($exception)
 	{
+		//echo $this->environment; exit;
 		if (!$exception instanceof FlattenException)
 		{
 			$exception = FlattenException::create($exception);
@@ -120,8 +121,8 @@ class ExceptionHandler
 				}
 			}
 
-			$template = new Template($template_path, $template_extension, $template_name, array(), Template::FILTER_ESCAPE, new Response('', $exception->getStatusCode(), $exception->getHeaders()));
-			return $template->render(TRUE);
+			$template = new Template($template_path, $template_name, array(), Template::FILTER_ESCAPE, new Response('', $exception->getStatusCode(), $exception->getHeaders()), $template_extension);
+			return $template->render();
 		}
 	}
 

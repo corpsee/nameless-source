@@ -64,14 +64,13 @@ class Template
 
 	/**
 	 * @param string   $template_path
-	 * @param string   $template_extension
 	 * @param string   $template
 	 * @param array    $data
 	 * @param int      $template_filter
 	 * @param Response $response
+	 * @param string   $template_extension
 	 */
-	//TODO: filters as classes
-	public function __construct ($template_path, $template_extension, $template, $data = array(), $template_filter = self::FILTER_ESCAPE, Response $response = NULL)
+	public function __construct ($template_path, $template, $data = array(), $template_filter = self::FILTER_ESCAPE, Response $response = NULL, $template_extension = 'tpl')
 	{
 		$this->template_path      = $template_path;
 		$this->template_extension = $template_extension;
@@ -83,27 +82,29 @@ class Template
 	}
 
 	/**
-	 * @param array|string $data_name
-	 * @param mixed        $data_value
+	 * @param array|string $name
+	 * @param mixed        $value
 	 * @param integer      $filter
 	 *
 	 * @return $this
 	 *
 	 * @throws \InvalidArgumentException
 	 */
-	public function setData ($data_name, $data_value = NULL, $filter = NULL)
+	//TODO: make filters is a preffixes in the $data_name
+	public function setData ($name, $value = NULL, $filter = NULL)
 	{
-		if (is_array($data_name) && is_null($data_value))
+		//var_dump($name); exit;
+		if ($name && !is_null($value))
 		{
-			$this->data = $data_name;
-		}
-		elseif ($data_name && $data_value)
-		{
-			$this->data[$data_name]    = $data_value;
+			$this->data[$name] = $value;
 			if (!is_null($filter))
 			{
-				$this->filters[$data_name] = $filter;
+				$this->filters[$name] = $filter;
 			}
+		}
+		elseif (is_array($name))
+		{
+			$this->data = $name;
 		}
 		else
 		{
@@ -124,65 +125,71 @@ class Template
 	}
 
 	/**
-	 * @param string|array $data_name
+	 * @param string|array $name
 	 *
 	 * @return mixed
 	 *
 	 * @throws \OutOfBoundsException
 	 */
-	public function getData ($data_name = NULL)
+	public function getData ($name = NULL)
 	{
-		if (is_null($data_name))
+		if (is_null($name))
 		{
 			$data = array();
-			foreach ($this->data as $data_name => $data_value)
+			foreach ($this->data as $name => $data_value)
 			{
-				$filter = isset($this->filters[$data_name]) ? $this->filters[$data_name] : $this->template_filter;
+				$filter = isset($this->filters[$name]) ? $this->filters[$name] : $this->template_filter;
 				switch ($filter)
 				{
 					case 0:
-						$data[$data_name] = $data_value;
+						$data[$name] = $data_value;
 						break;
 					case 1:
-						$data[$data_name] = self::escape($data_value);
+						$data[$name] = self::escape($data_value);
 						break;
 					case 2:
-						$data[$data_name] = self::cleanXSS($data_value);
+						$data[$name] = $this->cleanXSS($data_value);
 				}
 			}
 			return $data;
 		}
-		elseif (isset($this->data[$data_name]))
+		elseif (isset($this->data[$name]))
 		{
-			$filter = isset($this->filters[$data_name]) ? $this->filters[$data_name] : $this->template_filter;
+			$filter = isset($this->filters[$name]) ? $this->filters[$name] : $this->template_filter;
 			switch ($filter)
 			{
 				case 0:
-					return $this->data[$data_name];
+					return $this->data[$name];
 					break;
 				case 1:
-					return self::escape($this->data[$data_name]);
+					return self::escape($this->data[$name]);
 					break;
 				case 2:
-					return self::cleanXSS($this->data[$data_name]);
+					return $this->cleanXSS($this->data[$name]);
 			}
 		}
 		throw new \OutOfBoundsException('Value doesn`t exist in template data');
 	}
 
 	/**
-	 * @param string  $data_name
-	 * @param mixed   $data_value
+	 * @param string  $name
+	 * @param mixed   $value
 	 * @param integer $filter
+	 *
+	 * @throws \InvalidArgumentException
 	 *
 	 * @return $this
 	 */
-	public function bindData ($data_name, &$data_value, $filter = NULL)
+	public function bindData ($name, &$value, $filter = NULL)
 	{
-		$this->data[$data_name]    = $data_value;
+		$this->data[$name] = $value;
 		if (!is_null($filter))
 		{
-			$this->filters[$data_name] = $filter;
+			$this->filters[$name] = $filter;
+		}
+		if (!$name && !$value)
+		{
+			throw new \InvalidArgumentException('Invalid argument for bind template data');
 		}
 		return $this;
 	}
@@ -192,7 +199,7 @@ class Template
 	 */
 	public function subTemplate ($template)
 	{
-		$subtemplate_instance = new static($this->template_path, $this->template_extension, $template, $this->data);
+		$subtemplate_instance = new static($this->template_path, $template, $this->data, $this->template_filter, NULL, $this->template_extension);
 		$subtemplate_instance->setFilters($this->filters);
 
 		return $subtemplate_instance->renderTemplate();
@@ -305,50 +312,51 @@ class Template
 	/**
 	 * Clean a value and try to prevent XSS attacks
 	 *
-	 * @param mixed   $varValue      A string or array
+	 * @param mixed   $value      A string or array
 	 *
 	 * @return mixed The cleaned string or array
 	 */
-	public static function cleanXSS ($varValue)
+	protected function cleanXSS ($value)
 	{
-		echo 1; exit;
-		if ($varValue === NULL || $varValue == '')
+		if ($value === NULL || $value == '')
 		{
-			return $varValue;
+			return $value;
 		}
 
 		// Recursively clean arrays
-		if (is_array($varValue))
+		if (is_array($value))
 		{
-			foreach ($varValue as $k => $v)
+			foreach ($value as $k => $v)
 			{
-				$varValue[$k] = static::cleanXSS($v);
+				$value[$k] = static::cleanXSS($v);
 			}
 
-			return $varValue;
+			return $value;
 		}
 
 		// Return if var is not a string
-		if (is_bool($varValue) || $varValue === NULL || is_numeric($varValue))
+		if (is_bool($value) || $value === NULL || is_numeric($value))
 		{
-			return $varValue;
+			return $value;
 		}
 
 		// Validate standard character entites and UTF16 two byte encoding
-		$varValue = preg_replace('/(&#*\w+)[\x00-\x20]+;/i', '$1;', $varValue);
-		$varValue = preg_replace('/(&#x*)([0-9a-f]+);/i', '$1$2;', $varValue);
+		$value = preg_replace('/(&#*\w+)[\x00-\x20]+;/i', '$1;', $value);
+		$value = preg_replace('/(&#x*)([0-9a-f]+);/i', '$1$2;', $value);
 
 		// Remove carriage returns
-		$varValue = preg_replace('/\r+/', '', $varValue);
+		$value = preg_replace('/\r+/', '', $value);
 
 		// Replace unicode entities
 		//$varValue = utf8_decode_entities($varValue);
 
 		// Remove NULL characters
-		$varValue = preg_replace('/\0+/', '', $varValue);
-		$varValue = preg_replace('/(\\\\0)+/', '', $varValue);
+		$value = preg_replace('/\0+/', '', $value);
+		$value = preg_replace('/(\\\\0)+/', '', $value);
 
-		$arrKeywords = array('/\bj\s*a\s*v\s*a\s*s\s*c\s*r\s*i\s*p\s*t\b/is', // javascript
+		$keywords = array
+		(
+			'/\bj\s*a\s*v\s*a\s*s\s*c\s*r\s*i\s*p\s*t\b/is', // javascript
 			'/\bv\s*b\s*s\s*c\s*r\s*i\s*p\s*t\b/is', // vbscript
 			'/\bv\s*b\s*s\s*c\s*r\s*p\s*t\b/is', // vbscrpt
 			'/\bs\s*c\s*r\s*i\s*p\s*t\b/is', //script
@@ -361,50 +369,50 @@ class Template
 		);
 
 		// Compact exploded keywords like "j a v a s c r i p t"
-		foreach ($arrKeywords as $strKeyword)
+		foreach ($keywords as $keyword)
 		{
-			$arrMatches = array();
-			preg_match_all($strKeyword, $varValue, $arrMatches);
+			$matches = array();
+			preg_match_all($keyword, $value, $matches);
 
-			foreach ($arrMatches[0] as $strMatch)
+			foreach ($matches[0] as $match)
 			{
-				$varValue = str_replace($strMatch, preg_replace('/\s*/', '', $strMatch), $varValue);
+				$value = str_replace($match, preg_replace('/\s*/', '', $match), $value);
 			}
 		}
 
-		$arrRegexp[] = '/<(a|img)[^>]*[^a-z](<script|<xss)[^>]*>/is';
-		$arrRegexp[] = '/<(a|img)[^>]*[^a-z]document\.cookie[^>]*>/is';
-		$arrRegexp[] = '/<(a|img)[^>]*[^a-z]vbscri?pt\s*:[^>]*>/is';
-		$arrRegexp[] = '/<(a|img)[^>]*[^a-z]expression\s*\([^>]*>/is';
+		$regexp[] = '/<(a|img)[^>]*[^a-z](<script|<xss)[^>]*>/is';
+		$regexp[] = '/<(a|img)[^>]*[^a-z]document\.cookie[^>]*>/is';
+		$regexp[] = '/<(a|img)[^>]*[^a-z]vbscri?pt\s*:[^>]*>/is';
+		$regexp[] = '/<(a|img)[^>]*[^a-z]expression\s*\([^>]*>/is';
 
-		$arrRegexp[] = '/vbscri?pt\s*:/is';
-		$arrRegexp[] = '/javascript\s*:/is';
-		$arrRegexp[] = '/<\s*embed.*swf/is';
-		$arrRegexp[] = '/<(a|img)[^>]*[^a-z]alert\s*\([^>]*>/is';
-		$arrRegexp[] = '/<(a|img)[^>]*[^a-z]javascript\s*:[^>]*>/is';
-		$arrRegexp[] = '/<(a|img)[^>]*[^a-z]window\.[^>]*>/is';
-		$arrRegexp[] = '/<(a|img)[^>]*[^a-z]document\.[^>]*>/is';
-		$arrRegexp[] = '/<[^>]*[^a-z]onabort\s*=[^>]*>/is';
-		$arrRegexp[] = '/<[^>]*[^a-z]onblur\s*=[^>]*>/is';
-		$arrRegexp[] = '/<[^>]*[^a-z]onchange\s*=[^>]*>/is';
-		$arrRegexp[] = '/<[^>]*[^a-z]onclick\s*=[^>]*>/is';
-		$arrRegexp[] = '/<[^>]*[^a-z]onerror\s*=[^>]*>/is';
-		$arrRegexp[] = '/<[^>]*[^a-z]onfocus\s*=[^>]*>/is';
-		$arrRegexp[] = '/<[^>]*[^a-z]onkeypress\s*=[^>]*>/is';
-		$arrRegexp[] = '/<[^>]*[^a-z]onkeydown\s*=[^>]*>/is';
-		$arrRegexp[] = '/<[^>]*[^a-z]onkeyup\s*=[^>]*>/is';
-		$arrRegexp[] = '/<[^>]*[^a-z]onload\s*=[^>]*>/is';
-		$arrRegexp[] = '/<[^>]*[^a-z]onmouseover\s*=[^>]*>/is';
-		$arrRegexp[] = '/<[^>]*[^a-z]onmouseup\s*=[^>]*>/is';
-		$arrRegexp[] = '/<[^>]*[^a-z]onmousedown\s*=[^>]*>/is';
-		$arrRegexp[] = '/<[^>]*[^a-z]onmouseout\s*=[^>]*>/is';
-		$arrRegexp[] = '/<[^>]*[^a-z]onreset\s*=[^>]*>/is';
-		$arrRegexp[] = '/<[^>]*[^a-z]onselect\s*=[^>]*>/is';
-		$arrRegexp[] = '/<[^>]*[^a-z]onsubmit\s*=[^>]*>/is';
-		$arrRegexp[] = '/<[^>]*[^a-z]onunload\s*=[^>]*>/is';
-		$arrRegexp[] = '/<[^>]*[^a-z]onresize\s*=[^>]*>/is';
+		$regexp[] = '/vbscri?pt\s*:/is';
+		$regexp[] = '/javascript\s*:/is';
+		$regexp[] = '/<\s*embed.*swf/is';
+		$regexp[] = '/<(a|img)[^>]*[^a-z]alert\s*\([^>]*>/is';
+		$regexp[] = '/<(a|img)[^>]*[^a-z]javascript\s*:[^>]*>/is';
+		$regexp[] = '/<(a|img)[^>]*[^a-z]window\.[^>]*>/is';
+		$regexp[] = '/<(a|img)[^>]*[^a-z]document\.[^>]*>/is';
+		$regexp[] = '/<[^>]*[^a-z]onabort\s*=[^>]*>/is';
+		$regexp[] = '/<[^>]*[^a-z]onblur\s*=[^>]*>/is';
+		$regexp[] = '/<[^>]*[^a-z]onchange\s*=[^>]*>/is';
+		$regexp[] = '/<[^>]*[^a-z]onclick\s*=[^>]*>/is';
+		$regexp[] = '/<[^>]*[^a-z]onerror\s*=[^>]*>/is';
+		$regexp[] = '/<[^>]*[^a-z]onfocus\s*=[^>]*>/is';
+		$regexp[] = '/<[^>]*[^a-z]onkeypress\s*=[^>]*>/is';
+		$regexp[] = '/<[^>]*[^a-z]onkeydown\s*=[^>]*>/is';
+		$regexp[] = '/<[^>]*[^a-z]onkeyup\s*=[^>]*>/is';
+		$regexp[] = '/<[^>]*[^a-z]onload\s*=[^>]*>/is';
+		$regexp[] = '/<[^>]*[^a-z]onmouseover\s*=[^>]*>/is';
+		$regexp[] = '/<[^>]*[^a-z]onmouseup\s*=[^>]*>/is';
+		$regexp[] = '/<[^>]*[^a-z]onmousedown\s*=[^>]*>/is';
+		$regexp[] = '/<[^>]*[^a-z]onmouseout\s*=[^>]*>/is';
+		$regexp[] = '/<[^>]*[^a-z]onreset\s*=[^>]*>/is';
+		$regexp[] = '/<[^>]*[^a-z]onselect\s*=[^>]*>/is';
+		$regexp[] = '/<[^>]*[^a-z]onsubmit\s*=[^>]*>/is';
+		$regexp[] = '/<[^>]*[^a-z]onunload\s*=[^>]*>/is';
+		$regexp[] = '/<[^>]*[^a-z]onresize\s*=[^>]*>/is';
 
-		return preg_replace($arrRegexp, '', $varValue);
+		return preg_replace($regexp, '', $value);
 	}
 
 	/**
@@ -412,11 +420,20 @@ class Template
 	 *
 	 * @return string
 	 */
-	public static function escape ($value)
+	protected function escape ($value)
 	{
 		if (empty($value) || is_numeric($value) || is_bool($value))
 		{
 			return (string)$value;
+		}
+
+		if (is_array($value))
+		{
+			foreach ($value as $k => $v)
+			{
+				$value[$k] = $this->escape($v);
+			}
+			return $value;
 		}
 
 		$value = (string)$value;
