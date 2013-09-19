@@ -222,7 +222,7 @@ class Kernel extends HttpKernel
 		}
 
 		ErrorHandler::register();
-		ExceptionHandler::register($this->container['templates_error_path'], $this->container['templates_extension'], $this->container['environment'], $this->container['logger.logger']);
+		ExceptionHandler::register($this->container['templates_error_path'], $this->container['environment'], $this->container['logger.logger']);
 
 		$this->container['benchmark'] = $this->container->share(function ()
 		{
