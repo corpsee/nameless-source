@@ -41,7 +41,12 @@ class IndexController extends Controller
 			'scripts'     => $this->container['assets.dispatcher']->getAssets('frontend', $scripts),
 			'subtemplate' => 'subindex',
 		);
-		return $this->render('index', $data, Template::FILTER_XSS);
+		$data_filters = array
+		(
+			'styles'      => Template::FILTER_RAW,
+			'scripts'     => Template::FILTER_RAW,
+		);
+		return $this->render('index', $data, Template::FILTER_ESCAPE, $data_filters);
 
 		/*$image = $this->container['imager.image']
 			->open(PUBLIC_PATH . 'observer_origin.jpg')

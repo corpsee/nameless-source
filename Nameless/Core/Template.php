@@ -66,17 +66,19 @@ class Template
 	 * @param string   $template_path
 	 * @param string   $template
 	 * @param array    $data
-	 * @param int      $template_filter
+	 * @param integer  $template_filter
+	 * @param array    $filters
 	 * @param Response $response
 	 * @param string   $template_extension
 	 */
-	public function __construct ($template_path, $template, $data = array(), $template_filter = self::FILTER_ESCAPE, Response $response = NULL, $template_extension = 'tpl')
+	public function __construct ($template_path, $template, $data = array(), $template_filter = self::FILTER_ESCAPE, array $filters = array(), Response $response = NULL, $template_extension = 'tpl')
 	{
 		$this->template_path      = $template_path;
 		$this->template_extension = $template_extension;
 		$this->template           = $template;
 		$this->template_filter    = $template_filter;
 		$this->response           = $response;
+		$this->filters            = $filters;
 
 		$this->setData($data);
 	}
@@ -110,17 +112,6 @@ class Template
 		{
 			throw new \InvalidArgumentException('Invalid argument for set template data');
 		}
-		return $this;
-	}
-
-	/**
-	 * @param array $filters
-	 *
-	 * @return $this
-	 */
-	protected function setFilters (array $filters)
-	{
-		$this->filters = $filters;
 		return $this;
 	}
 
@@ -159,14 +150,15 @@ class Template
 			switch ($filter)
 			{
 				case 0:
-					return $this->data[$name];
+					$return = $this->data[$name];
 					break;
 				case 1:
-					return self::escape($this->data[$name]);
+					$return =  self::escape($this->data[$name]);
 					break;
 				case 2:
-					return $this->cleanXSS($this->data[$name]);
+					$return = $this->cleanXSS($this->data[$name]);
 			}
+			return $return;
 		}
 		throw new \OutOfBoundsException('Value doesn`t exist in template data');
 	}
@@ -199,9 +191,7 @@ class Template
 	 */
 	public function subTemplate ($template)
 	{
-		$subtemplate_instance = new static($this->template_path, $template, $this->data, $this->template_filter, NULL, $this->template_extension);
-		$subtemplate_instance->setFilters($this->filters);
-
+		$subtemplate_instance = new static($this->template_path, $template, $this->data, $this->template_filter, $this->filters, $this->response, $this->template_extension);
 		return $subtemplate_instance->renderTemplate();
 	}
 
@@ -316,10 +306,12 @@ class Template
 	 *
 	 * @return mixed The cleaned string or array
 	 */
-	protected function cleanXSS ($value)
+	protected function cleanXSS0 ($value)
 	{
+		var_dump($value);
 		if ($value === NULL || $value == '')
 		{
+			var_dump($value);
 			return $value;
 		}
 
@@ -331,12 +323,14 @@ class Template
 				$value[$k] = static::cleanXSS($v);
 			}
 
+			var_dump($value);
 			return $value;
 		}
 
 		// Return if var is not a string
 		if (is_bool($value) || $value === NULL || is_numeric($value))
 		{
+			var_dump($value);
 			return $value;
 		}
 
@@ -412,13 +406,82 @@ class Template
 		$regexp[] = '/<[^>]*[^a-z]onunload\s*=[^>]*>/is';
 		$regexp[] = '/<[^>]*[^a-z]onresize\s*=[^>]*>/is';
 
-		return preg_replace($regexp, '', $value);
+
+		$value = preg_replace($regexp, '', $value);
+		var_dump($value);
+		return $value;
 	}
 
 	/**
-	 * @param string $value
+	 * @param mixed $value
 	 *
-	 * @return string
+	 * @return mixed
+	 */
+	public function cleanXSS ($value)
+	{
+		if (empty($value) || is_bool($value) || is_numeric($value))
+		{
+			return $value;
+		}
+
+		if (is_array($value) || is_object($value))
+		{
+			foreach ($value as $value_key => $value_item)
+			{
+				$value[$value_key] = $this->cleanXSS($value_item);
+			}
+			return $value;
+		}
+
+		// Remove all NULL bytes
+		$value = str_replace("\0", '', $value);
+
+		// Fix &entity\n;
+		$value = str_replace(array('&amp;', '&lt;', '&gt;'), array('&amp;amp;', '&amp;lt;', '&amp;gt;'), $value);
+		$value = preg_replace('/(&#*\w+)[\x00-\x20]+;/u', '$1;', $value);
+		$value = preg_replace('/(&#x*[0-9A-F]+);*/iu', '$1;', $value);
+		$value = html_entity_decode($value, ENT_COMPAT, 'UTF-8');
+
+		// Remove any attribute starting with "on" or xmlns
+		$value = preg_replace('#(?:on[a-z]+|xmlns)\s*=\s*[\'"\x00-\x20]?[^\'>"]*[\'"\x00-\x20]?\s?#iu', '', $value);
+
+		// Remove javascript: and vbscript: protocols
+		$script_replace = array
+		(
+			'#([a-z]*)[\x00-\x20]*=[\x00-\x20]*([`\'"]*)[\x00-\x20]*j[\x00-\x20]*a[\x00-\x20]*v[\x00-\x20]*a[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iu',
+			'#([a-z]*)[\x00-\x20]*=([\'"]*)[\x00-\x20]*v[\x00-\x20]*b[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iu',
+			'#([a-z]*)[\x00-\x20]*=([\'"]*)[\x00-\x20]*-moz-binding[\x00-\x20]*:#u',
+		);
+		$value = preg_replace($script_replace, '$1=$2[deleted]', $value);
+
+		// Only works in IE: <span style="width: expression(alert('Ping!'));"></span>
+		$expression_replace = array
+		(
+			'#(<[^>]+?)style[\x00-\x20]*=[\x00-\x20]*[`\'"]*.*?expression[\x00-\x20]*\([^>]*+>#is',
+			'#(<[^>]+?)style[\x00-\x20]*=[\x00-\x20]*[`\'"]*.*?behaviour[\x00-\x20]*\([^>]*+>#is',
+			'#(<[^>]+?)style[\x00-\x20]*=[\x00-\x20]*[`\'"]*.*?s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:*[^>]*+>#ius',
+		);
+		$value = preg_replace($expression_replace, '$1>', $value);
+
+		// Remove namespaced elements (we do not need them)
+		$value = preg_replace('#</*\w+:\w[^>]*+>#i', '', $value);
+
+		do
+		{
+			// Remove really unwanted tags
+			$old = $value;
+			$value = preg_replace('#</*(?:applet|b(?:ase|gsound|link)|embed|frame(?:set)?|i(?:frame|layer)|l(?:ayer|ink)|meta|object|s(?:cript|tyle)|title|xml)[^>]*+>#i', '', $value);
+		}
+		while ($old !== $value);
+
+		return $value;
+	}
+
+
+	/**
+	 * @param mixed $value
+	 *
+	 * @return mixed
 	 */
 	protected function escape ($value)
 	{
@@ -427,16 +490,14 @@ class Template
 			return (string)$value;
 		}
 
-		if (is_array($value))
+		if (is_array($value) || is_object($value))
 		{
-			foreach ($value as $k => $v)
+			foreach ($value as $value_key => $value_item)
 			{
-				$value[$k] = $this->escape($v);
+				$value[$value_key] = $this->escape($value_item);
 			}
 			return $value;
 		}
-
-		$value = (string)$value;
-		return htmlspecialchars($value, ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8');
+		return htmlspecialchars((string)$value, ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8');
 	}
 }
