@@ -8,6 +8,10 @@ use Nameless\Core\Controller;
 
 class IndexController extends Controller
 {
+	public function error ($code)
+	{
+		echo 'IndexController::error'; exit();
+	}
 
 	public function index ()
 	{
