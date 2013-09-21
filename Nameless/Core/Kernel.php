@@ -23,6 +23,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
 use Symfony\Component\HttpKernel\EventListener\ResponseListener;
 use Symfony\Component\HttpKernel\EventListener\LocaleListener;
+use Symfony\Component\HttpKernel\EventListener\ExceptionListener;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
@@ -30,6 +31,8 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Route;
 use Nameless\Modules\Auto\User;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
+use Symfony\Component\Debug\ErrorHandler;
+use Symfony\Component\Debug\Debug;
 
 /**
  * Kernel class
@@ -207,22 +210,30 @@ class Kernel extends HttpKernel
 
 		mb_internal_encoding('UTF-8');
 
-		// error/exception reporting
-		if ($this->container['environment'] === 'debug' || $this->container['environment'] === 'test')
+		$this->container['dispatcher']->addSubscriber(new ResponseListener('UTF-8'));
+
+		if ($this->container['environment'] === 'debug')
 		{
-			error_reporting(-1);
-			ini_set('display_errors', 1);
+			Debug::enable();
+			ErrorHandler::setLogger($this->container['logger.logger'], 'deprecation');
+			ErrorHandler::setLogger($this->container['logger.logger'], 'emergency');
 		}
 		else
 		{
-			error_reporting(E_ALL ^ (E_STRICT | E_NOTICE | E_DEPRECATED));
-			ini_set('display_errors', 0);
+			if ($this->container['environment'] === 'test')
+			{
+				error_reporting(-1);
+				ini_set('display_errors', 1);
+			}
+			else
+			{
+				error_reporting(E_ALL ^ (E_STRICT | E_NOTICE | E_DEPRECATED));
+				ini_set('display_errors', 0);
+			}
 
-			$this->container['dispatcher']->addSubscriber(new ResponseListener('UTF-8'));
-		}
-
-		ErrorHandler::register();
-		ExceptionHandler::register($this->container['templates_error_path'], $this->container['environment'], $this->container['logger.logger']);
+			$listener = new ExceptionListener($this->container['error_controller']);
+			$this->container['dispatcher']->addSubscriber($listener);
+		};
 
 		$this->container['benchmark'] = $this->container->share(function ()
 		{

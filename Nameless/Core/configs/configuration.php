@@ -13,6 +13,5 @@ return array
 	'https_port'                   => 443,
 	'cache_path'                   => APPLICATION_PATH . 'cache' . DS,
 	'templates_path'               => APPLICATION_PATH . 'Templates' . DS,
-	'templates_error_path'         => APPLICATION_PATH . 'Templates' . DS,
-	'default_templates_error_path' => ROOT_PATH . 'Nameless' . DS . 'Core' . DS . 'Templates' . DS,
+	'error_controller'             => 'Nameless\\Core\\ErrorController::error',
 );

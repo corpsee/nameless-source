@@ -6,6 +6,7 @@
 		"symfony/http-kernel":      "v2.3.4",
 		"symfony/routing":          "v2.3.4",
 		"symfony/event-dispatcher": "v2.3.4",
+		"symfony/debug":            "v2.3.4",
 		"swiftmailer/swiftmailer":  "v5.0.2",
 		"monolog/monolog":          "1.6.0",
 		"kriswallsmith/assetic":    "v1.1.2",
