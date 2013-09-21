@@ -71,6 +71,7 @@ class Template
 	 * @param Response $response
 	 * @param string   $template_extension
 	 */
+	//TODO: Page layout instead of subtemplates (or together)
 	public function __construct ($template_path, $template, $data = array(), $template_filter = self::FILTER_ESCAPE, array $filters = array(), Response $response = NULL, $template_extension = 'tpl')
 	{
 		$this->template_path      = $template_path;
