@@ -121,7 +121,7 @@ class ExceptionHandler
 				}
 			}
 
-			$template = new Template($template_path, $template_name, array(), Template::FILTER_ESCAPE, new Response('', $exception->getStatusCode(), $exception->getHeaders()), $template_extension);
+			$template = new Template($template_path, $template_name, array(), Template::FILTER_ESCAPE, array(), new Response('', $exception->getStatusCode(), $exception->getHeaders()), $template_extension);
 			return $template->render();
 		}
 	}

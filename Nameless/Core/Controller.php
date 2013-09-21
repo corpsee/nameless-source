@@ -112,20 +112,21 @@ class Controller implements ControllerInterface
 	/**
 	 * @param string   $template
 	 * @param array    $data
-	 * @param integer  $filter
+	 * @param integer  $template_filter
+	 * @param array    $filters
 	 * @param Response $response
 	 * @param string   $template_extension
 	 * @param string   $template_path
 	 *
 	 * @return Response
 	 */
-	public function render ($template, array $data = array(), $filter = Template::FILTER_ESCAPE, Response $response = NULL, $template_path = NULL, $template_extension = 'tpl')
+	public function render ($template, array $data = array(), $template_filter = Template::FILTER_ESCAPE, array $filters = array(), Response $response = NULL, $template_path = NULL, $template_extension = 'tpl')
 	{
 		if (is_null($template_path))
 		{
 			$template_path = $this->container['templates_path'];
 		}
-		$template = new Template($template_path, $template, $data, $filter);
+		$template = new Template($template_path, $template, $data, $template_filter, $filters);
 		return $template->render();
 	}
 
