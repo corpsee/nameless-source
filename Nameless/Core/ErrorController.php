@@ -9,6 +9,6 @@ class ErrorController extends Controller
 	//TODO: error style - bootstrap
 	public function error (FlattenException $exception)
 	{
-		return $this->render($exception->getStatusCode(), array(), Template::FILTER_ESCAPE, array(), NULL, NAMELESS_PATH . 'Core' . DS . 'Templates' . DS);
+		return $this->render($exception->getStatusCode(), array(), Template::FILTER_ESCAPE, array(), NULL, NAMELESS_PATH . 'Core' . DS . 'templates' . DS);
 	}
 }
