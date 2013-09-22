@@ -67,13 +67,16 @@ class AssetsDispatcher
 	 * @return string
 	 * @throws \RuntimeException
 	 */
+	//TODO: check amount of files
 	public function getAssets ($name, array $assets, $debug = FALSE, $compress = TRUE)
 	{
 		$assets = $this->createAssets($assets);
 		$assets_collection = new AssetsCollection($assets);
 
 		$compress_postfix = $compress ? 'min.' : '';
-		$compiled_path    = $this->container['assets.path'] . $name . '.' . $assets_collection->getLastModified() . '.' . $compress_postfix . $assets_collection->getMetaType();
+		$version          = $assets_collection->getLastModified();
+
+		$compiled_path    = $this->container['assets.path'] . $name . '.' . $compress_postfix . $assets_collection->getMetaType();
 
 		if
 		(
@@ -87,14 +90,11 @@ class AssetsDispatcher
 		{
 			return $this->generateAssetsDebug($assets_collection);
 		}
-		elseif ($this->container['environment'] === 'production')
+		elseif ($this->container['environment'] === 'test')
 		{
-			return $this->generateAssets($assets_collection, $compiled_path);
+			$this->generateAssetsTest($assets_collection, $compiled_path, $compress);
 		}
-		else
-		{
-			return $this->generateAssetsTest($assets_collection, $compiled_path, $compress);
-		}
+		return sprintf($this->templates[$assets_collection->getMetaType()], pathToURL($compiled_path) . '?v=' . $version);
 	}
 
 	protected function generateAssetsDebug (AssetsCollection $assets_collection)
@@ -126,33 +126,19 @@ class AssetsDispatcher
 	 */
 	protected function generateAssetsTest (AssetsCollection $assets_collection, $compiled_path, $compress = TRUE)
 	{
-		if (!file_exists($compiled_path))
+		if ($compress)
 		{
-			if ($compress)
-			{
-				$dump = $assets_collection->dumpCompress($this->container['assets.path'], $this->container['assets.yuicompressor_path'], $this->container['assets.java_path']);
-			}
-			else
-			{
-				$dump = $assets_collection->dump($this->container['assets.path']);
-			}
-
-			if (FALSE === @file_put_contents($compiled_path, $dump))
-			{
-				throw new \RuntimeException('Unable to write file ' . $compiled_path);
-			}
+			$dump = $assets_collection->dumpCompress($this->container['assets.path'], $this->container['assets.yuicompressor_path'], $this->container['assets.java_path']);
 		}
-		return sprintf($this->templates[$assets_collection->getMetaType()], pathToURL($compiled_path));
-	}
+		else
+		{
+			$dump = $assets_collection->dump($this->container['assets.path']);
+		}
 
-	/**
-	 * @param AssetsCollection $assets_collection
-	 * @param string           $compiled_path
-	 *
-	 * @return string
-	 */
-	protected function generateAssets (AssetsCollection $assets_collection, $compiled_path)
-	{
-		return sprintf($this->templates[$assets_collection->getMetaType()], pathToURL($compiled_path));
+		if (FALSE === @file_put_contents($compiled_path, $dump))
+		{
+			throw new \RuntimeException('Unable to write file ' . $compiled_path);
+		}
+		return pathToURL($compiled_path);
 	}
 }
