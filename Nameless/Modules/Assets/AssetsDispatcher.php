@@ -124,6 +124,7 @@ class AssetsDispatcher
 	 * @return string
 	 * @throws \RuntimeException
 	 */
+	//TODO: Remove every time generation, check changes
 	protected function generateAssetsTest (AssetsCollection $assets_collection, $compiled_path, $compress = TRUE)
 	{
 		if ($compress)
