@@ -55,7 +55,7 @@ class Template
 	/**
 	 * @var array
 	 */
-	protected $filters = array();
+	protected $filters;
 
 	/**
 	 * @var Response
