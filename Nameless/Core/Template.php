@@ -375,7 +375,7 @@ class Template
 	{
 		if (empty($value) || is_numeric($value) || is_bool($value))
 		{
-			return (string)$value;
+			return $value;
 		}
 
 		if (is_array($value) || is_object($value))
