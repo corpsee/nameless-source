@@ -82,9 +82,10 @@ class Response
 		511 => "Network Authentication Required", // RFC6585
 	);
 
-	public function __construct ($content = '', $status_code = 200, array $headers = array(), $protocol_version = '1.0')
+	public function __construct ($content = '', $status_code = 200, array $headers = array(), $protocol_version = '1.0', $charset = 'UTF-8')
 	{
 		$this
+			->setCharset($charset)
 			->setContent($content)
 			->setStatusCode($status_code)
 			->setProtocolVersion($protocol_version)
@@ -193,6 +194,17 @@ class Response
 		return $this->status_message;
 	}
 
+	public function setCharset ($charset)
+	{
+		$this->charset = $charset;
+		return $this;
+	}
+
+	public function getCharset ()
+	{
+		return $this->charset;
+	}
+
 	public function sendHeaders ()
 	{
 		if (headers_sent())
@@ -218,12 +230,6 @@ class Response
 	public function sendContent ()
 	{
 		echo $this->content;
-
-		if (function_exists('fastcgi_finish_request'))
-		{
-			fastcgi_finish_request();
-		}
-
 		return $this;
 	}
 
@@ -231,6 +237,12 @@ class Response
 	{
 		$this->sendHeaders();
 		$this->sendContent();
+
+		if (function_exists('fastcgi_finish_request'))
+		{
+			fastcgi_finish_request();
+		}
+
 		return $this;
 	}
 }
