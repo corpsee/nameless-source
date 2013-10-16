@@ -6,6 +6,8 @@ class Response
 {
 	protected $headers;
 
+	protected $cookies;
+
 	protected $content;
 
 	protected $protocol_version;
@@ -189,5 +191,46 @@ class Response
 	public function getStatusMessage ()
 	{
 		return $this->status_message;
+	}
+
+	public function sendHeaders ()
+	{
+		if (headers_sent())
+		{
+			return $this;
+		}
+
+		header('HTTP/' . $this->getProtocolVersion() . ' ' . $this->getStatusCode() . ' ' . $this->getStatusMessage());
+
+		foreach ($this->headers as $name => $header)
+		{
+			header($name . ': ' . $header, FALSE);
+		}
+
+		// cookies
+		foreach ($this->cookies as $cookie)
+		{
+			setcookie($cookie['name'], $cookie['value'], $cookie['expires_time'], $cookie['path'], $cookie['domain'], $cookie['is_secure'], $cookie['is_http_only']);
+		}
+		return $this;
+	}
+
+	public function sendContent ()
+	{
+		echo $this->content;
+
+		if (function_exists('fastcgi_finish_request'))
+		{
+			fastcgi_finish_request();
+		}
+
+		return $this;
+	}
+
+	public function send ()
+	{
+		$this->sendHeaders();
+		$this->sendContent();
+		return $this;
 	}
 }
