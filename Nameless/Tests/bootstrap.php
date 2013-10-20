@@ -13,4 +13,4 @@ define('PUBLIC_PATH',      ROOT_PATH . 'Public' . DS);
 define('FILE_PATH',        PUBLIC_PATH . 'files' . DS);
 define('FILE_PATH_URL',    '/files/');
 
-require_once ROOT_PATH . 'Vendors' . DS . 'autoload.php';
+require_once ROOT_PATH . 'vendor' . DS . 'autoload.php';
