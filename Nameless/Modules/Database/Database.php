@@ -40,7 +40,7 @@ class Database extends \PDO
 			$attributes[\PDO::ATTR_PERSISTENT] = TRUE;
 		}
 
-		if (in_array(strtolower($db_type), array('mysql', 'mysqli')) and $compress)
+		if (strtolower($db_type) === 'mysql' && $compress)
 		{
 			$attributes[\PDO::MYSQL_ATTR_COMPRESS] = TRUE;
 		}
