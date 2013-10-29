@@ -24,10 +24,10 @@ class Database extends \PDO
 	//result->rowCount();
 
 	/**
-	 * @param string $db_type
-	 * @param string $dns
-	 * @param string $user
-	 * @param string $password
+	 * @param string  $db_type
+	 * @param string  $dns
+	 * @param string  $user
+	 * @param string  $password
 	 * @param boolean $persistent
 	 * @param boolean $compress
 	 */
@@ -50,7 +50,7 @@ class Database extends \PDO
 
 	/**
 	 * @param string $sql
-	 * @param array $params
+	 * @param array  $params
 	 *
 	 * @return \PDOStatement
 	 */
@@ -67,7 +67,7 @@ class Database extends \PDO
 
 	/**
 	 * @param string $sql
-	 * @param array $params
+	 * @param array  $params
 	 *
 	 * @return integer
 	 */
@@ -87,7 +87,7 @@ class Database extends \PDO
 
 	/**
 	 * @param string $sql
-	 * @param array $params
+	 * @param array  $params
 	 *
 	 * @return array|false
 	 */
@@ -99,7 +99,7 @@ class Database extends \PDO
 
 	/**
 	 * @param string $sql
-	 * @param array $params
+	 * @param array  $params
 	 *
 	 * @return array|false
 	 */
@@ -110,8 +110,8 @@ class Database extends \PDO
 	}
 
 	/**
-	 * @param string $sql
-	 * @param array $params
+	 * @param string  $sql
+	 * @param array   $params
 	 * @param integer $column
 	 *
 	 * @return array|false
