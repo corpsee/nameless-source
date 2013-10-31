@@ -12,7 +12,6 @@
 
 namespace Nameless\Core;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RequestContext;
@@ -29,7 +28,6 @@ use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHa
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Route;
-use Nameless\Modules\Auto\User;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\Debug;

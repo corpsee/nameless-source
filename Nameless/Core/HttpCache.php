@@ -13,7 +13,6 @@
 namespace Nameless\Core;
 
 use Symfony\Component\HttpKernel\HttpCache\HttpCache as BaseHttpCache;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * HttpCache class
