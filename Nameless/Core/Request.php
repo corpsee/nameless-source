@@ -10,7 +10,12 @@ class Request extends BaseRequest
 	{
 		if (is_null($this->pathInfo))
 		{
-			$this->pathInfo = rtrim($this->preparePathInfo(), '/');
+			$this->pathInfo = $this->preparePathInfo();
+
+			if ('/' !== $this->pathInfo)
+			{
+				$this->pathInfo = rtrim($this->pathInfo, '/');
+			}
 		}
 		return $this->pathInfo;
 	}
