@@ -13,6 +13,7 @@
 namespace Nameless\Core;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request as BaseRequest;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
@@ -252,13 +253,13 @@ class Kernel extends HttpKernel
 	}
 
 	/**
-	 * @param Request $request
-	 * @param integer $type
-	 * @param boolean $catch
+	 * @param BaseRequest $request
+	 * @param integer     $type
+	 * @param boolean     $catch
 	 *
 	 * @return Response
 	 */
-	public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = TRUE)
+	public function handle(BaseRequest $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = TRUE)
 	{
 		if (!$this->booted) { $this->boot(); }
 		$this->container['request'] = $request;
@@ -298,10 +299,10 @@ class Kernel extends HttpKernel
 	}
 
 	/**
-	 * @param Request  $request
-	 * @param Response $response
+	 * @param BaseRequest $request
+	 * @param Response    $response
 	 */
-	public function terminate (Request $request, Response $response)
+	public function terminate (BaseRequest $request, Response $response)
 	{
 		$this->dispatcher->dispatch(KernelEvents::TERMINATE, new PostResponseEvent($this, $request, $response));
 	}
