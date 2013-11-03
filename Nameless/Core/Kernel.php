@@ -29,6 +29,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHa
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\Debug;
@@ -102,7 +103,7 @@ class Kernel extends HttpKernel
 
 	private function routerInit ()
 	{
-		$this->container['routes.collection'] = $this->container->share(function ()
+		$this->container['routes-collection'] = $this->container->share(function ()
 		{
 			return new RouteCollection();
 		});
@@ -113,13 +114,22 @@ class Kernel extends HttpKernel
 			$requirements = isset($route_value['requirements']) ? $route_value['requirements'] : array();
 			$options      = isset($route_value['options']) ? $route_value['options'] : array();
 
-			$this->container['routes.collection']->add($route_name, new Route($route_value['pattern'], $defaults, $requirements, $options));
+			$this->container['routes-collection']->add($route_name, new Route($route_value['pattern'], $defaults, $requirements, $options));
 		}
 
-		$this->container['matcher'] = $this->container->share(function ($c)
+		$this->container['request-context'] = $this->container->share(function ($c)
 		{
-			$context  = new RequestContext($c['http_port'], $c['https_port']);
-			return new UrlMatcher($c['routes.collection'], $context);
+			return new RequestContext($c['http_port'], $c['https_port']);
+		});
+
+		$this->container['url-matcher'] = $this->container->share(function ($c)
+		{
+			return new UrlMatcher($c['routes-collection'], $c['request-context']);
+		});
+
+		$this->container['url-generator'] = $this->container->share(function ($c)
+		{
+			return new UrlGenerator($c['routes-collection'], $c['request-context']);
 		});
 
 		$this->container['resolver'] = $this->container->share(function ($c)
@@ -173,7 +183,7 @@ class Kernel extends HttpKernel
 		{
 			$dispatcher = new EventDispatcher();
 			// матчинг путей, определение контроллера
-			$dispatcher->addSubscriber(new RouterListener($c['matcher'], NULL, $c['logger.logger']));
+			$dispatcher->addSubscriber(new RouterListener($c['url-matcher'], NULL, $c['logger.logger']));
 			// локаль
 			$dispatcher->addSubscriber(new LocaleListener($c['locale']));
 			// подписчик для before
@@ -276,7 +286,7 @@ class Kernel extends HttpKernel
 	 */
 	public function forward($route, array $attributes = array(), array $query = array())
 	{
-		$defaults = $this->container['routes.collection']->get($route)->getDefaults();
+		$defaults = $this->container['routes-collection']->get($route)->getDefaults();
 		$attributes['_controller'] = $defaults['_controller'];
 		$attributes['_route'] = $route;
 
