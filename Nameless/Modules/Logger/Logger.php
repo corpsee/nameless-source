@@ -13,11 +13,14 @@
 namespace Nameless\Modules\Logger;
 
 use Monolog\Logger as BaseLogger;
-use Symfony\Component\HttpKernel\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Logger class
  *
  * @author Corpsee <poisoncorpsee@gmail.com>
  */
-class Logger extends BaseLogger implements LoggerInterface {}
+class Logger extends BaseLogger implements LoggerInterface
+{
+
+}
