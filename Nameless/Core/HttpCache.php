@@ -13,6 +13,7 @@
 namespace Nameless\Core;
 
 use Symfony\Component\HttpKernel\HttpCache\HttpCache as BaseHttpCache;
+use Symfony\Component\HttpFoundation\Request as BaseRequest;
 
 /**
  * HttpCache class
@@ -24,9 +25,9 @@ class HttpCache extends BaseHttpCache
 	/**
 	 * Handles the Request and delivers the Response.
 	 *
-	 * @param Request $request The Request objet
+	 * @param BaseRequest $request The Request objet
 	 */
-	public function run(Request $request = NULL)
+	public function run(BaseRequest $request = NULL)
 	{
 		if (is_null($request))
 		{
