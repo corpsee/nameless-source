@@ -30,7 +30,7 @@ class ModuleProvider extends BaseModuleProvider
 
 		$this->container['auto.user'] = $this->container->share(function ($c)
 		{
-			return new User($c['session'], $c['routes.collection'], $c['auto.access']);
+			return new User($c['session'], $c['routes-collection'], $c['auto.access']);
 		});
 	}
 
