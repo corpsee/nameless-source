@@ -129,7 +129,7 @@ class Kernel extends HttpKernel
 
 		$this->container['url-generator'] = $this->container->share(function ($c)
 		{
-			return new UrlGenerator($c['routes-collection'], $c['request-context']);
+			return new UrlGenerator($c['routes-collection'], $c['request-context'], $c['logger.logger']);
 		});
 
 		$this->container['resolver'] = $this->container->share(function ($c)
