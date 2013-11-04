@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Nameless\Modules\Database\Database;
+use Symfony\Component\Routing\Generator\UrlGenerator;
 
 /**
  * Base controller class
@@ -106,6 +107,18 @@ class Controller implements ControllerInterface
 	public function notFound($message = 'Page not found', \Exception $previous = NULL)
 	{
 		throw new NotFoundHttpException($message, $previous);
+	}
+
+	/**
+	 * @param string         $route_name
+	 * @param array          $parameters
+	 * @param boolean|string $referenceType
+	 *
+	 * @return string
+	 */
+	public function generateURL ($route_name, array $parameters = array(), $referenceType = UrlGenerator::ABSOLUTE_PATH)
+	{
+		return $this->container['url-generator']->generate($route_name, $parameters, $referenceType);
 	}
 
 	/**
