@@ -18,34 +18,16 @@ namespace Nameless\Modules\Database;
  *
  * @author Corpsee <poisoncorpsee@gmail.com>
  */
-class Database extends \PDO
+class Database
 {
+	protected $db_handler;
+
 	//->lastInsertId()
 	//result->rowCount();
 
-	/**
-	 * @param string  $db_type
-	 * @param string  $dns
-	 * @param string  $user
-	 * @param string  $password
-	 * @param boolean $persistent
-	 * @param boolean $compress
-	 */
-	public function __construct($db_type, $dns, $user = NULL, $password = NULL, $persistent = FALSE, $compress = FALSE)
+	public function __construct(\PDO $db_handler)
 	{
-		$attributes = array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION);
-
-		if ($persistent)
-		{
-			$attributes[\PDO::ATTR_PERSISTENT] = TRUE;
-		}
-
-		if (strtolower($db_type) === 'mysql' && $compress)
-		{
-			$attributes[\PDO::MYSQL_ATTR_COMPRESS] = TRUE;
-		}
-
-		parent::__construct($dns, $user, $password, $attributes);
+		$this->db_handler = $db_handler;
 	}
 
 	/**
@@ -54,15 +36,15 @@ class Database extends \PDO
 	 *
 	 * @return \PDOStatement
 	 */
-	public function extendPrepare($sql = '', $params = array())
+	public function executeQuery($sql = '', $params = array())
 	{
-		$result = $this->prepare($sql);
+		$result = $this->db_handler->prepare($sql);
 		$result->execute($params);
 
 		return $result;
 	}
 
-	// $result = $database->extendPrepare('SELECT * FROM `table`');
+	// $result = $database->executeQuery('SELECT * FROM `table`');
 	// while ($row = $result->fetch(\PDO::FETCH_ASSOC)) { }
 
 	/**
@@ -73,11 +55,11 @@ class Database extends \PDO
 	 */
 	public function execute($sql = '', $params = array())
 	{
-		$result = $this->extendPrepare($sql, $params);
+		$result = $this->executeQuery($sql, $params);
 
 		if(preg_match('#insert#i', $sql))
 		{
-			return (integer)$this->lastInsertId();
+			return (integer)$this->db_handler->lastInsertId();
 		}
 		else
 		{
@@ -93,8 +75,8 @@ class Database extends \PDO
 	 */
 	public function selectOne($sql = '', $params = array())
 	{
-		$result = $this->extendPrepare($sql, $params);
-		return $result->fetch(parent::FETCH_ASSOC);
+		$result = $this->executeQuery($sql, $params);
+		return $result->fetch(\PDO::FETCH_ASSOC);
 	}
 
 	/**
@@ -105,8 +87,8 @@ class Database extends \PDO
 	 */
 	public function selectMany($sql = '', $params = array())
 	{
-		$result = $this->extendPrepare($sql, $params);
-		return $result->fetchAll(parent::FETCH_ASSOC);
+		$result = $this->executeQuery($sql, $params);
+		return $result->fetchAll(\PDO::FETCH_ASSOC);
 	}
 
 	/**
@@ -118,7 +100,7 @@ class Database extends \PDO
 	 */
 	public function selectColumn($sql = '', $params = array(), $column = 0)
 	{
-		$result = $this->extendPrepare($sql, $params);
-		return $result->fetchAll(parent::FETCH_COLUMN, $column);
+		$result = $this->executeQuery($sql, $params);
+		return $result->fetchAll(\PDO::FETCH_COLUMN, $column);
 	}
 }
