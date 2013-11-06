@@ -2,31 +2,33 @@
 
 namespace Nameless\Modules\Database;
 
-interface Driver
+abstract class Driver
 {
-	public function __construct ($dns, $username = NULL, $password = NULL, array $options);
+	protected $handler;
 
-	public function getDBType ();
+	abstract public function __construct ($type, $db_name, $host = NULL, $user = NULL, $password = NULL, $port = NULL, $socket = NULL);
 
-	public function getDBName ();
+	abstract public function getDBType ();
 
-	public function prepare ($query);
+	abstract public function getDBName ();
 
-	public function query ($query);
+	abstract public function prepare ($query);
 
-	public function quote ($input, $type = \PDO::PARAM_STR);
+	abstract public function query ($query);
 
-	public function execute ($statement);
+	abstract public function quote ($input, $type = \PDO::PARAM_STR);
 
-	public function lastInsertId ($name = NULL);
+	abstract public function execute ($statement);
 
-	public function beginTransaction ();
+	abstract public function lastInsertId ($name = NULL);
 
-	public function commit ();
+	abstract public function beginTransaction ();
 
-	public function rollBack ();
+	abstract public function commit ();
 
-	public function errorCode ();
+	abstract public function rollBack ();
 
-	public function errorInfo ();
+	abstract public function errorCode ();
+
+	abstract public function errorInfo ();
 }
