@@ -22,12 +22,34 @@ class Database
 {
 	protected $db_handler;
 
+	protected $fetch_method;
+
 	//->lastInsertId()
 	//result->rowCount();
 
-	public function __construct(\PDO $db_handler)
+	public function __construct(Driver $db_handler, $fetch_method = \PDO::FETCH_ASSOC)
 	{
 		$this->db_handler = $db_handler;
+		$this->setFetchMethod($fetch_method);
+	}
+
+	public function getFetchMethod ()
+	{
+		return $this->fetch_method;
+	}
+
+	public function setFetchMethod ($fetch_method)
+	{
+		if (!in_array($fetch_method, array
+		(
+			\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC, \PDO::FETCH_BOTH, \PDO::FETCH_BOUND,
+			\PDO::FETCH_CLASS, \PDO::FETCH_CLASS | \PDO::FETCH_CLASSTYPE,
+			\PDO::FETCH_INTO, \PDO::FETCH_LAZY, \PDO::FETCH_NUM, \PDO::FETCH_OBJ
+		)))
+		{
+			throw new \InvalidArgumentException('Invalid fetch method!');
+		}
+		$this->fetch_method = $fetch_method;
 	}
 
 	/**
@@ -43,9 +65,6 @@ class Database
 
 		return $result;
 	}
-
-	// $result = $database->executeQuery('SELECT * FROM `table`');
-	// while ($row = $result->fetch(\PDO::FETCH_ASSOC)) { }
 
 	/**
 	 * @param string $sql
@@ -76,7 +95,7 @@ class Database
 	public function selectOne($sql = '', $params = array())
 	{
 		$result = $this->executeQuery($sql, $params);
-		return $result->fetch(\PDO::FETCH_ASSOC);
+		return $result->fetch($this->fetch_method);
 	}
 
 	/**
@@ -88,7 +107,7 @@ class Database
 	public function selectMany($sql = '', $params = array())
 	{
 		$result = $this->executeQuery($sql, $params);
-		return $result->fetchAll(\PDO::FETCH_ASSOC);
+		return $result->fetchAll($this->fetch_method);
 	}
 
 	/**
