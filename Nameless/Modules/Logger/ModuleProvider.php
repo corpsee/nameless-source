@@ -22,8 +22,6 @@ use Monolog\Handler\StreamHandler;
  */
 class ModuleProvider extends BaseModuleProvider
 {
-	const MODULE_NAME = 'Logger';
-
 	public function register ()
 	{
 		parent::register();

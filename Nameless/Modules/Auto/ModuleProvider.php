@@ -22,8 +22,6 @@ use Nameless\Modules\Auto\User;
  */
 class ModuleProvider extends BaseModuleProvider
 {
-	const MODULE_NAME = 'Auto';
-
 	public function register ()
 	{
 		parent::register();

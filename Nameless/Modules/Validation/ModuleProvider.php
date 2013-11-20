@@ -21,8 +21,6 @@ use Nameless\Core\ModuleProvider as BaseModuleProvider;
  */
 class ModuleProvider extends BaseModuleProvider
 {
-	const MODULE_NAME = 'Validation';
-
 	public function register ()
 	{
 		parent::register();
