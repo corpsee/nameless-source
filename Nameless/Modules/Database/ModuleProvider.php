@@ -27,27 +27,17 @@ class ModuleProvider extends BaseModuleProvider
 	{
 		parent::register();
 
-		$this->container['database.db_handler'] = $this->container->share(function ($c)
-		{
-			$db_handler = new \PDO($c['database.dns'], $c['database.user'], $c['database.password']);
-
-			$db_handler->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-			if ($c['database.persistent'])
-			{
-				$db_handler->setAttribute(\PDO::ATTR_PERSISTENT, TRUE);
-			}
-
-			if ($c['database.compress'] && strtolower($c['database.type']) === 'mysql')
-			{
-				$db_handler->setAttribute(\PDO::MYSQL_ATTR_COMPRESS, TRUE);
-			}
-
-			return $db_handler;
-		});
-
 		$this->container['database.database'] = $this->container->share(function ($c)
 		{
-			return new Database($c['database.db_handler']);
+			return new Database
+			(
+				$c['database.type'],
+				$c['database.dns'],
+				$c['database.user'],
+				$c['database.password'],
+				$c['database.persistent'],
+				$c['database.compress']
+			);
 		});
 	}
 
