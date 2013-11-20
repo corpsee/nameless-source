@@ -34,13 +34,16 @@ abstract class ModuleProvider
 
 	protected function configurationInit ()
 	{
-		$config = include_once NAMELESS_PATH . 'Modules' . DS . static::MODULE_NAME . DS . 'configs' . DS . 'configuration.php';
+		$module_path = __DIR__ . DS;
+		$module_name = basename($module_path);
+
+		$config      = include_once($module_path . 'configs' . DS . 'configuration.php');
 
 		foreach ($config as $config_option => $config_value)
 		{
-			if ($config_value && !is_array($config_value) && strtolower(static::MODULE_NAME) !== $config_option)
+			if ($config_value && !is_array($config_value) && strtolower($module_name) !== $config_option)
 			{
-				throw new \RuntimeException('Invalid module configuration array: ' . static::MODULE_NAME);
+				throw new \RuntimeException('Invalid module configuration array: ' . $module_name);
 			}
 
 			foreach ($config_value as $module_option => $module_value)
