@@ -18,38 +18,34 @@ namespace Nameless\Modules\Database;
  *
  * @author Corpsee <poisoncorpsee@gmail.com>
  */
-class Database
+class Database extends \PDO
 {
-	protected $db_handler;
-
-	protected $fetch_method;
-
 	//->lastInsertId()
 	//result->rowCount();
 
-	public function __construct(Driver $db_handler, $fetch_method = \PDO::FETCH_ASSOC)
+	/**
+	 * @param string  $db_type
+	 * @param string  $dns
+	 * @param string  $user
+	 * @param string  $password
+	 * @param boolean $persistent
+	 * @param boolean $compress
+	 */
+	public function __construct($db_type, $dns, $user = NULL, $password = NULL, $persistent = FALSE, $compress = FALSE)
 	{
-		$this->db_handler = $db_handler;
-		$this->setFetchMethod($fetch_method);
-	}
+		$attributes = array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION);
 
-	public function getFetchMethod ()
-	{
-		return $this->fetch_method;
-	}
-
-	public function setFetchMethod ($fetch_method)
-	{
-		if (!in_array($fetch_method, array
-		(
-			\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC, \PDO::FETCH_BOTH, \PDO::FETCH_BOUND,
-			\PDO::FETCH_CLASS, \PDO::FETCH_CLASS | \PDO::FETCH_CLASSTYPE,
-			\PDO::FETCH_INTO, \PDO::FETCH_LAZY, \PDO::FETCH_NUM, \PDO::FETCH_OBJ
-		)))
+		if ($persistent)
 		{
-			throw new \InvalidArgumentException('Invalid fetch method!');
+			$attributes[\PDO::ATTR_PERSISTENT] = TRUE;
 		}
-		$this->fetch_method = $fetch_method;
+
+		if (strtolower($db_type) === 'mysql' && $compress)
+		{
+			$attributes[\PDO::MYSQL_ATTR_COMPRESS] = TRUE;
+		}
+
+		parent::__construct($dns, $user, $password, $attributes);
 	}
 
 	/**
@@ -58,13 +54,16 @@ class Database
 	 *
 	 * @return \PDOStatement
 	 */
-	public function executeQuery($sql = '', $params = array())
+	public function extendPrepare($sql = '', $params = array())
 	{
-		$result = $this->db_handler->prepare($sql);
+		$result = $this->prepare($sql);
 		$result->execute($params);
 
 		return $result;
 	}
+
+	// $result = $database->extendPrepare('SELECT * FROM `table`');
+	// while ($row = $result->fetch(\PDO::FETCH_ASSOC)) { }
 
 	/**
 	 * @param string $sql
@@ -74,11 +73,11 @@ class Database
 	 */
 	public function execute($sql = '', $params = array())
 	{
-		$result = $this->executeQuery($sql, $params);
+		$result = $this->extendPrepare($sql, $params);
 
 		if(preg_match('#insert#i', $sql))
 		{
-			return (integer)$this->db_handler->lastInsertId();
+			return (integer)$this->lastInsertId();
 		}
 		else
 		{
@@ -94,8 +93,8 @@ class Database
 	 */
 	public function selectOne($sql = '', $params = array())
 	{
-		$result = $this->executeQuery($sql, $params);
-		return $result->fetch($this->fetch_method);
+		$result = $this->extendPrepare($sql, $params);
+		return $result->fetch(parent::FETCH_ASSOC);
 	}
 
 	/**
@@ -106,8 +105,8 @@ class Database
 	 */
 	public function selectMany($sql = '', $params = array())
 	{
-		$result = $this->executeQuery($sql, $params);
-		return $result->fetchAll($this->fetch_method);
+		$result = $this->extendPrepare($sql, $params);
+		return $result->fetchAll(parent::FETCH_ASSOC);
 	}
 
 	/**
@@ -119,7 +118,7 @@ class Database
 	 */
 	public function selectColumn($sql = '', $params = array(), $column = 0)
 	{
-		$result = $this->executeQuery($sql, $params);
-		return $result->fetchAll(\PDO::FETCH_COLUMN, $column);
+		$result = $this->extendPrepare($sql, $params);
+		return $result->fetchAll(parent::FETCH_COLUMN, $column);
 	}
 }
