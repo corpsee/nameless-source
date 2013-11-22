@@ -39,6 +39,5 @@
 			"src/Nameless/Core/functions/functions.php"
 		]
 	},
-	"prefer-stable": false,
 	"minimum-stability": "dev"
 }

@@ -32,11 +32,14 @@ abstract class ModuleProvider
 		$this->container = $container;
 	}
 
-	protected function configurationInit ()
+	/**
+	 * @param $module_path
+	 *
+	 * @throws \RuntimeException
+	 */
+	protected function configurationInit ($module_path)
 	{
-		$module_path = __DIR__ . DS;
 		$module_name = basename($module_path);
-
 		$config      = include_once($module_path . 'configs' . DS . 'configuration.php');
 
 		foreach ($config as $config_option => $config_value)
@@ -57,9 +60,12 @@ abstract class ModuleProvider
 		}
 	}
 
-	public function register ()
+	/**
+	 * @param $module_path
+	 */
+	public function register ($module_path = NULL)
 	{
-		$this->configurationInit();
+		$this->configurationInit($module_path);
 	}
 
 	abstract public function boot ();

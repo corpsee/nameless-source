@@ -6,6 +6,7 @@ define('START_TIME',   microtime(TRUE));
 define('START_MEMORY', memory_get_usage());
 
 define('ROOT_PATH',        dirname(dirname(__DIR__)) . DS);
+//TODO: remove this const
 define('NAMELESS_PATH',    ROOT_PATH . 'Nameless' . DS);
 define('APPLICATION_PATH', ROOT_PATH . 'Application' . DS);
 define('CONFIG_PATH',      APPLICATION_PATH . 'configs' . DS);

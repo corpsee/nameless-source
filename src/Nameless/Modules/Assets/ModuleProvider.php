@@ -21,9 +21,10 @@ use Nameless\Core\ModuleProvider as BaseModuleProvider;
  */
 class ModuleProvider extends BaseModuleProvider
 {
-	public function register ()
+	public function register ($module_path = NULL)
 	{
-		parent::register();
+		$module_path = __DIR__ . DS;
+		parent::register($module_path);
 
 		$this->container['assets.dispatcher'] = $this->container->share(function ($c)
 		{
