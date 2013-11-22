@@ -34,6 +34,8 @@ use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\Debug;
 
+define('NAMELESS_PATH', dirname(__DIR__) . DIRECTORY_SEPARATOR);
+
 /**
  * Kernel class
  *
