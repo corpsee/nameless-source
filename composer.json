@@ -1,4 +1,17 @@
 {
+	"name":        "corpsee/nameless-framework",
+	"description": "Yet another framework based on Symfony Components.",
+	"type":        "library",
+	"keywords":    ["framework", "nameless"],
+	"license":     "MIT",
+	"authors":     [
+		{
+			"name":     "Corpsee",
+			"email":    "poisoncorpsee@gmail.com",
+			"homepage": "http://corpsee.com",
+			"role":     "Developer"
+		}
+	],
 	"require":
 	{
 		"pimple/pimple":            "v1.0.2",
