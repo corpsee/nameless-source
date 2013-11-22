@@ -38,5 +38,6 @@
 		"files": [
 			"src/Nameless/Core/functions/functions.php"
 		]
-	}
+	},
+	"minimum-stability": "dev"
 }
