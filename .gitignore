@@ -1,7 +1,4 @@
 composer.phar
 .git
 .idea
-sessions
-temp
-vendor
 composer.lock
