@@ -22,9 +22,10 @@ use Monolog\Handler\StreamHandler;
  */
 class ModuleProvider extends BaseModuleProvider
 {
-	public function register ()
+	public function register ($module_path = NULL)
 	{
-		parent::register();
+		$module_path = __DIR__ . DS;
+		parent::register($module_path);
 
 		//TODO: вызывать исключение, если не заданы необходимые настройки (['logger']['name'] например)
 		$this->container['logger.logger'] = $this->container->share(function ($c)

@@ -64,6 +64,7 @@ class Localization
 		$module = strtolower($module);
 		switch ($module)
 		{
+			//TODO: ucfirst($module) for more than 1 word?
 			case 'core':
 				$file_path         = NAMELESS_PATH . ucfirst($module) . DS . 'localization' . DS . $language . DS . $file . '.php';
 				$default_file_path = NAMELESS_PATH . ucfirst($module) . DS . 'localization' . DS . $this->default_language . DS . $file . '.php';
