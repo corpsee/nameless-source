@@ -18,107 +18,12 @@ namespace Nameless\Modules\Database;
  *
  * @author Corpsee <poisoncorpsee@gmail.com>
  */
-class Database extends \PDO
+class Database
 {
-	//->lastInsertId()
-	//result->rowCount();
+	protected $db_handler;
 
-	/**
-	 * @param string  $db_type
-	 * @param string  $dns
-	 * @param string  $user
-	 * @param string  $password
-	 * @param boolean $persistent
-	 * @param boolean $compress
-	 */
-	public function __construct($db_type, $dns, $user = NULL, $password = NULL, $persistent = FALSE, $compress = FALSE)
+	public function __construct(Driver $db_handler)
 	{
-		$attributes = array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION);
-
-		if ($persistent)
-		{
-			$attributes[\PDO::ATTR_PERSISTENT] = TRUE;
-		}
-
-		if (strtolower($db_type) === 'mysql' && $compress)
-		{
-			$attributes[\PDO::MYSQL_ATTR_COMPRESS] = TRUE;
-		}
-
-		parent::__construct($dns, $user, $password, $attributes);
-	}
-
-	/**
-	 * @param string $sql
-	 * @param array  $params
-	 *
-	 * @return \PDOStatement
-	 */
-	public function extendPrepare($sql = '', $params = array())
-	{
-		$result = $this->prepare($sql);
-		$result->execute($params);
-
-		return $result;
-	}
-
-	// $result = $database->extendPrepare('SELECT * FROM `table`');
-	// while ($row = $result->fetch(\PDO::FETCH_ASSOC)) { }
-
-	/**
-	 * @param string $sql
-	 * @param array  $params
-	 *
-	 * @return integer
-	 */
-	public function execute($sql = '', $params = array())
-	{
-		$result = $this->extendPrepare($sql, $params);
-
-		if(preg_match('#insert#i', $sql))
-		{
-			return (integer)$this->lastInsertId();
-		}
-		else
-		{
-			return (integer)$result->rowCount();
-		}
-	}
-
-	/**
-	 * @param string $sql
-	 * @param array  $params
-	 *
-	 * @return array|false
-	 */
-	public function selectOne($sql = '', $params = array())
-	{
-		$result = $this->extendPrepare($sql, $params);
-		return $result->fetch(parent::FETCH_ASSOC);
-	}
-
-	/**
-	 * @param string $sql
-	 * @param array  $params
-	 *
-	 * @return array|false
-	 */
-	public function selectMany($sql = '', $params = array())
-	{
-		$result = $this->extendPrepare($sql, $params);
-		return $result->fetchAll(parent::FETCH_ASSOC);
-	}
-
-	/**
-	 * @param string  $sql
-	 * @param array   $params
-	 * @param integer $column
-	 *
-	 * @return array|false
-	 */
-	public function selectColumn($sql = '', $params = array(), $column = 0)
-	{
-		$result = $this->extendPrepare($sql, $params);
-		return $result->fetchAll(parent::FETCH_COLUMN, $column);
+		$this->db_handler = $db_handler;
 	}
 }
