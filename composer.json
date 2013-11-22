@@ -1,5 +1,5 @@
 {
-	"name":        "corpsee/nameless-framework",
+	"name":        "corpsee/nameless-source",
 	"description": "Yet another framework based on Symfony Components.",
 	"type":        "library",
 	"keywords":    ["framework", "nameless"],
@@ -33,9 +33,10 @@
 	{
 		"psr-0":
 		{
-			"Application": "",
-			"Nameless":    ""
+			"Nameless":    "src/"
 		},
-		"files": ["Nameless/Core/functions/functions.php"]
+		"files": [
+			"src/Nameless/Core/functions/functions.php"
+		]
 	}
 }
