@@ -8,6 +8,6 @@ return array
 		'java_path'           => '/usr/bin/java',
 		'path'                => FILE_PATH . 'compiled' . DS,
 		'less'                => TRUE,
-		'lessjs_url'          => FILE_PATH_URL . 'lib/less/1.4.1/less.min.js',
+		'lessjs_url'          => FILE_PATH_URL . 'lib/less/1.5.1/less.min.js',
 	),
 );
