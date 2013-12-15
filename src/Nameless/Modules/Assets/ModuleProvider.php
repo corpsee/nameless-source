@@ -21,6 +21,7 @@ use Nameless\Core\ModuleProvider as BaseModuleProvider;
  */
 class ModuleProvider extends BaseModuleProvider
 {
+	//TODO: assets lib packeges like: $container['assets.dispatcher']->get['jquery']
 	public function register ($module_path = NULL)
 	{
 		$module_path = __DIR__ . DS;

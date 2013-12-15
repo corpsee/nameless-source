@@ -57,7 +57,7 @@ class Asset
 	 */
 	public function __construct ($url)
 	{
-		$this->url           = $url;
+		$this->url = $url;
 	}
 
 	/**
@@ -110,7 +110,7 @@ class Asset
 				$this->type = $type;
 				break;
 			default:
-				throw new \LogicException("Invalid asset type: $type");
+				throw new \LogicException("Invalid asset type: '$type'");
 		}
 		return $this->type;
 	}
