@@ -2,9 +2,14 @@
 	"name":        "corpsee/nameless-source",
 	"description": "Yet another framework based on Symfony Components.",
 	"type":        "library",
-	"keywords":    ["framework", "nameless"],
+	"keywords":
+	[
+		"framework",
+		"nameless"
+	],
 	"license":     "MIT",
-	"authors":     [
+	"authors":
+	[
 		{
 			"name":     "Corpsee",
 			"email":    "poisoncorpsee@gmail.com",
@@ -20,6 +25,7 @@
 		"symfony/routing":          "v2.3.7",
 		"symfony/event-dispatcher": "v2.3.7",
 		"symfony/debug":            "v2.3.7",
+		"symfony/console":          "v2.3.7",
 		"swiftmailer/swiftmailer":  "v5.0.2",
 		"monolog/monolog":          "1.7.0",
 		"kriswallsmith/assetic":    "v1.1.2",
@@ -35,7 +41,8 @@
 		{
 			"Nameless":    "src/"
 		},
-		"files": [
+		"files":
+		[
 			"src/Nameless/Core/functions/functions.php"
 		]
 	},
