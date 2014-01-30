@@ -19,17 +19,17 @@
 	],
 	"require":
 	{
-		"pimple/pimple":            "v1.1.*",
-		"symfony/http-foundation":  "v2.3.*",
-		"symfony/http-kernel":      "v2.3.*",
-		"symfony/routing":          "v2.3.*",
-		"symfony/event-dispatcher": "v2.3.*",
-		"symfony/debug":            "v2.3.*",
-		"symfony/console":          "v2.3.*",
-		"swiftmailer/swiftmailer":  "v5.0.*",
+		"pimple/pimple":            "1.1.*",
+		"symfony/http-foundation":  "2.3.*",
+		"symfony/http-kernel":      "2.3.*",
+		"symfony/routing":          "2.3.*",
+		"symfony/event-dispatcher": "2.3.*",
+		"symfony/debug":            "2.3.*",
+		"symfony/console":          "2.3.*",
+		"swiftmailer/swiftmailer":  "5.0.*",
 		"monolog/monolog":          "1.7.*",
-		"kriswallsmith/assetic":    "v1.1.*",
-		"leafo/lessphp":            "v0.4.*"
+		"kriswallsmith/assetic":    "1.1.*",
+		"leafo/lessphp":            "0.4.*"
 	},
 	"require-dev":
 	{
