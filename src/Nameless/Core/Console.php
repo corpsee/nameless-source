@@ -43,4 +43,12 @@ class Console extends Application
 		$this->kernel = $kernel->boot();
 		parent::__construct($name, $version);
 	}
+
+	/**
+	 * @return \Pimple
+	 */
+	public function getContainer ()
+	{
+		return $this->kernel->container;
+	}
 }
