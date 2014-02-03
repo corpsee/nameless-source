@@ -14,8 +14,6 @@ namespace Nameless\Core;
 
 use Symfony\Component\Console\Application;
 
-define('NAMELESS_PATH', dirname(__DIR__) . DIRECTORY_SEPARATOR);
-
 /**
  * Kernel class
  *
