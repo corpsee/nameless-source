@@ -40,7 +40,7 @@ class Console extends Application
 	 */
 	public function __construct (Kernel $kernel, $name = 'UNKNOWN', $version = 'UNKNOWN')
 	{
-		$this->kernel = $kernel;
+		$this->kernel = $kernel->boot();
 		parent::__construct($name, $version);
 	}
 }

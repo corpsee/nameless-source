@@ -262,6 +262,7 @@ class Kernel extends HttpKernel
 			}
 			$this->booted = TRUE;
 		}
+		return $this;
 	}
 
 	/**
