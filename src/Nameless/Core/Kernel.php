@@ -319,4 +319,12 @@ class Kernel extends HttpKernel
 	{
 		$this->dispatcher->dispatch(KernelEvents::TERMINATE, new PostResponseEvent($this, $request, $response));
 	}
+
+	/**
+	 * @return \Pimple
+	 */
+	public function getContainer ()
+	{
+		return $this->container;
+	}
 }

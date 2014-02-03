@@ -49,6 +49,6 @@ class Console extends Application
 	 */
 	public function getContainer ()
 	{
-		return $this->kernel->container;
+		return $this->kernel->getContainer();
 	}
 }
