@@ -6,7 +6,7 @@
  *
  * @package    Nameless
  * @author     Corpsee <poisoncorpsee@gmail.com>
- * @copyright  2012 - 2013. Corpsee <poisoncorpsee@gmail.com>
+ * @copyright  2012 - 2014. Corpsee <poisoncorpsee@gmail.com>
  * @link       https://github.com/corpsee/Nameless
  */
 
@@ -54,7 +54,7 @@ class Kernel extends HttpKernel
 	private $booted = FALSE;
 
 	/**
-	 * @var Container
+	 * @var \Pimple
 	 */
 	private $container;
 
