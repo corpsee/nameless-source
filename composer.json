@@ -31,11 +31,11 @@
 		"phpunit/phpunit":          "3.7.*"
 	},
 	"autoload": {
-		"psr-0": {
-			"Nameless":    "src/"
+		"psr-4": {
+			"Nameless\\":    "src"
 		},
 		"files": [
-			"src/Nameless/Core/functions/functions.php"
+			"src/Core/functions/functions.php"
 		]
 	},
 	"minimum-stability": "dev"

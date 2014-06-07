@@ -1,6 +1,6 @@
 <?php
 
-namespace Nameless\Tests\Core\Functions;
+namespace NamelessTests\Tests\Core\Functions;
 
 class FunctionTest extends \PHPUnit_Framework_TestCase
 {
