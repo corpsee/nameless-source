@@ -1,6 +1,6 @@
 <?php
 
-namespace NamelessTests\Modules\Tests\Modules\Validation;
+namespace Nameless\Tests\Modules\Tests\Modules\Validation;
 
 use Nameless\Modules\Validation\Validator;
 

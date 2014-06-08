@@ -32,8 +32,8 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"Nameless\\":      "src",
-			"NamelessTests\\": "tests"
+			"Nameless\\":        "src",
+			"Nameless\\Tests\\": "tests"
 		},
 		"files": [
 			"src/Core/functions/functions.php"
