@@ -22,7 +22,7 @@
 		"symfony/event-dispatcher": "2.3.*",
 		"symfony/debug":            "2.3.*",
 		"symfony/console":          "2.3.*",
-		"swiftmailer/swiftmailer":  "5.0.*",
+		"swiftmailer/swiftmailer":  "5.2.*",
 		"monolog/monolog":          "1.7.*",
 		"kriswallsmith/assetic":    "1.1.*",
 		"leafo/lessphp":            "0.4.*"
