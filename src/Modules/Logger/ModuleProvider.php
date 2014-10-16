@@ -22,38 +22,38 @@ use Monolog\Handler\StreamHandler;
  */
 class ModuleProvider extends BaseModuleProvider
 {
-	public function register ($module_path = NULL)
-	{
-		$module_path = __DIR__ . DS;
-		parent::register($module_path);
+    public function register($module_path = null)
+    {
+        $module_path = __DIR__ . DS;
+        parent::register($module_path);
 
-		//TODO: вызывать исключение, если не заданы необходимые настройки (['logger']['name'] например)
-		$this->container['logger.logger'] = $this->container->share(function ($c)
-		{
-			$logger = new Logger($c['logger.name']);
-			$logger->pushHandler($c['logger.handler']);
-			return $logger;
-		});
+        //TODO: вызывать исключение, если не заданы необходимые настройки (['logger']['name'] например)
+        $this->container['logger.logger'] = $this->container->share(
+            function ($c) {
+                $logger = new Logger($c['logger.name']);
+                $logger->pushHandler($c['logger.handler']);
+                return $logger;
+            }
+        );
 
-		$this->container['logger.handler'] = $this->container->share(function ($c)
-		{
-			return new StreamHandler($c['logger.file'], $c['logger.level']);
-		});
+        $this->container['logger.handler'] = $this->container->share(
+            function ($c) {
+                return new StreamHandler($c['logger.file'], $c['logger.level']);
+            }
+        );
 
-		$this->container['logger.level'] = function ($c)
-		{
-			if ($c['environment'] == 'production')
-			{
-				return Logger::ERROR;
-			}
-			else
-			{
-				return Logger::DEBUG;
-			}
-		};
+        $this->container['logger.level'] = function ($c) {
+            if ($c['environment'] == 'production') {
+                return Logger::ERROR;
+            } else {
+                return Logger::DEBUG;
+            }
+        };
 
-		$this->container['logger.file'] = $this->container['logger.path'] . $this->container['logger.name'] . '.log';
-	}
+        $this->container['logger.file'] = $this->container['logger.path'] . $this->container['logger.name'] . '.log';
+    }
 
-	public function boot () {}
+    public function boot()
+    {
+    }
 }

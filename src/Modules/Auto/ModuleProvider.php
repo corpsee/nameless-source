@@ -22,16 +22,19 @@ use Nameless\Modules\Auto\User;
  */
 class ModuleProvider extends BaseModuleProvider
 {
-	public function register ($module_path = NULL)
-	{
-		$module_path = __DIR__ . DS;
-		parent::register($module_path);
+    public function register($module_path = null)
+    {
+        $module_path = __DIR__ . DS;
+        parent::register($module_path);
 
-		$this->container['auto.user'] = $this->container->share(function ($c)
-		{
-			return new User($c['session'], $c['routes-collection'], $c['auto.access']);
-		});
-	}
+        $this->container['auto.user'] = $this->container->share(
+            function ($c) {
+                return new User($c['session'], $c['routes-collection'], $c['auto.access']);
+            }
+        );
+    }
 
-	public function boot () {}
+    public function boot()
+    {
+    }
 }

@@ -21,54 +21,48 @@ use Nameless\Modules\Auto\User;
  */
 class FileUserProvider implements UserProviderInterface
 {
-	/**
-	 * @var array
-	 */
-	private $users;
+    /**
+     * @var array
+     */
+    private $users;
 
-	/**
-	 * @param array $users
-	 */
-	public function  __construct(array $users)
-	{
-		$this->users = $users;
-	}
+    /**
+     * @param array $users
+     */
+    public function  __construct(array $users)
+    {
+        $this->users = $users;
+    }
 
-	/**
-	 * @param string $user_name
-	 *
-	 * @return array|false
-	 */
-	public function getUserByName ($user_name)
-	{
-		if (isset($this->users[$user_name]))
-		{
-			$user = $this->users[$user_name];
-			$user['username'] = $user_name;
-			unset($user['groups']);
+    /**
+     * @param string $user_name
+     *
+     * @return array|false
+     */
+    public function getUserByName($user_name)
+    {
+        if (isset($this->users[$user_name])) {
+            $user = $this->users[$user_name];
+            $user['username'] = $user_name;
+            unset($user['groups']);
 
-			return $user;
-		}
-		else
-		{
-			return FALSE;
-		}
-	}
+            return $user;
+        } else {
+            return false;
+        }
+    }
 
-	/**
-	 * @param string $user_name
-	 *
-	 * @return array|false
-	 */
-	public function getUserGroups ($user_name)
-	{
-		if (isset($this->users[$user_name]))
-		{
-			return $this->users[$user_name]['groups'];
-		}
-		else
-		{
-			return FALSE;
-		}
-	}
+    /**
+     * @param string $user_name
+     *
+     * @return array|false
+     */
+    public function getUserGroups($user_name)
+    {
+        if (isset($this->users[$user_name])) {
+            return $this->users[$user_name]['groups'];
+        } else {
+            return false;
+        }
+    }
 }

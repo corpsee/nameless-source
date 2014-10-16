@@ -22,19 +22,18 @@ use Symfony\Component\HttpFoundation\Request as BaseRequest;
  */
 class HttpCache extends BaseHttpCache
 {
-	/**
-	 * Handles the Request and delivers the Response.
-	 *
-	 * @param BaseRequest $request The Request objet
-	 */
-	public function run(BaseRequest $request = NULL)
-	{
-		if (is_null($request))
-		{
-			$request = Request::createFromGlobals();
-		}
-		$response = $this->handle($request);
-		$response->send();
-		$this->terminate($request, $response);
-	}
+    /**
+     * Handles the Request and delivers the Response.
+     *
+     * @param BaseRequest $request The Request objet
+     */
+    public function run(BaseRequest $request = null)
+    {
+        if (is_null($request)) {
+            $request = Request::createFromGlobals();
+        }
+        $response = $this->handle($request);
+        $response->send();
+        $this->terminate($request, $response);
+    }
 }

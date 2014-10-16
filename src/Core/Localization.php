@@ -19,125 +19,110 @@ namespace Nameless\Core;
  */
 class Localization
 {
-	/**
-	 * @var array
-	 */
-	protected $files = array();
+    /**
+     * @var array
+     */
+    protected $files = [];
 
-	/**
-	 * @var array
-	 */
-	protected $lines = array();
+    /**
+     * @var array
+     */
+    protected $lines = [];
 
-	/**
-	 * @var string
-	 */
-	protected $default_language;
+    /**
+     * @var string
+     */
+    protected $default_language;
 
-	/**
-	 * @param string $default_language
-	 */
-	public function __construct($default_language = 'en')
-	{
-		$this->default_language = $default_language;
-	}
+    /**
+     * @param string $default_language
+     */
+    public function __construct($default_language = 'en')
+    {
+        $this->default_language = $default_language;
+    }
 
-	//TODO: добавить обработку массивов в $file
-	//TODO: добавить обработку абсолютных путей в $file
-	/**
-	 * @param sting   $file
-	 * @param string  $module
-	 * @param string  $language
-	 * @param boolean $overwrite
-	 *
-	 * @throws \RuntimeException
-	 *
-	 * @return boolean
-	 */
-	public function load ($file, $module = 'application', $language = NULL, $overwrite = FALSE)
-	{
-		if (!$overwrite && isset($this->files[$module][$language][$file]))
-		{
-			return $this;
-		}
+    //TODO: добавить обработку массивов в $file
+    //TODO: добавить обработку абсолютных путей в $file
+    /**
+     * @param sting $file
+     * @param string $module
+     * @param string $language
+     * @param boolean $overwrite
+     *
+     * @throws \RuntimeException
+     *
+     * @return boolean
+     */
+    public function load($file, $module = 'application', $language = null, $overwrite = false)
+    {
+        if (!$overwrite && isset($this->files[$module][$language][$file])) {
+            return $this;
+        }
 
-		$module = strtolower($module);
-		switch ($module)
-		{
-			//TODO: ucfirst($module) for more than 1 word?
-			case 'core':
-				$file_path         = NAMELESS_PATH . ucfirst($module) . DS . 'localization' . DS . $language . DS . $file . '.php';
-				$default_file_path = NAMELESS_PATH . ucfirst($module) . DS . 'localization' . DS . $this->default_language . DS . $file . '.php';
-				break;
-			case 'application':
-				$file_path         = APPLICATION_PATH . 'localization' . DS . $language . DS . $file . '.php';
-				$default_file_path = APPLICATION_PATH . 'localization' . DS . $this->default_language . DS . $file . '.php';
-				break;
-			default:
-				$file_path         = NAMELESS_PATH . 'Modules' . DS . ucfirst($module) . DS . 'localization' . DS . $language . DS . $file . '.php';
-				$default_file_path = NAMELESS_PATH . 'Modules' . DS . ucfirst($module) . DS . 'localization' . DS . $this->default_language . DS . $file . '.php';
-		}
+        $module = strtolower($module);
+        switch ($module) {
+            //TODO: ucfirst($module) for more than 1 word?
+            case 'core':
+                $file_path = NAMELESS_PATH . ucfirst($module) . DS . 'localization' . DS . $language . DS . $file . '.php';
+                $default_file_path = NAMELESS_PATH . ucfirst($module) . DS . 'localization' . DS . $this->default_language . DS . $file . '.php';
+                break;
+            case 'application':
+                $file_path = APPLICATION_PATH . 'localization' . DS . $language . DS . $file . '.php';
+                $default_file_path = APPLICATION_PATH . 'localization' . DS . $this->default_language . DS . $file . '.php';
+                break;
+            default:
+                $file_path = NAMELESS_PATH . 'Modules' . DS . ucfirst($module) . DS . 'localization' . DS . $language . DS . $file . '.php';
+                $default_file_path = NAMELESS_PATH . 'Modules' . DS . ucfirst($module) . DS . 'localization' . DS . $this->default_language . DS . $file . '.php';
+        }
 
-		if (file_exists($file_path))
-		{
-			if (!isset($this->lines[$language]))
-			{
-				$this->lines[$language] = array();
-			}
+        if (file_exists($file_path)) {
+            if (!isset($this->lines[$language])) {
+                $this->lines[$language] = array();
+            }
 
-			//TODO: correct include_once
-			$lines = include $file_path;
-			$this->lines[$language] = array_merge($this->lines[$language], $lines);
+            //TODO: correct include_once
+            $lines = include $file_path;
+            $this->lines[$language] = array_merge($this->lines[$language], $lines);
 
-			return $language;
-		}
-		elseif (file_exists($default_file_path))
-		{
-			if (!isset($this->lines[$this->default_language]))
-			{
-				$this->lines[$this->default_language] = array();
-			}
+            return $language;
+        } elseif (file_exists($default_file_path)) {
+            if (!isset($this->lines[$this->default_language])) {
+                $this->lines[$this->default_language] = array();
+            }
 
-			$lines = include $default_file_path;
-			$this->lines[$this->default_language] = array_merge($this->lines[$this->default_language], $lines);
+            $lines = include $default_file_path;
+            $this->lines[$this->default_language] = array_merge($this->lines[$this->default_language], $lines);
 
-			return $this->default_language;
-		}
-		else
-		{
-			throw new \RuntimeException('Don`t find language file');
-		}
-	}
+            return $this->default_language;
+        } else {
+            throw new \RuntimeException('Don`t find language file');
+        }
+    }
 
-	/**
-	 * @param string $line_name
-	 * @param string $language
-	 * @param array  $params
-	 *
-	 * @return string
-	 *
-	 * @throws \RuntimeException
-	 */
-	public function get ($line_name, $language = NULL, array $params = array())
-	{
-		$params_temp = array();
-		foreach ($params as $param_name => $param)
-		{
-			$params_temp[':' . $param_name . ':'] = $param;
-		}
-		unset($param);
+    /**
+     * @param string $line_name
+     * @param string $language
+     * @param array $params
+     *
+     * @return string
+     *
+     * @throws \RuntimeException
+     */
+    public function get($line_name, $language = null, array $params = array())
+    {
+        $params_temp = array();
+        foreach ($params as $param_name => $param) {
+            $params_temp[':' . $param_name . ':'] = $param;
+        }
+        unset($param);
 
-		if (isset($this->lines[$language][$line_name]))
-		{
-			return strtr($this->lines[$language][$line_name], $params_temp);
-		}
-		elseif (isset($this->lines[$this->default_language][$line_name]))
-		{
-			return strtr($this->lines[$this->default_language][$line_name], $params_temp);
-		}
-		else
-		{
-			throw new \RuntimeException('Don`t find language line');
-		}
-	}
+        if (isset($this->lines[$language][$line_name])) {
+            return strtr($this->lines[$language][$line_name], $params_temp);
+        } elseif (isset($this->lines[$this->default_language][$line_name])) {
+            return strtr($this->lines[$this->default_language][$line_name], $params_temp);
+        } else {
+            throw new \RuntimeException('Don`t find language line');
+        }
+    }
 }

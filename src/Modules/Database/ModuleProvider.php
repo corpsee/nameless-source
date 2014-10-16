@@ -21,24 +21,27 @@ use Nameless\Core\ModuleProvider as BaseModuleProvider;
  */
 class ModuleProvider extends BaseModuleProvider
 {
-	public function register ($module_path = NULL)
-	{
-		$module_path = __DIR__ . DS;
-		parent::register($module_path);
+    public function register($module_path = null)
+    {
+        $module_path = __DIR__ . DS;
+        parent::register($module_path);
 
-		$this->container['database.database'] = $this->container->share(function ($c)
-		{
-			return new Database
-			(
-				$c['database.type'],
-				$c['database.dns'],
-				$c['database.user'],
-				$c['database.password'],
-				$c['database.persistent'],
-				$c['database.compress']
-			);
-		});
-	}
+        $this->container['database.database'] = $this->container->share(
+            function ($c) {
+                return new Database
+                (
+                    $c['database.type'],
+                    $c['database.dns'],
+                    $c['database.user'],
+                    $c['database.password'],
+                    $c['database.persistent'],
+                    $c['database.compress']
+                );
+            }
+        );
+    }
 
-	public function boot () {}
+    public function boot()
+    {
+    }
 }

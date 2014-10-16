@@ -21,32 +21,32 @@ use Symfony\Component\Console\Application;
  */
 class Console extends Application
 {
-	/**
-	 * @var Kernel
-	 */
-	protected $kernel;
+    /**
+     * @var Kernel
+     */
+    protected $kernel;
 
-	/**
-	 * @var \Pimple
-	 */
-	protected $container;
+    /**
+     * @var \Pimple
+     */
+    protected $container;
 
-	/**
-	 * @param Kernel $kernel
-	 * @param string $name
-	 * @param string $version
-	 */
-	public function __construct (Kernel $kernel, $name = 'UNKNOWN', $version = 'UNKNOWN')
-	{
-		$this->kernel = $kernel->boot();
-		parent::__construct($name, $version);
-	}
+    /**
+     * @param Kernel $kernel
+     * @param string $name
+     * @param string $version
+     */
+    public function __construct(Kernel $kernel, $name = 'UNKNOWN', $version = 'UNKNOWN')
+    {
+        $this->kernel = $kernel->boot();
+        parent::__construct($name, $version);
+    }
 
-	/**
-	 * @return \Pimple
-	 */
-	public function getContainer ()
-	{
-		return $this->kernel->getContainer();
-	}
+    /**
+     * @return \Pimple
+     */
+    public function getContainer()
+    {
+        return $this->kernel->getContainer();
+    }
 }

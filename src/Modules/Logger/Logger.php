@@ -22,5 +22,4 @@ use Psr\Log\LoggerInterface;
  */
 class Logger extends BaseLogger implements LoggerInterface
 {
-
 }

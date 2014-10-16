@@ -14,20 +14,20 @@ namespace Nameless\Modules\Imager;
 
 class Image
 {
-	protected $driver;
+    protected $driver;
 
-	public function __construct (ImageDriver $driver)
-	{
-		$this->driver = $driver;
-	}
+    public function __construct(ImageDriver $driver)
+    {
+        $this->driver = $driver;
+    }
 
-	public function open ($file_path)
-	{
-		return $this->driver->open($file_path);
-	}
+    public function open($file_path)
+    {
+        return $this->driver->open($file_path);
+    }
 
-	public function create ($width, $height, $color = '#FFF', $opacity = 0)
-	{
-		return $this->driver->create($width, $height, $color, $opacity);
-	}
+    public function create($width, $height, $color = '#FFF', $opacity = 0)
+    {
+        return $this->driver->create($width, $height, $color, $opacity);
+    }
 }

@@ -21,17 +21,20 @@ use Nameless\Core\ModuleProvider as BaseModuleProvider;
  */
 class ModuleProvider extends BaseModuleProvider
 {
-	public function register ($module_path = NULL)
-	{
-		$module_path = __DIR__ . DS;
-		parent::register($module_path);
+    public function register($module_path = null)
+    {
+        $module_path = __DIR__ . DS;
+        parent::register($module_path);
 
-		$this->container['validation.validator'] = $this->container->share(function ($c)
-		{
-			return new Validator($c);
-		});
-		$this->container['localization']->load('messages', 'validation');
-	}
+        $this->container['validation.validator'] = $this->container->share(
+            function ($c) {
+                return new Validator($c);
+            }
+        );
+        $this->container['localization']->load('messages', 'validation');
+    }
 
-	public function boot () {}
+    public function boot()
+    {
+    }
 }

@@ -23,29 +23,30 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class AccessListener implements EventSubscriberInterface
 {
-	/**
-	 * @param FilterControllerEvent $event
-	 */
-	public function onKernelController (FilterControllerEvent $event)
-	{
-		$controller = $event->getController();
+    /**
+     * @param FilterControllerEvent $event
+     */
+    public function onKernelController(FilterControllerEvent $event)
+    {
+        $controller = $event->getController();
 
-		if (!is_array($controller)) { return; }
+        if (!is_array($controller)) {
+            return;
+        }
 
-		if ($controller[0] instanceof ControllerInterface && method_exists($controller[0], 'before'))
-		{
-			$controller[0]->before();
-		}
-	}
+        if ($controller[0] instanceof ControllerInterface && method_exists($controller[0], 'before')) {
+            $controller[0]->before();
+        }
+    }
 
-	/**
-	 * @return array
-	 */
-	static public function getSubscribedEvents()
-	{
-		return array
-		(
-			KernelEvents::CONTROLLER => array('onKernelController'),
-		);
-	}
+    /**
+     * @return array
+     */
+    static public function getSubscribedEvents()
+    {
+        return array
+        (
+            KernelEvents::CONTROLLER => array('onKernelController'),
+        );
+    }
 }

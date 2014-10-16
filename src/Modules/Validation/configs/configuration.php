@@ -1,9 +1,7 @@
 <?php
 
-return array
-(
-	'validation' => array
-	(
-		'rules' => array(),
-	),
-);
+return [
+    'validation' => [
+        'rules' => [],
+    ],
+];

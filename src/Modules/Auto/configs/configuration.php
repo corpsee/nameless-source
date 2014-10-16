@@ -1,10 +1,8 @@
 <?php
 
-return array
-(
-	'auto' => array
-	(
-		'users'  => array(),
-		'access' => array(),
-	),
-);
+return [
+    'auto' => [
+        'users'  => [],
+        'access' => [],
+    ],
+];

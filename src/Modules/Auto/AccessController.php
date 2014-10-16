@@ -22,14 +22,13 @@ use Nameless\Core\Controller;
  */
 class AccessController extends Controller
 {
-	public function before()
-	{
+    public function before()
+    {
 
-		$access = $this->container['auto.user']->getAccessByRoute($this->getAttributes('_route'));
+        $access = $this->container['auto.user']->getAccessByRoute($this->getAttributes('_route'));
 
-		if (!$access)
-		{
-			throw new AccessDeniedException('Access Denied!');
-		}
-	}
+        if (!$access) {
+            throw new AccessDeniedException('Access Denied!');
+        }
+    }
 }

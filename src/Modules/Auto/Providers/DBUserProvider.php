@@ -21,42 +21,41 @@ use Nameless\Modules\Database;
  */
 class DBUserProvider implements UserProviderInterface
 {
-	/**
-	 * @var Database
-	 */
-	private $database;
+    /**
+     * @var Database
+     */
+    private $database;
 
-	/**
-	 * @param Database $database
-	 */
-	public function  __construct(Database $database)
-	{
-		$this->database = $database;
-	}
+    /**
+     * @param Database $database
+     */
+    public function  __construct(Database $database)
+    {
+        $this->database = $database;
+    }
 
-	/**
-	 * @param string $user_name
-	 *
-	 * @return array|FALSE
-	 */
-	public function getUserByName ($user_name)
-	{
-		return $this->database->selectOne("SELECT `id`, `password` FROM `tbl_users` WHERE `username` = ?", array($user_name));
-	}
+    /**
+     * @param string $user_name
+     *
+     * @return array|FALSE
+     */
+    public function getUserByName($user_name)
+    {
+        return $this->database->selectOne("SELECT `id`, `password` FROM `tbl_users` WHERE `username` = ?", array($user_name));
+    }
 
-	/**
-	 * @param string $user_name
-	 *
-	 * @return array|false
-	 */
-	public function getUserGroups ($user_name)
-	{
-		$groups = $this->database->selectOne("SELECT `groups` FROM `tbl_users` WHERE `username` = ?", array($user_name));
+    /**
+     * @param string $user_name
+     *
+     * @return array|false
+     */
+    public function getUserGroups($user_name)
+    {
+        $groups = $this->database->selectOne("SELECT `groups` FROM `tbl_users` WHERE `username` = ?", array($user_name));
 
-		if ($groups)
-		{
-			return stringToArray($groups['groups']);
-		}
-		return FALSE;
-	}
+        if ($groups) {
+            return stringToArray($groups['groups']);
+        }
+        return false;
+    }
 }
