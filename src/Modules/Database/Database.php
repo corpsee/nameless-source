@@ -52,7 +52,7 @@ class Database extends \PDO
      *
      * @return \PDOStatement
      */
-    public function extendPrepare($sql = '', $params = array())
+    public function extendPrepare($sql = '', $params = [])
     {
         $result = $this->prepare($sql);
         $result->execute($params);
@@ -69,7 +69,7 @@ class Database extends \PDO
      *
      * @return integer
      */
-    public function execute($sql = '', $params = array())
+    public function execute($sql = '', $params = [])
     {
         $result = $this->extendPrepare($sql, $params);
 
@@ -86,7 +86,7 @@ class Database extends \PDO
      *
      * @return array|false
      */
-    public function selectOne($sql = '', $params = array())
+    public function selectOne($sql = '', $params = [])
     {
         $result = $this->extendPrepare($sql, $params);
         return $result->fetch(parent::FETCH_ASSOC);
@@ -98,7 +98,7 @@ class Database extends \PDO
      *
      * @return array|false
      */
-    public function selectMany($sql = '', $params = array())
+    public function selectMany($sql = '', $params = [])
     {
         $result = $this->extendPrepare($sql, $params);
         return $result->fetchAll(parent::FETCH_ASSOC);
@@ -111,7 +111,7 @@ class Database extends \PDO
      *
      * @return array|false
      */
-    public function selectColumn($sql = '', $params = array(), $column = 0)
+    public function selectColumn($sql = '', $params = [], $column = 0)
     {
         $result = $this->extendPrepare($sql, $params);
         return $result->fetchAll(parent::FETCH_COLUMN, $column);

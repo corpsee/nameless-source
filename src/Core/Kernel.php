@@ -46,7 +46,7 @@ class Kernel extends HttpKernel
     /**
      * @var array
      */
-    private $modules = array();
+    private $modules = [];
 
     /**
      * @var boolean
@@ -106,9 +106,9 @@ class Kernel extends HttpKernel
         );
 
         foreach ($this->container['routes'] as $route_name => $route_value) {
-            $defaults = isset($route_value['defaults']) ? $route_value['defaults'] : array();
-            $requirements = isset($route_value['requirements']) ? $route_value['requirements'] : array();
-            $options = isset($route_value['options']) ? $route_value['options'] : array();
+            $defaults = isset($route_value['defaults']) ? $route_value['defaults'] : [];
+            $requirements = isset($route_value['requirements']) ? $route_value['requirements'] : [];
+            $options = isset($route_value['options']) ? $route_value['options'] : [];
 
             $this->container['routes-collection']->add(
                 $route_name,
@@ -158,7 +158,7 @@ class Kernel extends HttpKernel
 
     private function sessionInit()
     {
-        $this->container['session_options'] = array();
+        $this->container['session_options'] = [];
         $this->container['session_default_locale'] = $this->container['locale'];
         $this->container['session_path'] = '';
 
@@ -275,7 +275,7 @@ class Kernel extends HttpKernel
      *
      * @return Response
      */
-    public function forward($route, array $attributes = array(), array $query = array())
+    public function forward($route, array $attributes = [], array $query = [])
     {
         $defaults = $this->container['routes-collection']->get($route)->getDefaults();
         $attributes['_controller'] = $defaults['_controller'];

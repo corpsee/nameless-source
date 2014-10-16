@@ -45,7 +45,7 @@ class Auto
     /**
      * @var array
      */
-    protected $user_groups = array();
+    protected $user_groups = [];
 
     /**
      * @var UserProviderInterface

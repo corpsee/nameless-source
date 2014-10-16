@@ -231,7 +231,7 @@ class Validator
      */
     public function validateField($key, $value, $rules)
     {
-        $errors = array();
+        $errors = [];
         $value = trim($value);
 
         foreach ($rules as $rule) {
@@ -256,7 +256,7 @@ class Validator
 
     public function validateFieldTest($value, $rules)
     {
-        $errors = array();
+        $errors = [];
         $value = trim($value);
 
         foreach ($rules as $rule) {
@@ -285,7 +285,7 @@ class Validator
      */
     public function validate($form)
     {
-        $errors = array();
+        $errors = [];
         if (isset($this->container['validation.rules'][$form])) {
             $post = $this->container['request']->request->all();
             foreach ($post as $key => $value) {

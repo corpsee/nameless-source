@@ -40,9 +40,9 @@ class FunctionTest extends \PHPUnit_Framework_TestCase
     {
         return array
         (
-            array(array('string', 'string'), 'string, string'),
-            array(array('string'), 'string'),
-            array(array(), ''),
+            [['string', 'string'], 'string, string'],
+            [['string'], 'string'],
+            [[], ''],
         );
     }
 

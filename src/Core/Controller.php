@@ -76,7 +76,7 @@ class Controller implements ControllerInterface
      *
      * @return Response
      */
-    public function forward($route, array $attributes = array(), array $query = array())
+    public function forward($route, array $attributes = [], array $query = [])
     {
         return $this->getKernel()->forward($route, $attributes, $query);
     }
@@ -90,7 +90,7 @@ class Controller implements ControllerInterface
      *
      * @return RedirectResponse
      */
-    public function redirect($url, $status = 302, $headers = array())
+    public function redirect($url, $status = 302, $headers = [])
     {
         return new RedirectResponse($url, $status, $headers);
     }

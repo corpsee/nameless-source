@@ -24,7 +24,7 @@ class Benchmark
     /**
      * @var array
      */
-    protected $markers = array();
+    protected $markers = [];
 
     //TODO: add marker groups
     /**

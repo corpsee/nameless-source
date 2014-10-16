@@ -151,7 +151,7 @@ class User
      *
      * @return array
      */
-    public function getUserGroups(array $default = array())
+    public function getUserGroups(array $default = [])
     {
         return unserialize($this->session->get(self::USER_GROUPS, serialize($default)));
     }

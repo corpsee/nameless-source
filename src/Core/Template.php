@@ -118,7 +118,7 @@ class Template
     public function getData($name = null)
     {
         if (is_null($name)) {
-            $data = array();
+            $data = [];
             foreach ($this->data as $name => $data_value) {
                 $filter = isset($this->filters[$name]) ? $this->filters[$name] : $this->template_filter;
                 switch ($filter) {

@@ -103,7 +103,7 @@ class AssetsCollection
      */
     public function dumpCompress($assets_dir, $compressor_path, $java_path)
     {
-        $filters = array();
+        $filters = [];
         if ($this->assets[0]->getType() === 'js') {
             $filters[] = new JsCompressorFilter($compressor_path, $java_path);
         } else {

@@ -143,7 +143,7 @@ class Asset
             return $this->file_asset;
         }
 
-        $filters = array();
+        $filters = [];
         if ($this->getType() === 'js') {
             $this->file_asset = new FileAsset($this->getPath(), $filters);
             return $this->file_asset;
@@ -173,8 +173,8 @@ class Asset
 
         chdir(dirname($this->getPath()));
 
-        $urls_old = array();
-        $urls_new = array();
+        $urls_old = [];
+        $urls_new = [];
 
         preg_match_all('#url\(([\'"]?[^/\'"][^\'"]*[\'"]?)\)#imU', $asset_text, $urls_old);
         $urls = array_unique($urls_old[1]);

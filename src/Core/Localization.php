@@ -78,7 +78,7 @@ class Localization
 
         if (file_exists($file_path)) {
             if (!isset($this->lines[$language])) {
-                $this->lines[$language] = array();
+                $this->lines[$language] = [];
             }
 
             //TODO: correct include_once
@@ -88,7 +88,7 @@ class Localization
             return $language;
         } elseif (file_exists($default_file_path)) {
             if (!isset($this->lines[$this->default_language])) {
-                $this->lines[$this->default_language] = array();
+                $this->lines[$this->default_language] = [];
             }
 
             $lines = include $default_file_path;
@@ -109,9 +109,9 @@ class Localization
      *
      * @throws \RuntimeException
      */
-    public function get($line_name, $language = null, array $params = array())
+    public function get($line_name, $language = null, array $params = [])
     {
-        $params_temp = array();
+        $params_temp = [];
         foreach ($params as $param_name => $param) {
             $params_temp[':' . $param_name . ':'] = $param;
         }
