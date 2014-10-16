@@ -1,43 +1,45 @@
 {
-	"name":        "corpsee/nameless-source",
-	"description": "Yet another framework based on Symfony Components.",
-	"type":        "library",
-	"keywords":    [
-		"framework",
-		"nameless"
-	],
-	"license":     "MIT",
-	"authors":     [{
-			"name":     "Corpsee",
-			"email":    "poisoncorpsee@gmail.com",
-			"homepage": "http://corpsee.com",
-			"role":     "Developer"
-		}
-	],
-	"require": {
-		"pimple/pimple":            "1.1.*",
-		"symfony/http-foundation":  "2.3.*",
-		"symfony/http-kernel":      "2.3.*",
-		"symfony/routing":          "2.3.*",
-		"symfony/event-dispatcher": "2.3.*",
-		"symfony/debug":            "2.3.*",
-		"symfony/console":          "2.3.*",
-		"swiftmailer/swiftmailer":  "5.2.*",
-		"monolog/monolog":          "1.7.*",
-		"kriswallsmith/assetic":    "1.1.*",
-		"leafo/lessphp":            "0.4.*"
-	},
-	"require-dev": {
-		"phpunit/phpunit":          "3.7.*"
-	},
-	"autoload": {
-		"psr-4": {
-			"Nameless\\":        "src",
-			"Nameless\\Tests\\": "tests"
-		},
-		"files": [
-			"src/Core/functions/functions.php"
-		]
-	},
-	"minimum-stability": "dev"
+    "name":        "corpsee/nameless-source",
+    "description": "Yet another framework based on Symfony Components.",
+    "type":        "framework",
+    "keywords": [
+        "framework",
+        "nameless"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name":     "Corpsee",
+            "email":    "poisoncorpsee@gmail.com",
+            "homepage": "http://corpsee.com",
+            "role":     "Developer"
+        }
+    ],
+    "require": {
+        "php":                      ">=5.4.0",
+        "pimple/pimple":            "1.1.*",
+        "symfony/http-foundation":  "2.3.*",
+        "symfony/http-kernel":      "2.3.*",
+        "symfony/routing":          "2.3.*",
+        "symfony/event-dispatcher": "2.3.*",
+        "symfony/debug":            "2.3.*",
+        "symfony/console":          "2.3.*",
+        "swiftmailer/swiftmailer":  "5.2.*",
+        "monolog/monolog":          "1.7.*",
+        "kriswallsmith/assetic":    "1.1.*",
+        "leafo/lessphp":            "0.4.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.1.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Nameless\\":        "src",
+            "Nameless\\Tests\\": "tests"
+        },
+        "files": [
+            "src/Core/functions/functions.php"
+        ]
+    },
+    "minimum-stability": "dev"
 }
