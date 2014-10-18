@@ -128,16 +128,17 @@ class Controller implements ControllerInterface
      * @param Response $response
      * @param string $template_extension
      * @param string $template_path
+     * @param boolean $compress
      *
      * @return Response
      */
-    public function render($template, array $data = [], $template_filter = Template::FILTER_ESCAPE, array $filters = [], Response $response = null, $template_path = null, $template_extension = 'tpl')
+    public function render($template, array $data = [], $template_filter = Template::FILTER_ESCAPE, array $filters = [], Response $response = null, $template_path = null, $template_extension = 'tpl', $compress = false)
     {
         if (is_null($template_path)) {
             $template_path = $this->container['templates_path'];
         }
         $template = new Template($template_path, $template, $data, $template_filter, $filters);
-        return $template->render();
+        return $template->render($compress);
     }
 
     /**
