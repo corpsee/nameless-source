@@ -123,11 +123,7 @@ class AssetsDispatcher
     protected function generateAssetsTest(AssetsCollection $assets_collection, $compiled_path, $compress = true)
     {
         if ($compress) {
-            $dump = $assets_collection->dumpCompress(
-                $this->container['assets.path'],
-                $this->container['assets.yuicompressor_path'],
-                $this->container['assets.java_path']
-            );
+            $dump = $assets_collection->dumpCompress($this->container['assets.path']);
         } else {
             $dump = $assets_collection->dump($this->container['assets.path']);
         }
