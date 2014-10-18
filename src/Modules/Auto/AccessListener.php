@@ -46,7 +46,7 @@ class AccessListener implements EventSubscriberInterface
     {
         return array
         (
-            KernelEvents::CONTROLLER => array('onKernelController'),
+            KernelEvents::CONTROLLER => ['onKernelController'],
         );
     }
 }

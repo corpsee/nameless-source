@@ -57,6 +57,9 @@ class ControllerResolver extends BaseControllerResolver
             $controller->setContainer($this->container);
         }
 
-        return array($controller, $method);
+        return [
+            $controller,
+            $method
+        ];
     }
 }

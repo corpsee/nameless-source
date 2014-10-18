@@ -8,9 +8,9 @@ class FunctionTest extends \PHPUnit_Framework_TestCase
     {
         return array
         (
-            array(PUBLIC_PATH . 'files/path/to/url'),
-            array(PUBLIC_PATH . 'files' . DS . 'path' . DS . 'to' . DS . 'url'),
-            array(PUBLIC_PATH . 'files\path\to\url'),
+            [PUBLIC_PATH . 'files/path/to/url'],
+            [PUBLIC_PATH . 'files' . DS . 'path' . DS . 'to' . DS . 'url'],
+            [PUBLIC_PATH . 'files\path\to\url'],
         );
     }
 
@@ -18,7 +18,7 @@ class FunctionTest extends \PHPUnit_Framework_TestCase
     {
         return array
         (
-            array('/files/path/to/url'),
+            ['/files/path/to/url'],
         );
     }
 
@@ -26,13 +26,13 @@ class FunctionTest extends \PHPUnit_Framework_TestCase
     {
         return array
         (
-            array('string_part, string_part', 2),
-            array('string part, string part', 2),
-            array('string_part, string_part,', 2),
-            array('string_part, string_part,,', 2),
-            array('', 0),
-            array(',', 0),
-            array(' , ', 0),
+            ['string_part, string_part', 2],
+            ['string part, string part', 2],
+            ['string_part, string_part,', 2],
+            ['string_part, string_part,,', 2],
+            ['', 0],
+            [',', 0],
+            [' , ', 0],
         );
     }
 

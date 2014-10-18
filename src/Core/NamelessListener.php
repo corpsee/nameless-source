@@ -112,9 +112,9 @@ class NamelessListener implements EventSubscriberInterface
     {
         return array
         (
-            KernelEvents::CONTROLLER => array('onKernelController'),
-            KernelEvents::REQUEST    => array('onEarlyKernelRequest'),
-            KernelEvents::TERMINATE  => array('onTerminate'),
+            KernelEvents::CONTROLLER => ['onKernelController'],
+            KernelEvents::REQUEST    => ['onEarlyKernelRequest'],
+            KernelEvents::TERMINATE  => ['onTerminate'],
         );
     }
 }

@@ -239,12 +239,12 @@ class Validator
                 if (!$error = $this->{$rule[0]}($value)) {
                     $errors[] = $this->container['localization']->get(
                         $rule[0],
-                        array('field' => $key, 'param2' => $rule[1])
+                        ['field' => $key, 'param2' => $rule[1]]
                     );
                 }
             } elseif (is_string($rule)) {
                 if (!$error = $this->{$rule}($value)) {
-                    $errors[] = $this->container['localization']->get($rule, array('field' => $key));
+                    $errors[] = $this->container['localization']->get($rule, ['field' => $key]);
                 }
             } else {
                 throw new \InvalidArgumentException('Invalid validation rule');

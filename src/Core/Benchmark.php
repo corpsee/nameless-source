@@ -200,6 +200,6 @@ class Benchmark
      */
     public function getAppStatistic()
     {
-        return $this->getTotals(array(self::APPLICATION_MARKER));
+        return $this->getTotals([self::APPLICATION_MARKER]);
     }
 }

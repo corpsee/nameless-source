@@ -21,8 +21,8 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     {
         return array
         (
-            array('noempty'),
-            array('.'),
+            ['noempty'],
+            ['.'],
         );
     }
 
@@ -30,8 +30,8 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     {
         return array
         (
-            array(''),
-            array(' '),
+            [''],
+            [' '],
         );
     }
 
@@ -39,8 +39,8 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     {
         return array
         (
-            array('0'),
-            array('12569'),
+            ['0'],
+            ['12569'],
         );
     }
 
@@ -48,10 +48,10 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     {
         return array
         (
-            array('12.569'),
-            array('12 569'),
-            array('-12569'),
-            array('12569a'),
+            ['12.569'],
+            ['12 569'],
+            ['-12569'],
+            ['12569a'],
         );
     }
 
@@ -59,20 +59,20 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     {
         return array
         (
-            array('testmail@test.com'),
-            array('test.mail@test.com'),
-            array('test..mail@test.com'),
-            array('test+mail@test.com'),
-            array('test++mail@test.com'),
-            array('test-mail@test.com'),
-            array('test--mail@test.com'),
-            array('test_mail@test.com'),
-            array('test__mail@test.com'),
-            array('testmail@testmail'),
-            array('testmail@testmail.testmail'),
-            array('testmail@test-mail.com'),
-            array('testmail@test--mail.com'),
-            array('testmail@тестовая.почта'),
+            ['testmail@test.com'],
+            ['test.mail@test.com'],
+            ['test..mail@test.com'],
+            ['test+mail@test.com'],
+            ['test++mail@test.com'],
+            ['test-mail@test.com'],
+            ['test--mail@test.com'],
+            ['test_mail@test.com'],
+            ['test__mail@test.com'],
+            ['testmail@testmail'],
+            ['testmail@testmail.testmail'],
+            ['testmail@test-mail.com'],
+            ['testmail@test--mail.com'],
+            ['testmail@тестовая.почта'],
         );
     }
 
@@ -80,15 +80,15 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     {
         return array
         (
-            array('-testmail@mail.com'),
-            array('testmail@-mail.com'),
-            array('testmail@mail.-com'),
-            array('testmail@test@mail.com'),
-            array('testmail@test.mail.com'),
-            array('testmail@test..mail'),
-            array('testmail@test_mail.com'),
-            array('testmail@test+mail.com'),
-            array('тестоваяпочта@тестовая.почта'),
+            ['-testmail@mail.com'],
+            ['testmail@-mail.com'],
+            ['testmail@mail.-com'],
+            ['testmail@test@mail.com'],
+            ['testmail@test.mail.com'],
+            ['testmail@test..mail'],
+            ['testmail@test_mail.com'],
+            ['testmail@test+mail.com'],
+            ['тестоваяпочта@тестовая.почта'],
         );
     }
 
@@ -96,28 +96,28 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     {
         return array
         (
-            array('testmail@test.com'),
-            array('test.mail@test.com'),
-            array('test..mail@test.com'),
-            array('test+mail@test.com'),
-            array('test++mail@test.com'),
-            array('test-mail@test.com'),
-            array('test--mail@test.com'),
-            array('test_mail@test.com'),
-            array('test__mail@test.com'),
-            array('testmail@testmail'),
-            array('testmail@testmail.testmail'),
-            array('testmail@test-mail.com'),
-            array('testmail@test--mail.com'),
-            array('testmail@тестовая.почта'),
-            array('-testmail@mail.com'),
-            array('testmail@-mail.com'),
-            array('testmail@mail.-com'),
-            array('testmail@test.mail.com'),
-            array('testmail@test..mail'),
-            array('testmail@test_mail.com'),
-            array('testmail@test+mail.com'),
-            array('тестоваяпочта@тестовая.почта'),
+            ['testmail@test.com'],
+            ['test.mail@test.com'],
+            ['test..mail@test.com'],
+            ['test+mail@test.com'],
+            ['test++mail@test.com'],
+            ['test-mail@test.com'],
+            ['test--mail@test.com'],
+            ['test_mail@test.com'],
+            ['test__mail@test.com'],
+            ['testmail@testmail'],
+            ['testmail@testmail.testmail'],
+            ['testmail@test-mail.com'],
+            ['testmail@test--mail.com'],
+            ['testmail@тестовая.почта'],
+            ['-testmail@mail.com'],
+            ['testmail@-mail.com'],
+            ['testmail@mail.-com'],
+            ['testmail@test.mail.com'],
+            ['testmail@test..mail'],
+            ['testmail@test_mail.com'],
+            ['testmail@test+mail.com'],
+            ['тестоваяпочта@тестовая.почта'],
         );
     }
 
@@ -125,8 +125,8 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     {
         return array
         (
-            array('testmail_test.com'),
-            array('testmail@test@mail.com'),
+            ['testmail_test.com'],
+            ['testmail@test@mail.com'],
         );
     }
 
@@ -136,7 +136,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testTrueEmailSimple($string)
     {
         $this->init();
-        $this->assertEmpty($this->validator->validateFieldTest($string, array('email_simple')));
+        $this->assertEmpty($this->validator->validateFieldTest($string, ['email_simple']));
     }
 
     /**
@@ -145,7 +145,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testFalseEmailSimple($string)
     {
         $this->init();
-        $this->assertArrayHasKey(0, $this->validator->validateFieldTest($string, array('email_simple')));
+        $this->assertArrayHasKey(0, $this->validator->validateFieldTest($string, ['email_simple']));
     }
 
     /**
@@ -154,7 +154,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testTrueEmail($string)
     {
         $this->init();
-        $this->assertEmpty($this->validator->validateFieldTest($string, array('email')));
+        $this->assertEmpty($this->validator->validateFieldTest($string, ['email']));
     }
 
     /**
@@ -163,7 +163,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testFalseEmail($string)
     {
         $this->init();
-        $this->assertArrayHasKey(0, $this->validator->validateFieldTest($string, array('email')));
+        $this->assertArrayHasKey(0, $this->validator->validateFieldTest($string, ['email']));
     }
 
     /**
@@ -172,7 +172,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testTrueNoempty($string)
     {
         $this->init();
-        $this->assertArrayNotHasKey(0, $this->validator->validateFieldTest($string, array('noempty')));
+        $this->assertArrayNotHasKey(0, $this->validator->validateFieldTest($string, ['noempty']));
     }
 
     /**
@@ -181,7 +181,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testFalseNoempty($string)
     {
         $this->init();
-        $this->assertArrayHasKey(0, $this->validator->validateFieldTest($string, array('noempty')));
+        $this->assertArrayHasKey(0, $this->validator->validateFieldTest($string, ['noempty']));
     }
 
     /**
@@ -190,7 +190,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testTrueNumber($string)
     {
         $this->init();
-        $this->assertArrayNotHasKey(0, $this->validator->validateFieldTest($string, array('number')));
+        $this->assertArrayNotHasKey(0, $this->validator->validateFieldTest($string, ['number']));
     }
 
     /**
@@ -199,6 +199,6 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testFalseNumber($string)
     {
         $this->init();
-        $this->assertArrayHasKey(0, $this->validator->validateFieldTest($string, array('number')));
+        $this->assertArrayHasKey(0, $this->validator->validateFieldTest($string, ['number']));
     }
 }

@@ -33,7 +33,7 @@ class Database extends \PDO
      */
     public function __construct($db_type, $dns, $user = null, $password = null, $persistent = false, $compress = false)
     {
-        $attributes = array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION);
+        $attributes = [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION];
 
         if ($persistent) {
             $attributes[\PDO::ATTR_PERSISTENT] = true;

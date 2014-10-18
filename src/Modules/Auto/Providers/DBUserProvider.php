@@ -41,7 +41,7 @@ class DBUserProvider implements UserProviderInterface
      */
     public function getUserByName($user_name)
     {
-        return $this->database->selectOne("SELECT `id`, `password` FROM `tbl_users` WHERE `username` = ?", array($user_name));
+        return $this->database->selectOne("SELECT `id`, `password` FROM `tbl_users` WHERE `username` = ?", [$user_name]);
     }
 
     /**
@@ -51,7 +51,7 @@ class DBUserProvider implements UserProviderInterface
      */
     public function getUserGroups($user_name)
     {
-        $groups = $this->database->selectOne("SELECT `groups` FROM `tbl_users` WHERE `username` = ?", array($user_name));
+        $groups = $this->database->selectOne("SELECT `groups` FROM `tbl_users` WHERE `username` = ?", [$user_name]);
 
         if ($groups) {
             return stringToArray($groups['groups']);

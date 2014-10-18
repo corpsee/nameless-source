@@ -10,7 +10,7 @@ class ErrorController extends Controller
     public function error(FlattenException $exception)
     {
         $data = [
-            'styles' => array('/files/lib/bootstrap/2.3.2/css/bootstrap.css',),
+            'styles' => ['/files/lib/bootstrap/2.3.2/css/bootstrap.css'],
         ];
 
         return $this->render($exception->getStatusCode(), $data, Template::FILTER_ESCAPE, [], null, NAMELESS_PATH . 'Core' . DS . 'templates' . DS);

@@ -254,20 +254,18 @@ class Template
                 $optimize_next = false;
 
                 $part = str_replace(
-                    array("/* <![CDATA[ */\n", "<!--\n", "\n//-->"),
-                    array('/* <![CDATA[ */', '', ''),
+                    ["/* <![CDATA[ */\n", "<!--\n", "\n//-->"],
+                    ['/* <![CDATA[ */', '', ''],
                     $part
                 );
                 $part = trim(
-                    preg_replace(
-                        array(
+                    preg_replace([
                             '@(?<!:)//(?!W3C|DTD|EN).*@',
                             '/[ \n\t]*(;|=|\{|\}|\[|\]|&&|,|<|>|\',|",|\':|":|: |\|\|)[ \n\t]*/'
-                        ),
-                        array(
+                        ], [
                             '',
                             '$1'
-                        ),
+                        ],
                         $part
                     )
                 );
@@ -311,7 +309,7 @@ class Template
         $value = str_replace("\0", '', $value);
 
         // Fix &entity\n;
-        $value = str_replace(array('&amp;', '&lt;', '&gt;'), array('&amp;amp;', '&amp;lt;', '&amp;gt;'), $value);
+        $value = str_replace(['&amp;', '&lt;', '&gt;'], ['&amp;amp;', '&amp;lt;', '&amp;gt;'], $value);
         $value = preg_replace('/(&#*\w+)[\x00-\x20]+;/u', '$1;', $value);
         $value = preg_replace('/(&#x*[0-9A-F]+);*/iu', '$1;', $value);
         $value = html_entity_decode($value, ENT_COMPAT, 'UTF-8');

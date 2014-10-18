@@ -43,7 +43,7 @@ function hashCheck($value, $hash)
  */
 function pathToURL($path)
 {
-    return str_replace(array(PUBLIC_PATH, DS, '\\'), array('/', '/', '/'), $path);
+    return str_replace([PUBLIC_PATH, DS, '\\'], ['/', '/', '/'], $path);
 }
 
 /**
@@ -1163,7 +1163,7 @@ function standardizeFilename($string)
 function standardizeString($string)
 {
     $string = trim($string);
-    $string = preg_replace(array('#[- \\/+\.,:;=]#iu', '#[^\p{L}\p{Nd}_]+#iu'), array('_', ''), $string);
+    $string = preg_replace(['#[- \\/+\.,:;=]#iu', '#[^\p{L}\p{Nd}_]+#iu'], ['_', ''], $string);
     return mb_strtolower(trim($string));
 }
 

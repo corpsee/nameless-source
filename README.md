@@ -55,7 +55,7 @@ $options = array
 (
 	'debug'                  => FALSE,
 	'default_ttl'            => 0,
-	'private_headers'        => array('Authorization', 'Cookie'),
+	'private_headers'        => ['Authorization', 'Cookie'],
 	'allow_reload'           => TRUE,
 	'allow_revalidate'       => TRUE,
 	'stale_while_revalidate' => 2,
