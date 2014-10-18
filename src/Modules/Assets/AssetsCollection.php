@@ -13,6 +13,7 @@
 namespace Nameless\Modules\Assets;
 
 use Assetic\Asset\AssetCollection;
+use Assetic\Filter\GoogleClosure\CompilerApiFilter;
 use Assetic\Filter\Yui\CssCompressorFilter;
 use Assetic\Filter\Yui\JsCompressorFilter;
 
@@ -103,12 +104,14 @@ class AssetsCollection
      */
     public function dumpCompress($assets_dir, $compressor_path, $java_path)
     {
-        $filters = [];
+        /*$filters = [];
         if ($this->assets[0]->getType() === 'js') {
             $filters[] = new JsCompressorFilter($compressor_path, $java_path);
+            $filters[] = new CompilerApiFilter();
         } else {
             $filters[] = new CssCompressorFilter($compressor_path, $java_path);
-        }
+        }*/
+        $filters[] = new CompilerApiFilter();
 
         return $this->dump($assets_dir, $filters);
     }
