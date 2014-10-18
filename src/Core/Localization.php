@@ -45,7 +45,7 @@ class Localization
     //TODO: добавить обработку массивов в $file
     //TODO: добавить обработку абсолютных путей в $file
     /**
-     * @param sting $file
+     * @param string $file
      * @param string $module
      * @param string $language
      * @param boolean $overwrite

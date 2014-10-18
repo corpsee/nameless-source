@@ -132,6 +132,7 @@ class Controller implements ControllerInterface
      *
      * @return Response
      */
+    //TODO: $template_extension to config
     public function render($template, array $data = [], $template_filter = Template::FILTER_ESCAPE, array $filters = [], Response $response = null, $template_path = null, $template_extension = 'tpl', $compress = false)
     {
         if (is_null($template_path)) {
