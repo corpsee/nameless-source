@@ -14,7 +14,7 @@
 <body>
 <div class="container" style="margin-top: 50px;">
     <div class="row">
-        <div class="span12">
+        <div class="col-md-6">
             <h1>Page not found</h1>
         </div>
     </div>
