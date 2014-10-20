@@ -12,6 +12,8 @@
 
 namespace Nameless\Modules\Assets;
 
+use Pimple\Container;
+
 /**
  * AssetsDispatcher class
  *
@@ -21,7 +23,7 @@ namespace Nameless\Modules\Assets;
 class AssetsDispatcher
 {
     /**
-     * @var \Pimple
+     * @var Container
      */
     protected $container;
 
@@ -35,9 +37,9 @@ class AssetsDispatcher
     ];
 
     /**
-     * @param \Pimple $container
+     * @param Container $container
      */
-    public function __construct(\Pimple $container)
+    public function __construct(Container $container)
     {
         $this->container = $container;
     }

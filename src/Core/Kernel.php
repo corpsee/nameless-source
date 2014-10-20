@@ -33,6 +33,7 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\Debug;
+use Pimple\Container;
 
 define('NAMELESS_PATH', dirname(__DIR__) . DIRECTORY_SEPARATOR);
 
@@ -54,13 +55,13 @@ class Kernel extends HttpKernel
     private $booted = false;
 
     /**
-     * @var \Pimple
+     * @var Container
      */
     private $container;
 
     public function __construct()
     {
-        $this->container                  = new \Pimple();
+        $this->container                  = new Container();
         $this->container['kernel']        = $this;
         $this->container['logger.logger'] = null;
         $this->container['benchmark']     = null;
@@ -99,11 +100,9 @@ class Kernel extends HttpKernel
 
     private function routerInit()
     {
-        $this->container['routes-collection'] = $this->container->share(
-            function () {
-                return new RouteCollection();
-            }
-        );
+        $this->container['routes-collection'] = function () {
+            return new RouteCollection();
+        };
 
         foreach ($this->container['routes'] as $route_name => $route_value) {
             $defaults = isset($route_value['defaults']) ? $route_value['defaults'] : [];
@@ -116,29 +115,21 @@ class Kernel extends HttpKernel
             );
         }
 
-        $this->container['request-context'] = $this->container->share(
-            function ($c) {
-                return new RequestContext($c['http_port'], $c['https_port']);
-            }
-        );
+        $this->container['request-context'] = function ($c) {
+            return new RequestContext($c['http_port'], $c['https_port']);
+        };
 
-        $this->container['url-matcher'] = $this->container->share(
-            function ($c) {
-                return new UrlMatcher($c['routes-collection'], $c['request-context']);
-            }
-        );
+        $this->container['url-matcher'] = function ($c) {
+            return new UrlMatcher($c['routes-collection'], $c['request-context']);
+        };
 
-        $this->container['url-generator'] = $this->container->share(
-            function ($c) {
-                return new UrlGenerator($c['routes-collection'], $c['request-context'], $c['logger.logger']);
-            }
-        );
+        $this->container['url-generator'] = function ($c) {
+            return new UrlGenerator($c['routes-collection'], $c['request-context'], $c['logger.logger']);
+        };
 
-        $this->container['resolver'] = $this->container->share(
-            function ($c) {
-                return new ControllerResolver($c, $c['logger.logger']);
-            }
-        );
+        $this->container['resolver'] = function ($c) {
+            return new ControllerResolver($c, $c['logger.logger']);
+        };
     }
 
     private function modulesInit()
@@ -162,47 +153,37 @@ class Kernel extends HttpKernel
         $this->container['session_default_locale'] = $this->container['locale'];
         $this->container['session_path'] = '';
 
-        $this->container['session_handler'] = $this->container->share(
-            function ($c) {
-                return new NativeFileSessionHandler($c['session_path']);
-            }
-        );
+        $this->container['session_handler'] = function ($c) {
+            return new NativeFileSessionHandler($c['session_path']);
+        };
 
-        $this->container['session_storage'] = $this->container->share(
-            function ($c) {
-                return new NativeSessionStorage($c['session_options'], $c['session_handler']);
-            }
-        );
+        $this->container['session_storage'] = function ($c) {
+            return new NativeSessionStorage($c['session_options'], $c['session_handler']);
+        };
 
-        $this->container['session'] = $this->container->share(
-            function ($c) {
-                return new Session($c['session_storage']);
-            }
-        );
+        $this->container['session'] = function ($c) {
+            return new Session($c['session_storage']);
+        };
     }
 
     private function dispatcherInit()
     {
-        $this->container['dispatcher'] = $this->container->share(
-            function ($c) {
-                $dispatcher = new EventDispatcher();
-                $dispatcher->addSubscriber(new RouterListener($c['url-matcher'], null, $c['logger.logger']));
-                $dispatcher->addSubscriber(new LocaleListener($c['locale']));
-                $dispatcher->addSubscriber(new NamelessListener($c['session'], $c['benchmark'], $c['logger.logger']));
-                $dispatcher->addSubscriber(new ResponseListener('UTF-8'));
+        $this->container['dispatcher'] = function ($c) {
+            $dispatcher = new EventDispatcher();
+            $dispatcher->addSubscriber(new RouterListener($c['url-matcher'], null, $c['logger.logger']));
+            $dispatcher->addSubscriber(new LocaleListener($c['locale']));
+            $dispatcher->addSubscriber(new NamelessListener($c['session'], $c['benchmark'], $c['logger.logger']));
+            $dispatcher->addSubscriber(new ResponseListener('UTF-8'));
 
-                return $dispatcher;
-            }
-        );
+            return $dispatcher;
+        };
     }
 
     private function localizationInit()
     {
-        $this->container['localization'] = $this->container->share(
-            function ($c) {
-                return new Localization($c['language']);
-            }
-        );
+        $this->container['localization'] = function ($c) {
+            return new Localization($c['language']);
+        };
         $this->container['localization']->load('core', 'core');
     }
 
@@ -233,11 +214,9 @@ class Kernel extends HttpKernel
             $this->container['dispatcher']->addSubscriber($listener);
         };
 
-        $this->container['benchmark'] = $this->container->share(
-            function () {
-                return new Benchmark();
-            }
-        );
+        $this->container['benchmark'] = function () {
+            return new Benchmark();
+        };
     }
 
     public function boot()
@@ -308,7 +287,7 @@ class Kernel extends HttpKernel
     }
 
     /**
-     * @return \Pimple
+     * @return Container
      */
     public function getContainer()
     {

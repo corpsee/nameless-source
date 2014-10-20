@@ -18,6 +18,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Nameless\Modules\Database\Database;
 use Symfony\Component\Routing\Generator\UrlGenerator;
+use Pimple\Container;
 
 /**
  * Base controller class
@@ -27,14 +28,14 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 class Controller implements ControllerInterface
 {
     /**
-     * @var \Pimple
+     * @var Container
      */
     protected $container;
 
     /**
-     * @param \Pimple $container
+     * @param Container $container
      */
-    public function setContainer(\Pimple $container)
+    public function setContainer(Container $container)
     {
         $this->container = $container;
     }

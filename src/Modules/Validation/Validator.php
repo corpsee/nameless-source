@@ -12,6 +12,8 @@
 
 namespace Nameless\Modules\Validation;
 
+use Pimple\Container;
+
 /**
  * Validator class
  *
@@ -21,12 +23,12 @@ namespace Nameless\Modules\Validation;
 class Validator
 {
     /**
-     * @var \Pimple
+     * @var Container
      */
     private $container;
 
     /**
-     * @param \Pimple $container
+     * @param Container $container
      */
     public function __construct($container)
     {

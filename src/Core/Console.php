@@ -13,6 +13,7 @@
 namespace Nameless\Core;
 
 use Symfony\Component\Console\Application;
+use Pimple\Container;
 
 /**
  * Kernel class
@@ -27,7 +28,7 @@ class Console extends Application
     protected $kernel;
 
     /**
-     * @var \Pimple
+     * @var Container
      */
     protected $container;
 
@@ -43,7 +44,7 @@ class Console extends Application
     }
 
     /**
-     * @return \Pimple
+     * @return Container
      */
     public function getContainer()
     {

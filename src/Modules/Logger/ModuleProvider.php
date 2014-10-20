@@ -28,19 +28,15 @@ class ModuleProvider extends BaseModuleProvider
         parent::register($module_path);
 
         //TODO: вызывать исключение, если не заданы необходимые настройки (['logger']['name'] например)
-        $this->container['logger.logger'] = $this->container->share(
-            function ($c) {
-                $logger = new Logger($c['logger.name']);
-                $logger->pushHandler($c['logger.handler']);
-                return $logger;
-            }
-        );
+        $this->container['logger.logger'] = function ($c) {
+            $logger = new Logger($c['logger.name']);
+            $logger->pushHandler($c['logger.handler']);
+            return $logger;
+        };
 
-        $this->container['logger.handler'] = $this->container->share(
-            function ($c) {
-                return new StreamHandler($c['logger.file'], $c['logger.level']);
-            }
-        );
+        $this->container['logger.handler'] = function ($c) {
+            return new StreamHandler($c['logger.file'], $c['logger.level']);
+        };
 
         $this->container['logger.level'] = function ($c) {
             if ($c['environment'] == 'production') {

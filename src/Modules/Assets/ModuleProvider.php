@@ -27,11 +27,9 @@ class ModuleProvider extends BaseModuleProvider
         $module_path = __DIR__ . DS;
         parent::register($module_path);
 
-        $this->container['assets.dispatcher'] = $this->container->share(
-            function ($c) {
-                return new AssetsDispatcher($c);
-            }
-        );
+        $this->container['assets.dispatcher'] = function ($c) {
+            return new AssetsDispatcher($c);
+        };
     }
 
     public function boot()

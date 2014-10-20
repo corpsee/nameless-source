@@ -14,6 +14,7 @@ namespace Nameless\Core;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver as BaseControllerResolver;
+use Pimple\Container;
 
 /**
  * Controller resolver
@@ -31,7 +32,7 @@ class ControllerResolver extends BaseControllerResolver
      * @param Container $container
      * @param LoggerInterface $logger
      */
-    public function __construct(\Pimple $container, LoggerInterface $logger = null)
+    public function __construct(Container $container, LoggerInterface $logger = null)
     {
         $this->container = $container;
         parent::__construct($logger);

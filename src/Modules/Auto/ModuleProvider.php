@@ -27,11 +27,9 @@ class ModuleProvider extends BaseModuleProvider
         $module_path = __DIR__ . DS;
         parent::register($module_path);
 
-        $this->container['auto.user'] = $this->container->share(
-            function ($c) {
-                return new User($c['session'], $c['routes-collection'], $c['auto.access']);
-            }
-        );
+        $this->container['auto.user'] = function ($c) {
+            return new User($c['session'], $c['routes-collection'], $c['auto.access']);
+        };
     }
 
     public function boot()

@@ -26,11 +26,9 @@ class ModuleProvider extends BaseModuleProvider
         $module_path = __DIR__ . DS;
         parent::register($module_path);
 
-        $this->container['validation.validator'] = $this->container->share(
-            function ($c) {
-                return new Validator($c);
-            }
-        );
+        $this->container['validation.validator'] = function ($c) {
+            return new Validator($c);
+        };
         $this->container['localization']->load('messages', 'validation');
     }
 

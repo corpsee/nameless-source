@@ -12,6 +12,8 @@
 
 namespace Nameless\Core;
 
+use Pimple\Container;
+
 /**
  * Base controller interface class
  *
@@ -20,7 +22,7 @@ namespace Nameless\Core;
 interface ControllerInterface
 {
     /**
-     * @param \Pimple $container
+     * @param Container $container
      */
-    function setContainer(\Pimple $container);
+    function setContainer(Container $container);
 }

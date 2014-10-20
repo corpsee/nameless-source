@@ -12,6 +12,8 @@
 
 namespace Nameless\Core;
 
+use Pimple\Container;
+
 /**
  * ModuleProvider class
  *
@@ -20,14 +22,14 @@ namespace Nameless\Core;
 abstract class ModuleProvider
 {
     /**
-     * @var \Pimple
+     * @var Container
      */
     protected $container;
 
     /**
-     * @param \Pimple $container
+     * @param Container $container
      */
-    public function __construct(\Pimple $container)
+    public function __construct(Container $container)
     {
         $this->container = $container;
     }

@@ -26,29 +26,21 @@ class ModuleProvider extends BaseModuleProvider
         $module_path = __DIR__ . DS;
         parent::register($module_path);
 
-        $this->container['mailer.mailer'] = $this->container->share(
-            function ($c) {
-                return new \Swift_Mailer($c['mailer.transport']);
-            }
-        );
+        $this->container['mailer.mailer'] = function ($c) {
+            return new \Swift_Mailer($c['mailer.transport']);
+        };
 
-        $this->container['mailer.transport'] = $this->container->share(
-            function ($c) {
-                return new \Swift_Transport_MailTransport($c['mailer.transport_invoker'], $c['mailer.transport_eventdispatcher']);
-            }
-        );
+        $this->container['mailer.transport'] = function ($c) {
+            return new \Swift_Transport_MailTransport($c['mailer.transport_invoker'], $c['mailer.transport_eventdispatcher']);
+        };
 
-        $this->container['mailer.transport_invoker'] = $this->container->share(
-            function () {
-                return new \Swift_Transport_SimpleMailInvoker();
-            }
-        );
+        $this->container['mailer.transport_invoker'] = function () {
+            return new \Swift_Transport_SimpleMailInvoker();
+        };
 
-        $this->container['mailer.transport_eventdispatcher'] = $this->container->share(
-            function () {
-                return new \Swift_Events_SimpleEventDispatcher();
-            }
-        );
+        $this->container['mailer.transport_eventdispatcher'] = function () {
+            return new \Swift_Events_SimpleEventDispatcher();
+        };
     }
 
     public function boot()

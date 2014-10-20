@@ -26,12 +26,10 @@ class ModuleProvider extends BaseModuleProvider
         $module_path = __DIR__ . DS;
         parent::register($module_path);
 
-        $this->container['imager.driver'] = $this->container->share(
-            function ($c) {
-                $driver = '\\' . __NAMESPACE__ . '\\' . $c['imager.driver_name'] . 'Driver';
-                return new $driver();
-            }
-        );
+        $this->container['imager.driver'] = function ($c) {
+            $driver = '\\' . __NAMESPACE__ . '\\' . $c['imager.driver_name'] . 'Driver';
+            return new $driver();
+        };
 
         $this->container['imager.image'] = function ($c) {
             return new Image($c['imager.driver']);

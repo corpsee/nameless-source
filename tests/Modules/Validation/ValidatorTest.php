@@ -3,6 +3,7 @@
 namespace Nameless\Tests\Modules\Tests\Modules\Validation;
 
 use Nameless\Modules\Validation\Validator;
+use Pimple\Container;
 
 class ValidatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -13,7 +14,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function init()
     {
-        $container = new \Pimple();
+        $container = new Container();
         $this->validator = new Validator($container);
     }
 
