@@ -6,6 +6,7 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <meta name="description" content="Error 403"/>
     <meta name="keywords" content=""/>
+    <?php /** @var array $styles */ ?>
     <?php foreach ($styles as $style): ?>
         <link href="<?= $style; ?>" rel="stylesheet" type="text/css"/>
     <?php endforeach; ?>
@@ -19,7 +20,7 @@
     </div>
     <hr>
     <footer>
-        <p>Nameless framework. 2014.</p>
+        <p>Nameless framework. <?= date('Y'); ?>.</p>
     </footer>
 </div>
 </body>
