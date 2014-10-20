@@ -110,11 +110,10 @@ class NamelessListener implements EventSubscriberInterface
      */
     static public function getSubscribedEvents()
     {
-        return array
-        (
+        return [
             KernelEvents::CONTROLLER => ['onKernelController'],
             KernelEvents::REQUEST    => ['onEarlyKernelRequest'],
             KernelEvents::TERMINATE  => ['onTerminate'],
-        );
+        ];
     }
 }

@@ -311,12 +311,11 @@ class GDDriver extends ImageDriver
      */
     public function getInfo()
     {
-        return array
-        (
+        return [
             'width' => $this->width,
             'height' => $this->height,
             'mime' => $this->mime_type,
-        );
+        ];
     }
 
     /**

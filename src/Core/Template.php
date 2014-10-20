@@ -270,14 +270,13 @@ class Template
                     )
                 );
             } else {
-                $replace_array = array
-                (
+                $replace_array = [
                     '/\n ?\n+/' => "\n", // Convert multiple line-breaks
                     '/^[\t ]+</m' => '<', // Remove tag indentation
                     '/>( )?\n</' => '>$1<', // Remove line-breaks between tags
                     '/\n/' => '', // Remove all remaining line-breaks
                     '/ <\/(div|p)>/' => '</$1>' // Remove spaces before closing DIV and P tags
-                );
+                ];
 
                 $part = str_replace("\r", '', $part);
                 $part = trim(preg_replace(array_keys($replace_array), array_values($replace_array), $part));
@@ -318,21 +317,19 @@ class Template
         $value = preg_replace('#(?:on[a-z]+|xmlns)\s*=\s*[\'"\x00-\x20]?[^\'>"]*[\'"\x00-\x20]?\s?#iu', '', $value);
 
         // Remove javascript: and vbscript: protocols
-        $script_replace = array
-        (
+        $script_replace = [
             '#([a-z]*)[\x00-\x20]*=[\x00-\x20]*([`\'"]*)[\x00-\x20]*j[\x00-\x20]*a[\x00-\x20]*v[\x00-\x20]*a[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iu',
             '#([a-z]*)[\x00-\x20]*=([\'"]*)[\x00-\x20]*v[\x00-\x20]*b[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iu',
             '#([a-z]*)[\x00-\x20]*=([\'"]*)[\x00-\x20]*-moz-binding[\x00-\x20]*:#u',
-        );
+        ];
         $value = preg_replace($script_replace, '$1=$2[deleted]', $value);
 
         // Only works in IE: <span style="width: expression(alert('Ping!'));"></span>
-        $expression_replace = array
-        (
+        $expression_replace = [
             '#(<[^>]+?)style[\x00-\x20]*=[\x00-\x20]*[`\'"]*.*?expression[\x00-\x20]*\([^>]*+>#is',
             '#(<[^>]+?)style[\x00-\x20]*=[\x00-\x20]*[`\'"]*.*?behaviour[\x00-\x20]*\([^>]*+>#is',
             '#(<[^>]+?)style[\x00-\x20]*=[\x00-\x20]*[`\'"]*.*?s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:*[^>]*+>#ius',
-        );
+        ];
         $value = preg_replace($expression_replace, '$1>', $value);
 
         // Remove namespaced elements (we do not need them)

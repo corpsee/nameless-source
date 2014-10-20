@@ -37,7 +37,7 @@ class DBUserProvider implements UserProviderInterface
     /**
      * @param string $user_name
      *
-     * @return array|FALSE
+     * @return array|false
      */
     public function getUserByName($user_name)
     {

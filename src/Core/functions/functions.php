@@ -63,8 +63,7 @@ function URLToPath($path)
  */
 function romanizeString($string)
 {
-    $romanize = array
-    (
+    $romanize = [
         // Lower accents
         'à' => 'a',
         'ô' => 'o',
@@ -1128,7 +1127,8 @@ function romanizeString($string)
         'ㅠ' => 'yu',
         'ㅒ' => 'yay',
         'ㅖ' => 'yey'
-    );
+    ];
+
     return strtr($string, $romanize);
 }
 

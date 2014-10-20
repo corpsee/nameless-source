@@ -20,46 +20,41 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function noemptyTrueProvider()
     {
-        return array
-        (
+        return [
             ['noempty'],
             ['.'],
-        );
+        ];
     }
 
     public function noemptyFalseProvider()
     {
-        return array
-        (
+        return [
             [''],
             [' '],
-        );
+        ];
     }
 
     public function numberTrueProvider()
     {
-        return array
-        (
+        return [
             ['0'],
             ['12569'],
-        );
+        ];
     }
 
     public function numberFalseProvider()
     {
-        return array
-        (
+        return [
             ['12.569'],
             ['12 569'],
             ['-12569'],
             ['12569a'],
-        );
+        ];
     }
 
     public function emailTrueProvider()
     {
-        return array
-        (
+        return [
             ['testmail@test.com'],
             ['test.mail@test.com'],
             ['test..mail@test.com'],
@@ -74,13 +69,12 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             ['testmail@test-mail.com'],
             ['testmail@test--mail.com'],
             ['testmail@тестовая.почта'],
-        );
+        ];
     }
 
     public function emailFalseProvider()
     {
-        return array
-        (
+        return [
             ['-testmail@mail.com'],
             ['testmail@-mail.com'],
             ['testmail@mail.-com'],
@@ -90,13 +84,12 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             ['testmail@test_mail.com'],
             ['testmail@test+mail.com'],
             ['тестоваяпочта@тестовая.почта'],
-        );
+        ];
     }
 
     public function emailSimpleTrueProvider()
     {
-        return array
-        (
+        return [
             ['testmail@test.com'],
             ['test.mail@test.com'],
             ['test..mail@test.com'],
@@ -119,16 +112,15 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
             ['testmail@test_mail.com'],
             ['testmail@test+mail.com'],
             ['тестоваяпочта@тестовая.почта'],
-        );
+        ];
     }
 
     public function emailSimpleFalseProvider()
     {
-        return array
-        (
+        return [
             ['testmail_test.com'],
             ['testmail@test@mail.com'],
-        );
+        ];
     }
 
     /**
