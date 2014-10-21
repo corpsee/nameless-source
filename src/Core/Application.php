@@ -15,25 +15,13 @@ namespace Nameless\Core;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request as BaseRequest;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpKernel\EventListener\RouterListener;
-use Symfony\Component\HttpKernel\EventListener\ResponseListener;
-use Symfony\Component\HttpKernel\EventListener\LocaleListener;
 use Symfony\Component\HttpKernel\EventListener\ExceptionListener;
-use Symfony\Component\Routing\RouteCollection;
-use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler;
-use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\Debug;
-use Pimple\Container;
 
 define('NAMELESS_PATH', dirname(__DIR__) . DIRECTORY_SEPARATOR);
 
@@ -61,18 +49,15 @@ class Application extends HttpKernel
 
     public function __construct()
     {
-        $this->container                  = new Container();
-        $this->container['kernel']        = $this;
-        $this->container['logger.logger'] = null;
-        $this->container['benchmark']     = null;
+        $this->container = new Container();
+        $this->container->init();
 
         $this->configurationInit();
-        $this->routerInit();
-        $this->localizationInit();
+        $this->routsInit();
         $this->modulesInit();
-        $this->sessionInit();
-        $this->dispatcherInit();
         $this->environmentInit();
+
+        $this->container['kernel'] = $this;
 
         parent::__construct($this->container['dispatcher'], $this->container['resolver']);
     }
@@ -98,12 +83,8 @@ class Application extends HttpKernel
         }
     }
 
-    private function routerInit()
+    private function routsInit()
     {
-        $this->container['routes-collection'] = function () {
-            return new RouteCollection();
-        };
-
         foreach ($this->container['routes'] as $route_name => $route_value) {
             $defaults = isset($route_value['defaults']) ? $route_value['defaults'] : [];
             $requirements = isset($route_value['requirements']) ? $route_value['requirements'] : [];
@@ -111,22 +92,6 @@ class Application extends HttpKernel
 
             $this->container['routes-collection']->add($route_name, new Route($route_value['pattern'], $defaults, $requirements, $options));
         }
-
-        $this->container['request-context'] = function ($c) {
-            return new RequestContext($c['http_port'], $c['https_port']);
-        };
-
-        $this->container['url-matcher'] = function ($c) {
-            return new UrlMatcher($c['routes-collection'], $c['request-context']);
-        };
-
-        $this->container['url-generator'] = function ($c) {
-            return new UrlGenerator($c['routes-collection'], $c['request-context'], $c['logger.logger']);
-        };
-
-        $this->container['resolver'] = function ($c) {
-            return new ControllerResolver($c, $c['logger.logger']);
-        };
     }
 
     private function modulesInit()
@@ -142,46 +107,6 @@ class Application extends HttpKernel
             $this->modules[$module] = $module_provider;
             $module_provider->register($this->container);
         }
-    }
-
-    private function sessionInit()
-    {
-        $this->container['session_options'] = [];
-        $this->container['session_default_locale'] = $this->container['locale'];
-        $this->container['session_path'] = '';
-
-        $this->container['session_handler'] = function ($c) {
-            return new NativeFileSessionHandler($c['session_path']);
-        };
-
-        $this->container['session_storage'] = function ($c) {
-            return new NativeSessionStorage($c['session_options'], $c['session_handler']);
-        };
-
-        $this->container['session'] = function ($c) {
-            return new Session($c['session_storage']);
-        };
-    }
-
-    private function dispatcherInit()
-    {
-        $this->container['dispatcher'] = function ($c) {
-            $dispatcher = new EventDispatcher();
-            $dispatcher->addSubscriber(new RouterListener($c['url-matcher'], null, $c['logger.logger']));
-            $dispatcher->addSubscriber(new LocaleListener($c['locale']));
-            $dispatcher->addSubscriber(new NamelessListener($c['session'], $c['benchmark'], $c['logger.logger']));
-            $dispatcher->addSubscriber(new ResponseListener('UTF-8'));
-
-            return $dispatcher;
-        };
-    }
-
-    private function localizationInit()
-    {
-        $this->container['localization'] = function ($c) {
-            return new Localization($c['language']);
-        };
-        $this->container['localization']->load('core', 'core');
     }
 
     /**
@@ -209,10 +134,6 @@ class Application extends HttpKernel
 
             $listener = new ExceptionListener($this->container['error_controller']);
             $this->container['dispatcher']->addSubscriber($listener);
-        };
-
-        $this->container['benchmark'] = function () {
-            return new Benchmark();
         };
     }
 
