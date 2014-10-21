@@ -12,15 +12,17 @@
 
 namespace Nameless\Core;
 
-use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Application as ConsoleApplication;
+use Nameless\Core\Application;
 use Pimple\Container;
+
 
 /**
  * Application class
  *
  * @author Corpsee <poisoncorpsee@gmail.com>
  */
-class Console extends Application
+class Console extends ConsoleApplication
 {
     /**
      * @var Application
