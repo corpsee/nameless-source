@@ -26,9 +26,9 @@ define('FILE_PATH_URL',    '/files/');
 
 require_once ROOT_PATH . 'vendor' . DS . 'autoload.php';
 
-use Nameless\Core\Kernel;
+use Nameless\Core\Application;
 
-$framework = new Kernel();
+$framework = new Application();
 $framework->run();
 ```
 Production version of *index.php*:
@@ -49,7 +49,7 @@ require_once ROOT_PATH . 'vendor' . DS . 'autoload.php';
 // production mode with cache
 use Nameless\Core\HttpCache;
 use Symfony\Component\HttpKernel\HttpCache\Store;
-use Nameless\Core\Kernel;
+use Nameless\Core\Application;
 
 $options = array
 (
@@ -62,8 +62,8 @@ $options = array
 	'stale_if_error'         => 60,
 );
 
-$framework = new Kernel();
-$framework = new HttpCache(new Kernel(), new Store(APPLICATION_PATH . 'cache'), NULL, $options);
+$framework = new Application();
+$framework = new HttpCache(new Application(), new Store(APPLICATION_PATH . 'cache'), NULL, $options);
 ```
 For more examples please see the Application directory.
 Tests

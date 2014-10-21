@@ -38,11 +38,11 @@ use Pimple\Container;
 define('NAMELESS_PATH', dirname(__DIR__) . DIRECTORY_SEPARATOR);
 
 /**
- * Kernel class
+ * Application class
  *
  * @author Corpsee <poisoncorpsee@gmail.com>
  */
-class Kernel extends HttpKernel
+class Application extends HttpKernel
 {
     /**
      * @var array
@@ -109,10 +109,7 @@ class Kernel extends HttpKernel
             $requirements = isset($route_value['requirements']) ? $route_value['requirements'] : [];
             $options = isset($route_value['options']) ? $route_value['options'] : [];
 
-            $this->container['routes-collection']->add(
-                $route_name,
-                new Route($route_value['pattern'], $defaults, $requirements, $options)
-            );
+            $this->container['routes-collection']->add($route_name, new Route($route_value['pattern'], $defaults, $requirements, $options));
         }
 
         $this->container['request-context'] = function ($c) {

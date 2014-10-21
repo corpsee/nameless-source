@@ -16,14 +16,14 @@ use Symfony\Component\Console\Application;
 use Pimple\Container;
 
 /**
- * Kernel class
+ * Application class
  *
  * @author Corpsee <poisoncorpsee@gmail.com>
  */
 class Console extends Application
 {
     /**
-     * @var Kernel
+     * @var Application
      */
     protected $kernel;
 
@@ -33,11 +33,11 @@ class Console extends Application
     protected $container;
 
     /**
-     * @param Kernel $kernel
+     * @param Application $kernel
      * @param string $name
      * @param string $version
      */
-    public function __construct(Kernel $kernel, $name = 'UNKNOWN', $version = 'UNKNOWN')
+    public function __construct(Application $kernel, $name = 'UNKNOWN', $version = 'UNKNOWN')
     {
         $this->kernel = $kernel->boot();
         parent::__construct($name, $version);

@@ -61,7 +61,7 @@ class Controller implements ControllerInterface
     }
 
     /**
-     * @return Kernel
+     * @return Application
      */
     private function getKernel()
     {
