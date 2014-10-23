@@ -62,6 +62,7 @@ class Application extends HttpKernel
         parent::__construct($this->container['dispatcher'], $this->container['resolver']);
     }
 
+    //TODO: rework for nested arrays (recursive)
     private function configurationInit()
     {
         $app_config = [];

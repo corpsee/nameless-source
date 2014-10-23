@@ -14,7 +14,6 @@ namespace Nameless\Core;
 
 use Pimple\Container as BaseContainer;
 
-use Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcacheSessionHandler;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
@@ -28,6 +27,10 @@ use Symfony\Component\HttpKernel\EventListener\LocaleListener;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcachedSessionHandler;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcacheSessionHandler;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\MongoDbSessionHandler;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
 
 
 /**
@@ -99,9 +102,10 @@ class Container extends BaseContainer
         };
     }
 
+    //TODO: Added MongoDB, Redis, PDO
     protected function initSession()
     {
-        $session_type = $this['session.handler_type'];
+        $session_type = $this['session.type'];
 
         switch ($session_type) {
             case 'files':
@@ -111,22 +115,20 @@ class Container extends BaseContainer
                 break;
             case 'memcache':
                 $this['session.handler'] = function ($c) {
-                    return new MemcacheSessionHandler($c['memcache'], $c['session.handler_options']);
+                    $path = explode(':', $c['session.path']);
+
+                    $memcache = new \Memcache();
+                    $memcache->connect($path[0], $path[1]);
+                    return new MemcacheSessionHandler($memcache, $c['session.handler_options']);
                 };
                 break;
             case 'memcached':
                 $this['session.handler'] = function ($c) {
-                    return new MemcacheSessionHandler($c['memcached'], $c['session.handler_options']);
-                };
-                break;
-            case 'mongodb':
-                $this['session.handler'] = function ($c) {
-                    return new MemcacheSessionHandler($c['mongodb'], $c['session.handler_options']);
-                };
-                break;
-            case 'pdo':
-                $this['session.handler'] = function ($c) {
-                    return new MemcacheSessionHandler($c['pdo'], $c['session.handler_options']);
+                    $path = explode(':', $c['session.path']);
+
+                    $memcached = new \Memcached();
+                    $memcached->addServer($path[0], $path[1]);
+                    return new MemcachedSessionHandler($memcached, $c['session.handler_options']);
                 };
                 break;
         }
