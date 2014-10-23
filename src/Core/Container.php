@@ -14,6 +14,7 @@ namespace Nameless\Core;
 
 use Pimple\Container as BaseContainer;
 
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcacheSessionHandler;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
@@ -98,12 +99,37 @@ class Container extends BaseContainer
         };
     }
 
-    //TODO: Implement different session handlers
     protected function initSession()
     {
-        $this['session.handler'] = function ($c) {
-            return new NativeFileSessionHandler($c['session_path']);
-        };
+        $session_type = $this['session.handler_type'];
+
+        switch ($session_type) {
+            case 'files':
+                $this['session.handler'] = function ($c) {
+                    return new NativeFileSessionHandler($c['session.path']);
+                };
+                break;
+            case 'memcache':
+                $this['session.handler'] = function ($c) {
+                    return new MemcacheSessionHandler($c['memcache'], $c['session.handler_options']);
+                };
+                break;
+            case 'memcached':
+                $this['session.handler'] = function ($c) {
+                    return new MemcacheSessionHandler($c['memcached'], $c['session.handler_options']);
+                };
+                break;
+            case 'mongodb':
+                $this['session.handler'] = function ($c) {
+                    return new MemcacheSessionHandler($c['mongodb'], $c['session.handler_options']);
+                };
+                break;
+            case 'pdo':
+                $this['session.handler'] = function ($c) {
+                    return new MemcacheSessionHandler($c['pdo'], $c['session.handler_options']);
+                };
+                break;
+        }
 
         $this['session.storage'] = function ($c) {
             return new NativeSessionStorage($c['session.options'], $c['session.handler']);
