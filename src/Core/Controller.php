@@ -139,7 +139,7 @@ class Controller implements ControllerInterface
         if (is_null($template_path)) {
             $template_path = $this->container['templates_path'];
         }
-        $template = new Template($template_path, $template, $data, $template_filter, $filters);
+        $template = new Template($template_path, $template, $data, $template_filter, $filters, $response, $template_extension);
         return $template->render($compress);
     }
 
