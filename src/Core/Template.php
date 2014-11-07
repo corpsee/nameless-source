@@ -109,45 +109,27 @@ class Template
     }
 
     /**
-     * @param string|array $name
-     *
      * @return mixed
      *
      * @throws \OutOfBoundsException
      */
-    public function getData($name = null)
+    public function getData()
     {
-        if (is_null($name)) {
-            $data = [];
-            foreach ($this->data as $name => $data_value) {
-                $filter = isset($this->filters[$name]) ? $this->filters[$name] : $this->template_filter;
-                switch ($filter) {
-                    case 0:
-                        $data[$name] = $data_value;
-                        break;
-                    case 1:
-                        $data[$name] = self::escape($data_value);
-                        break;
-                    case 2:
-                        $data[$name] = $this->cleanXSS($data_value);
-                }
-            }
-            return $data;
-        } elseif (isset($this->data[$name])) {
+        $data = [];
+        foreach ($this->data as $name => $data_value) {
             $filter = isset($this->filters[$name]) ? $this->filters[$name] : $this->template_filter;
             switch ($filter) {
                 case 0:
-                    $return = $this->data[$name];
+                    $data[$name] = $data_value;
                     break;
                 case 1:
-                    $return = self::escape($this->data[$name]);
+                    $data[$name] = self::escape($data_value);
                     break;
                 case 2:
-                    $return = $this->cleanXSS($this->data[$name]);
+                    $data[$name] = $this->cleanXSS($data_value);
             }
-            return $return;
         }
-        throw new \OutOfBoundsException('Value doesn`t exist in template data');
+        return $data;
     }
 
     /**
