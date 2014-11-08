@@ -39,10 +39,10 @@ abstract class ModuleProvider
      *
      * @throws \RuntimeException
      */
-    protected function configurationInit($module_path)
+    protected function configInit($module_path)
     {
         $module_name = basename($module_path);
-        $config      = include_once($module_path . 'configs/configuration.php');
+        $config      = include_once($module_path . 'configs/config.php');
 
         foreach ($config as $config_option => $config_value) {
             if ($config_value && !is_array($config_value) && strtolower($module_name) !== $config_option) {
@@ -63,7 +63,7 @@ abstract class ModuleProvider
      */
     public function register($module_path = null)
     {
-        $this->configurationInit($module_path);
+        $this->configInit($module_path);
     }
 
     abstract public function boot();

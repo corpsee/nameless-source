@@ -51,7 +51,7 @@ class Application extends HttpKernel
         $this->container = new Container();
         $this->container->init();
 
-        $this->configurationInit();
+        $this->configInit();
         $this->routsInit();
         $this->modulesInit();
         $this->environmentInit();
@@ -61,26 +61,35 @@ class Application extends HttpKernel
         parent::__construct($this->container['dispatcher'], $this->container['resolver']);
     }
 
-    //TODO: rework for nested arrays (recursive)
-    private function configurationInit()
+    private function getConfigFromFiles()
     {
         $app_config = [];
-        if (file_exists(CONFIG_PATH . 'configuration.php')) {
-            $app_config = include_once CONFIG_PATH . 'configuration.php';
+        if (file_exists(CONFIG_PATH . 'config.php')) {
+            $app_config = include_once CONFIG_PATH . 'config.php';
         }
-
-        $default_config = include_once dirname(__DIR__) . '/Core/configs/configuration.php';
-        $config = array_merge($default_config, $app_config);
-
-        foreach ($config as $config_option => $config_value) {
-            if (is_array($config_value)) {
-                foreach ($config_value as $module_option => $module_value) {
-                    $full_module_option = $config_option . '.' . $module_option;
-                    $this->container[$full_module_option] = $module_value;
-                }
+        $default_config = include_once dirname(__DIR__) . '/Core/configs/config.php';
+        return array_merge($default_config, $app_config);
+    }
+    /**
+     * @param array  $config
+     * @param string $parent
+     */
+    private function setConfig(array $config, $parent = '')
+    {
+        foreach ($config as $option => $value) {
+            $full_path = $parent . $option;
+            if (is_array($value)) {
+                $this->setConfig($value, $full_path . '.');
+            } else {
+                $this->container[$full_path] = $value;
             }
-            $this->container[$config_option] = $config_value;
         }
+    }
+
+    private function configInit()
+    {
+        $config = $this->getConfigFromFiles();
+        $this->setConfig($config);
     }
 
     private function routsInit()
