@@ -116,7 +116,6 @@ class Application extends HttpKernel
     private function environmentInit()
     {
         date_default_timezone_set($this->container['timezone']);
-        mb_internal_encoding('UTF-8');
 
         $this->container['dispatcher']->addSubscriber(new ResponseListener('UTF-8'));
 
@@ -136,6 +135,11 @@ class Application extends HttpKernel
             $listener = new ExceptionListener($this->container['error_controller']);
             $this->container['dispatcher']->addSubscriber($listener);
         };
+
+        if (!extension_loaded('mbstring')) {
+            throw new \RuntimeException('mbstring extension must be enabled!');
+        }
+        mb_internal_encoding('UTF-8');
     }
 
     public function boot()
