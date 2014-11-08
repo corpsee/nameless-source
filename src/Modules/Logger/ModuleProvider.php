@@ -24,7 +24,7 @@ class ModuleProvider extends BaseModuleProvider
 {
     public function register($module_path = null)
     {
-        $module_path = __DIR__ . DS;
+        $module_path = __DIR__ . '/';
         parent::register($module_path);
 
         //TODO: вызывать исключение, если не заданы необходимые настройки (['logger']['name'] например)

@@ -12,6 +12,6 @@ class ErrorController extends Controller
             'styles' => ['/files/lib/bootstrap/3.2.0/css/bootstrap.css'],
         ];
 
-        return $this->render($exception->getStatusCode(), $data, Template::FILTER_ESCAPE, [], null, NAMELESS_PATH . 'Core' . DS . 'templates' . DS);
+        return $this->render($exception->getStatusCode(), $data, Template::FILTER_ESCAPE, [], null, dirname(__DIR__) . '/Core/templates/');
     }
 }

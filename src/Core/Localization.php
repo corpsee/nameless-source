@@ -64,16 +64,16 @@ class Localization
         switch ($module) {
             //TODO: ucfirst($module) for more than 1 word?
             case 'core':
-                $file_path = NAMELESS_PATH . ucfirst($module) . DS . 'localization' . DS . $language . DS . $file . '.php';
-                $default_file_path = NAMELESS_PATH . ucfirst($module) . DS . 'localization' . DS . $this->default_language . DS . $file . '.php';
+                $file_path = dirname(__DIR__) . '/' . ucfirst($module) . '/localization/' . $language . '/' . $file . '.php';
+                $default_file_path = dirname(__DIR__) . '/' . ucfirst($module) . '/localization/' . $this->default_language . '/' . $file . '.php';
                 break;
             case 'application':
-                $file_path = APPLICATION_PATH . 'localization' . DS . $language . DS . $file . '.php';
-                $default_file_path = APPLICATION_PATH . 'localization' . DS . $this->default_language . DS . $file . '.php';
+                $file_path = APPLICATION_PATH . 'localization/' . $language . '/' . $file . '.php';
+                $default_file_path = APPLICATION_PATH . 'localization/' . $this->default_language . '/' . $file . '.php';
                 break;
             default:
-                $file_path = NAMELESS_PATH . 'Modules' . DS . ucfirst($module) . DS . 'localization' . DS . $language . DS . $file . '.php';
-                $default_file_path = NAMELESS_PATH . 'Modules' . DS . ucfirst($module) . DS . 'localization' . DS . $this->default_language . DS . $file . '.php';
+                $file_path = dirname(__DIR__) . '/Modules/' . ucfirst($module) . '/localization/' . $language . '/' . $file . '.php';
+                $default_file_path = dirname(__DIR__) . '/Modules/' . ucfirst($module) . '/localization/' . $this->default_language . '/' . $file . '.php';
         }
 
         if (file_exists($file_path)) {

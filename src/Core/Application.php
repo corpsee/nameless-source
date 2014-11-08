@@ -21,9 +21,8 @@ use Symfony\Component\HttpKernel\EventListener\ExceptionListener;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\Debug\ErrorHandler;
-use Symfony\Component\Debug\Debug;
-
-define('NAMELESS_PATH', dirname(__DIR__) . DIRECTORY_SEPARATOR);
+use Symfony\Component\Debug\ExceptionHandler;
+use Symfony\Component\HttpKernel\EventListener\ResponseListener;
 
 /**
  * Application class
@@ -70,7 +69,7 @@ class Application extends HttpKernel
             $app_config = include_once CONFIG_PATH . 'configuration.php';
         }
 
-        $default_config = include_once NAMELESS_PATH . 'Core' . DS . 'configs' . DS . 'configuration.php';
+        $default_config = include_once dirname(__DIR__) . '/Core/configs/configuration.php';
         $config = array_merge($default_config, $app_config);
 
         foreach ($config as $config_option => $config_value) {
@@ -119,19 +118,19 @@ class Application extends HttpKernel
 
         $this->container['dispatcher']->addSubscriber(new ResponseListener('UTF-8'));
 
+        error_reporting(-1);
+        ini_set('display_errors', 1);
+        ErrorHandler::register(null, true);
+        ErrorHandler::setLogger($this->container['logger.logger'], 'deprecation');
+        ErrorHandler::setLogger($this->container['logger.logger'], 'emergency');
+
         if ($this->container['environment'] === 'debug') {
-            Debug::enable();
-            ErrorHandler::setLogger($this->container['logger.logger'], 'deprecation');
-            ErrorHandler::setLogger($this->container['logger.logger'], 'emergency');
+            ExceptionHandler::register();
         } else {
-            if ($this->container['environment'] === 'test') {
-                error_reporting(-1);
-                ini_set('display_errors', 1);
-            } else {
+            if ($this->container['environment'] === 'production') {
                 error_reporting(E_ALL ^ (E_STRICT | E_NOTICE | E_DEPRECATED));
                 ini_set('display_errors', 0);
             }
-
             $listener = new ExceptionListener($this->container['error_controller']);
             $this->container['dispatcher']->addSubscriber($listener);
         };

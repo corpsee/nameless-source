@@ -42,7 +42,7 @@ abstract class ModuleProvider
     protected function configurationInit($module_path)
     {
         $module_name = basename($module_path);
-        $config      = include_once($module_path . 'configs' . DS . 'configuration.php');
+        $config      = include_once($module_path . 'configs/configuration.php');
 
         foreach ($config as $config_option => $config_value) {
             if ($config_value && !is_array($config_value) && strtolower($module_name) !== $config_option) {
