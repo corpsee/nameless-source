@@ -49,13 +49,12 @@ class Application extends HttpKernel
 
     public function __construct()
     {
-        $this->container = new Container();
-        $this->container->init();
+        $this->container = new Container($this);
 
-        $this->configInit();
-        $this->routsInit();
-        $this->modulesInit();
-        $this->environmentInit();
+        $this->initConfigs();
+        $this->initRoutes();
+        $this->initModules();
+        $this->initEnvironment();
 
         $this->container['kernel'] = $this;
 
@@ -87,13 +86,13 @@ class Application extends HttpKernel
         }
     }
 
-    private function configInit()
+    private function initConfigs()
     {
         $config = $this->getConfigFromFiles();
         $this->setConfig($config);
     }
 
-    private function routsInit()
+    private function initRoutes()
     {
         foreach ($this->container['routes'] as $route_name => $route_value) {
             $defaults = isset($route_value['defaults'])
@@ -112,7 +111,7 @@ class Application extends HttpKernel
         }
     }
 
-    private function modulesInit()
+    private function initModules()
     {
         foreach ($this->container['modules'] as $module) {
             $module_provider_name = 'Nameless\\Modules\\' . $module . '\\ModuleProvider';
@@ -130,7 +129,7 @@ class Application extends HttpKernel
     /**
      * @throws \RuntimeException
      */
-    private function environmentInit()
+    private function initEnvironment()
     {
         date_default_timezone_set($this->container['timezone']);
 

@@ -38,6 +38,25 @@ use Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcacheSessionHand
  */
 class Container extends BaseContainer
 {
+    /**
+     * @param Application $application
+     * @param array       $values
+     */
+    public function __construct(Application $application, array $values = [])
+    {
+        parent::__construct($values);
+
+        $this['kernel']        = $application;
+        $this['logger.logger'] = null;
+        $this['benchmark']     = null;
+
+        $this->initRouting();
+        $this->initDispatcher();
+        $this->initLocalization();
+        $this->initBenchmark();
+        $this->initSession();
+    }
+
     public function init()
     {
         $this['logger.logger'] = null;
@@ -86,6 +105,7 @@ class Container extends BaseContainer
         };
     }
 
+    //TODO: move Localization to module
     protected function initLocalization()
     {
         $this['localization'] = function ($container) {
@@ -93,6 +113,7 @@ class Container extends BaseContainer
         };
     }
 
+    //TODO: move Benchmark to module
     protected function initBenchmark()
     {
         $this['benchmark'] = function () {
