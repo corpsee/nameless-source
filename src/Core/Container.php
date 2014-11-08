@@ -56,30 +56,30 @@ class Container extends BaseContainer
             return new RouteCollection();
         };
 
-        $this['request-context'] = function ($c) {
-            return new RequestContext($c['http_port'], $c['https_port']);
+        $this['request-context'] = function ($container) {
+            return new RequestContext($container['http_port'], $container['https_port']);
         };
 
-        $this['url-matcher'] = function ($c) {
-            return new UrlMatcher($c['routes-collection'], $c['request-context']);
+        $this['url-matcher'] = function ($container) {
+            return new UrlMatcher($container['routes-collection'], $container['request-context']);
         };
 
-        $this['url-generator'] = function ($c) {
-            return new UrlGenerator($c['routes-collection'], $c['request-context'], $c['logger.logger']);
+        $this['url-generator'] = function ($container) {
+            return new UrlGenerator($container['routes-collection'], $container['request-context'], $container['logger.logger']);
         };
 
-        $this['resolver'] = function ($c) {
-            return new ControllerResolver($c, $c['logger.logger']);
+        $this['resolver'] = function ($container) {
+            return new ControllerResolver($container, $container['logger.logger']);
         };
     }
 
     protected function initDispatcher()
     {
-        $this['dispatcher'] = function ($c) {
+        $this['dispatcher'] = function ($container) {
             $dispatcher = new EventDispatcher();
-            $dispatcher->addSubscriber(new RouterListener($c['url-matcher'], null, $c['logger.logger']));
-            $dispatcher->addSubscriber(new LocaleListener($c['locale']));
-            $dispatcher->addSubscriber(new NamelessListener($c['session'], $c['benchmark'], $c['logger.logger']));
+            $dispatcher->addSubscriber(new RouterListener($container['url-matcher'], null, $container['logger.logger']));
+            $dispatcher->addSubscriber(new LocaleListener($container['locale']));
+            $dispatcher->addSubscriber(new NamelessListener($container['session'], $container['benchmark'], $container['logger.logger']));
             $dispatcher->addSubscriber(new ResponseListener('UTF-8'));
 
             return $dispatcher;
@@ -88,8 +88,8 @@ class Container extends BaseContainer
 
     protected function initLocalization()
     {
-        $this['localization'] = function ($c) {
-            return new Localization($c['language']);
+        $this['localization'] = function ($container) {
+            return new Localization($container['language']);
         };
     }
 
@@ -107,36 +107,36 @@ class Container extends BaseContainer
 
         switch ($session_type) {
             case 'files':
-                $this['session.handler'] = function ($c) {
-                    return new NativeFileSessionHandler($c['session.path']);
+                $this['session.handler'] = function ($container) {
+                    return new NativeFileSessionHandler($container['session.path']);
                 };
                 break;
             case 'memcache':
-                $this['session.handler'] = function ($c) {
-                    $path = explode(':', $c['session.path']);
+                $this['session.handler'] = function ($container) {
+                    $path = explode(':', $container['session.path']);
 
                     $memcache = new \Memcache();
                     $memcache->connect($path[0], $path[1]);
-                    return new MemcacheSessionHandler($memcache, $c['session.handler_options']);
+                    return new MemcacheSessionHandler($memcache, $container['session.handler_options']);
                 };
                 break;
             case 'memcached':
-                $this['session.handler'] = function ($c) {
-                    $path = explode(':', $c['session.path']);
+                $this['session.handler'] = function ($container) {
+                    $path = explode(':', $container['session.path']);
 
                     $memcached = new \Memcached();
                     $memcached->addServer($path[0], $path[1]);
-                    return new MemcachedSessionHandler($memcached, $c['session.handler_options']);
+                    return new MemcachedSessionHandler($memcached, $container['session.handler_options']);
                 };
                 break;
         }
 
-        $this['session.storage'] = function ($c) {
-            return new NativeSessionStorage($c['session.options'], $c['session.handler']);
+        $this['session.storage'] = function ($container) {
+            return new NativeSessionStorage($container['session.options'], $container['session.handler']);
         };
 
-        $this['session'] = function ($c) {
-            return new Session($c['session.storage']);
+        $this['session'] = function ($container) {
+            return new Session($container['session.storage']);
         };
     }
 }

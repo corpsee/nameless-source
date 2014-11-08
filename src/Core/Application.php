@@ -23,6 +23,7 @@ use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
 use Symfony\Component\HttpKernel\EventListener\ResponseListener;
+use Symfony\Component\Routing\RouteCollection;
 
 /**
  * Application class
@@ -95,11 +96,19 @@ class Application extends HttpKernel
     private function routsInit()
     {
         foreach ($this->container['routes'] as $route_name => $route_value) {
-            $defaults = isset($route_value['defaults']) ? $route_value['defaults'] : [];
-            $requirements = isset($route_value['requirements']) ? $route_value['requirements'] : [];
-            $options = isset($route_value['options']) ? $route_value['options'] : [];
+            $defaults = isset($route_value['defaults'])
+                ? $route_value['defaults']
+                : [];
+            $requirements = isset($route_value['requirements'])
+                ? $route_value['requirements']
+                : [];
+            $options = isset($route_value['options'])
+                ? $route_value['options']
+                : [];
 
-            $this->container['routes-collection']->add($route_name, new Route($route_value['pattern'], $defaults, $requirements, $options));
+            /** @var RouteCollection $collection */
+            $collection = $this->container['routes-collection'];
+            $collection->add($route_name, new Route($route_value['pattern'], $defaults, $requirements, $options));
         }
     }
 
