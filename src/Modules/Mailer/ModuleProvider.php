@@ -23,12 +23,12 @@ class ModuleProvider extends BaseModuleProvider
 {
     public function register()
     {
-        $this->container['mailer.mailer'] = function ($c) {
-            return new \Swift_Mailer($c['mailer.transport']);
+        $this->container['mailer.mailer'] = function ($container) {
+            return new \Swift_Mailer($container['mailer.transport']);
         };
 
-        $this->container['mailer.transport'] = function ($c) {
-            return new \Swift_Transport_MailTransport($c['mailer.transport_invoker'], $c['mailer.transport_eventdispatcher']);
+        $this->container['mailer.transport'] = function ($container) {
+            return new \Swift_Transport_MailTransport($container['mailer.transport_invoker'], $container['mailer.transport_eventdispatcher']);
         };
 
         $this->container['mailer.transport_invoker'] = function () {

@@ -24,8 +24,8 @@ class ModuleProvider extends BaseModuleProvider
     //TODO: assets lib packeges like: $container['assets.dispatcher']->get['jquery']
     public function register()
     {
-        $this->container['assets.dispatcher'] = function ($c) {
-            return new AssetsDispatcher($c);
+        $this->container['assets.dispatcher'] = function ($container) {
+            return new AssetsDispatcher($container);
         };
     }
 }

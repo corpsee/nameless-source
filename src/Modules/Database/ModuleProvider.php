@@ -23,15 +23,15 @@ class ModuleProvider extends BaseModuleProvider
 {
     public function register()
     {
-        $this->container['database.database'] = function ($c) {
+        $this->container['database.database'] = function ($container) {
             return new Database
             (
-                $c['database.type'],
-                $c['database.dns'],
-                $c['database.user'],
-                $c['database.password'],
-                $c['database.persistent'],
-                $c['database.compress']
+                $container['database.type'],
+                $container['database.dns'],
+                $container['database.user'],
+                $container['database.password'],
+                $container['database.persistent'],
+                $container['database.compress']
             );
         };
     }

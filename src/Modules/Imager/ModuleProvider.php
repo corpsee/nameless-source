@@ -23,13 +23,13 @@ class ModuleProvider extends BaseModuleProvider
 {
     public function register()
     {
-        $this->container['imager.driver'] = function ($c) {
-            $driver = '\\' . __NAMESPACE__ . '\\' . $c['imager.driver_name'] . 'Driver';
+        $this->container['imager.driver'] = function ($container) {
+            $driver = '\\' . __NAMESPACE__ . '\\' . $container['imager.driver_name'] . 'Driver';
             return new $driver();
         };
 
-        $this->container['imager.image'] = function ($c) {
-            return new Image($c['imager.driver']);
+        $this->container['imager.image'] = function ($container) {
+            return new Image($container['imager.driver']);
         };
     }
 }
