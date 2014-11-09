@@ -22,17 +22,10 @@ use Nameless\Modules\Auto\User;
  */
 class ModuleProvider extends BaseModuleProvider
 {
-    public function register($module_path = null)
+    public function register()
     {
-        $module_path = __DIR__ . '/';
-        parent::register($module_path);
-
         $this->container['auto.user'] = function ($c) {
             return new User($c['session'], $c['routes-collection'], $c['auto.access']);
         };
-    }
-
-    public function boot()
-    {
     }
 }

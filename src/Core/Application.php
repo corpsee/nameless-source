@@ -38,11 +38,6 @@ class Application extends HttpKernel
     private $modules = [];
 
     /**
-     * @var boolean
-     */
-    private $booted = false;
-
-    /**
      * @var Container
      */
     private $container;
@@ -61,14 +56,25 @@ class Application extends HttpKernel
         parent::__construct($this->container['dispatcher'], $this->container['resolver']);
     }
 
-    private function getConfigFromFiles()
+    //TODO: Add tests
+    /**
+     * @return array
+     */
+    private function getConfigsFromFiles()
     {
         $app_config = [];
         if (file_exists(CONFIG_PATH . 'config.php')) {
             $app_config = include_once CONFIG_PATH . 'config.php';
         }
-        $default_config = include_once dirname(__DIR__) . '/Core/configs/config.php';
-        return array_merge($default_config, $app_config);
+        $config = include_once dirname(__DIR__) . '/Core/configs/config.php';
+        $config = array_merge_recursive($config, $app_config);
+
+        foreach ($config['modules'] as $module) {
+            $module_config = include_once(dirname(__DIR__) . '/Modules/' . ucfirst($module) . '/configs/config.php');
+            $config = array_merge_recursive($module_config, $config);
+        }
+
+        return $config;
     }
     /**
      * @param array  $config
@@ -88,7 +94,7 @@ class Application extends HttpKernel
 
     private function initConfigs()
     {
-        $config = $this->getConfigFromFiles();
+        $config = $this->getConfigsFromFiles();
         $this->setConfig($config);
     }
 
@@ -158,17 +164,6 @@ class Application extends HttpKernel
         mb_internal_encoding('UTF-8');
     }
 
-    public function boot()
-    {
-        if (!$this->booted) {
-            foreach ($this->modules as $module) {
-                $module->boot($this);
-            }
-            $this->booted = true;
-        }
-        return $this;
-    }
-
     /**
      * @param BaseRequest $request
      * @param integer $type
@@ -178,11 +173,7 @@ class Application extends HttpKernel
      */
     public function handle(BaseRequest $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
     {
-        if (!$this->booted) {
-            $this->boot();
-        }
         $this->container['request'] = $request;
-
         return parent::handle($request, $type, $catch);
     }
 

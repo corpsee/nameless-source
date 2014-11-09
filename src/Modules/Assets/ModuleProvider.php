@@ -22,17 +22,10 @@ use Nameless\Core\ModuleProvider as BaseModuleProvider;
 class ModuleProvider extends BaseModuleProvider
 {
     //TODO: assets lib packeges like: $container['assets.dispatcher']->get['jquery']
-    public function register($module_path = null)
+    public function register()
     {
-        $module_path = __DIR__ . '/';
-        parent::register($module_path);
-
         $this->container['assets.dispatcher'] = function ($c) {
             return new AssetsDispatcher($c);
         };
-    }
-
-    public function boot()
-    {
     }
 }

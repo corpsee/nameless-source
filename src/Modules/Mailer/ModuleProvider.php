@@ -21,11 +21,8 @@ use Nameless\Core\ModuleProvider as BaseModuleProvider;
  */
 class ModuleProvider extends BaseModuleProvider
 {
-    public function register($module_path = null)
+    public function register()
     {
-        $module_path = __DIR__ . '/';
-        parent::register($module_path);
-
         $this->container['mailer.mailer'] = function ($c) {
             return new \Swift_Mailer($c['mailer.transport']);
         };
@@ -41,9 +38,5 @@ class ModuleProvider extends BaseModuleProvider
         $this->container['mailer.transport_eventdispatcher'] = function () {
             return new \Swift_Events_SimpleEventDispatcher();
         };
-    }
-
-    public function boot()
-    {
     }
 }

@@ -21,11 +21,8 @@ use Nameless\Core\ModuleProvider as BaseModuleProvider;
  */
 class ModuleProvider extends BaseModuleProvider
 {
-    public function register($module_path = null)
+    public function register()
     {
-        $module_path = __DIR__ . '/';
-        parent::register($module_path);
-
         $this->container['imager.driver'] = function ($c) {
             $driver = '\\' . __NAMESPACE__ . '\\' . $c['imager.driver_name'] . 'Driver';
             return new $driver();
@@ -34,9 +31,5 @@ class ModuleProvider extends BaseModuleProvider
         $this->container['imager.image'] = function ($c) {
             return new Image($c['imager.driver']);
         };
-    }
-
-    public function boot()
-    {
     }
 }

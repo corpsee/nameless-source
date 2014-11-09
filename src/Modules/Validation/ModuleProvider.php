@@ -21,18 +21,11 @@ use Nameless\Core\ModuleProvider as BaseModuleProvider;
  */
 class ModuleProvider extends BaseModuleProvider
 {
-    public function register($module_path = null)
+    public function register()
     {
-        $module_path = __DIR__ . '/';
-        parent::register($module_path);
-
         $this->container['validation.validator'] = function ($c) {
             return new Validator($c);
         };
         $this->container['localization']->load('messages', 'validation');
-    }
-
-    public function boot()
-    {
     }
 }

@@ -41,7 +41,6 @@ class Console extends BaseApplication
      */
     public function __construct(Application $kernel, $name = 'UNKNOWN', $version = 'UNKNOWN')
     {
-        $this->kernel = $kernel->boot();
         parent::__construct($name, $version);
     }
 
