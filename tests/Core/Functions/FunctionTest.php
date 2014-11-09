@@ -45,13 +45,6 @@ class FunctionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testHashMakeCheck()
-    {
-        $password = 'password_string';
-        $hash = hashMake($password);
-        $this->assertTrue(hashCheck($password, $hash));
-    }
-
     /**
      * @dataProvider pathToURLProvider
      */

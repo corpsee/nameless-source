@@ -59,11 +59,13 @@ class Auto
 
     /**
      * @param UserProviderInterface $user_provider
+     * @param string                $user_name
+     * @param string                $user_password
      */
     public function __construct(UserProviderInterface $user_provider, $user_name, $user_password)
     {
         $this->user_provider = $user_provider;
-        $this->user_name = $user_name;
+        $this->user_name     = $user_name;
         $this->user_password = $user_password;
     }
 
@@ -92,8 +94,25 @@ class Auto
     }
 
     /**
-     * @param string $user_name
-     * @param string $password
+     * @return string
+     */
+    public function generateSalt()
+    {
+        $salt = substr(str_shuffle(str_repeat('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 5)), 0, 40);
+        return substr(strtr(base64_encode($salt), '+', '.'), 0, 22);
+    }
+
+    /**
+     * @param $password
+     *
+     * @return string|false
+     */
+    public function generateHash($password)
+    {
+        return password_hash($password, PASSWORD_BCRYPT, ['cost' => 10, 'salt' => $this->generateSalt()]);
+    }
+
+    /**
      * @return integer
      */
     public function authenticate()
@@ -104,7 +123,7 @@ class Auto
         if (false === $user) {
             $error = self::ERROR_USERNAME_INVALID;
         } else {
-            if (!hashCheck($this->user_password, $user['password'])) {
+            if (password_verify($this->user_password, $user['password'])) {
                 $error = self::ERROR_PASSWORD_INVALID;
             } else {
                 $this->user_id = isset($user['id']) ? (integer)$user['id'] : $this->user_name;
