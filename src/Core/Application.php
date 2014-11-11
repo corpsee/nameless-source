@@ -24,6 +24,7 @@ use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
 use Symfony\Component\HttpKernel\EventListener\ResponseListener;
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * Application class
@@ -50,6 +51,8 @@ class Application extends HttpKernel
         $this->initRoutes();
         $this->initModules();
         $this->initEnvironment();
+        $this->initTimezone();
+        $this->initUnicode();
 
         $this->container['kernel'] = $this;
 
@@ -64,7 +67,7 @@ class Application extends HttpKernel
     {
         $app_config = [];
         if (file_exists(CONFIG_PATH . 'config.php')) {
-            $app_config = include_once CONFIG_PATH . 'config.php';
+            $app_config = include_once APPLICATION_PATH . 'config.php';
         }
         $config = include_once dirname(__DIR__) . '/Core/configs/config.php';
         $config = array_merge_recursive($config, $app_config);
@@ -132,20 +135,32 @@ class Application extends HttpKernel
         }
     }
 
+    private function initTimezone()
+    {
+        if (isset($this->container['timezone'])) {
+            date_default_timezone_set($this->container['timezone']);
+        }
+    }
+
     /**
      * @throws \RuntimeException
      */
+    private function initUnicode()
+    {
+        /** @var EventDispatcher $dispatcher */
+        $dispatcher = $this->container['dispatcher'];
+        $dispatcher->addSubscriber(new ResponseListener('UTF-8'));
+
+        if (!extension_loaded('mbstring')) {
+            throw new \RuntimeException('mbstring extension must be enabled!');
+        }
+        mb_internal_encoding('UTF-8');
+    }
+
     private function initEnvironment()
     {
-        date_default_timezone_set($this->container['timezone']);
-
-        $this->container['dispatcher']->addSubscriber(new ResponseListener('UTF-8'));
-
         error_reporting(-1);
         ini_set('display_errors', 1);
-        ErrorHandler::register(null, true);
-        ErrorHandler::setLogger($this->container['logger.logger'], 'deprecation');
-        ErrorHandler::setLogger($this->container['logger.logger'], 'emergency');
 
         if ($this->container['environment'] === 'debug') {
             ExceptionHandler::register();
@@ -158,10 +173,10 @@ class Application extends HttpKernel
             $this->container['dispatcher']->addSubscriber($listener);
         };
 
-        if (!extension_loaded('mbstring')) {
-            throw new \RuntimeException('mbstring extension must be enabled!');
-        }
-        mb_internal_encoding('UTF-8');
+        ErrorHandler::register(null, true);
+
+        ErrorHandler::setLogger($this->container['logger.logger'], 'emergency');
+        ErrorHandler::setLogger($this->container['logger.logger'], 'scream');
     }
 
     /**
