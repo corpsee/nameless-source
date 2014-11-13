@@ -42,23 +42,9 @@ class Container extends BaseContainer
      * @param Application $application
      * @param array       $values
      */
-    public function __construct(Application $application, array $values = [])
+    public function init(Application $application, array $values = [])
     {
-        parent::__construct($values);
-
         $this['kernel']        = $application;
-        $this['logger.logger'] = null;
-        $this['benchmark']     = null;
-
-        $this->initRouting();
-        $this->initDispatcher();
-        $this->initLocalization();
-        $this->initBenchmark();
-        $this->initSession();
-    }
-
-    public function init()
-    {
         $this['logger.logger'] = null;
         $this['benchmark']     = null;
 

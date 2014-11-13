@@ -45,7 +45,7 @@ class Application extends HttpKernel
 
     public function __construct()
     {
-        $this->container = new Container($this);
+        $this->container = new Container();
 
         $this->initConfigs();
         $this->initRoutes();
@@ -53,6 +53,8 @@ class Application extends HttpKernel
         $this->initEnvironment();
         $this->initTimezone();
         $this->initUnicode();
+
+        $this->container->init($this);
 
         $this->container['kernel'] = $this;
 
