@@ -69,14 +69,17 @@ class Application extends HttpKernel
     {
         $app_config = [];
         if (file_exists(CONFIG_PATH . 'config.php')) {
-            $app_config = include_once APPLICATION_PATH . 'config.php';
+            $app_config = include_once APPLICATION_PATH . 'configs/config.php';
         }
         $config = include_once dirname(__DIR__) . '/Core/configs/config.php';
-        $config = array_merge_recursive($config, $app_config);
+        $config = array_replace_recursive($config, $app_config);
 
+        if (!isset($config['modules'])) {
+            return $config;
+        }
         foreach ($config['modules'] as $module) {
             $module_config = include_once(dirname(__DIR__) . '/Modules/' . ucfirst($module) . '/configs/config.php');
-            $config = array_merge_recursive($module_config, $config);
+            $config = array_replace_recursive($module_config, $config);
         }
 
         return $config;
@@ -124,16 +127,18 @@ class Application extends HttpKernel
 
     private function initModules()
     {
-        foreach ($this->container['modules'] as $module) {
-            $module_provider_name = 'Nameless\\Modules\\' . $module . '\\ModuleProvider';
-            $module_provider = new $module_provider_name($this->container);
+        if (isset($this->container['modules'])) {
+            foreach ($this->container['modules'] as $module) {
+                $module_provider_name = 'Nameless\\Modules\\' . $module . '\\ModuleProvider';
+                $module_provider = new $module_provider_name($this->container);
 
-            if (!$module_provider instanceof ModuleProvider) {
-                throw new \RuntimeException($module_provider_name . ' must be instance of ModuleProvider');
+                if (!$module_provider instanceof ModuleProvider) {
+                    throw new \RuntimeException($module_provider_name . ' must be instance of ModuleProvider');
+                }
+
+                $this->modules[$module] = $module_provider;
+                $module_provider->register($this->container);
             }
-
-            $this->modules[$module] = $module_provider;
-            $module_provider->register($this->container);
         }
     }
 
