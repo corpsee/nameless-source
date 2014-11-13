@@ -48,13 +48,14 @@ class Application extends HttpKernel
         $this->container = new Container();
 
         $this->initConfigs();
+
+        $this->container->init($this);
+
         $this->initRoutes();
         $this->initModules();
         $this->initEnvironment();
         $this->initTimezone();
         $this->initUnicode();
-
-        $this->container->init($this);
 
         $this->container['kernel'] = $this;
 
@@ -92,8 +93,9 @@ class Application extends HttpKernel
     {
         foreach ($config as $option => $value) {
             $full_path = $parent . $option;
-            if (is_array($value)) {
-                $this->setConfig($value, $full_path . '.');
+
+            if (is_array($config[$option]) && $option !== 'modules' && $option !== 'routes') {
+                $this->setConfig($config[$option], $full_path . '.');
             } else {
                 $this->container[$full_path] = $value;
             }

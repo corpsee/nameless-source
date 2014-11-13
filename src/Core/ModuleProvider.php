@@ -12,8 +12,6 @@
 
 namespace Nameless\Core;
 
-use Pimple\Container;
-
 /**
  * ModuleProvider class
  *
