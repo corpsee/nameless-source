@@ -14,7 +14,6 @@ namespace Nameless\Core;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver as BaseControllerResolver;
-use Pimple\Container;
 
 /**
  * Controller resolver

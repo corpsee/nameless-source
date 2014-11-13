@@ -24,7 +24,8 @@ class ModuleProvider extends BaseModuleProvider
     public function register()
     {
         $this->container['imager.driver'] = function ($container) {
-            $driver = '\\' . __NAMESPACE__ . '\\' . $container['imager.driver_name'] . 'Driver';
+            $config = $container['imager'];
+            $driver = '\\' . __NAMESPACE__ . '\\' . $config['driver_name'] . 'Driver';
             return new $driver();
         };
 

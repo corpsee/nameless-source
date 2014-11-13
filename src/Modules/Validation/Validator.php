@@ -12,8 +12,6 @@
 
 namespace Nameless\Modules\Validation;
 
-use Pimple\Container;
-
 /**
  * Validator class
  *

@@ -24,14 +24,15 @@ class ModuleProvider extends BaseModuleProvider
     public function register()
     {
         $this->container['database.database'] = function ($container) {
+            $config = $container['database'];
             return new Database
             (
-                $container['database.type'],
-                $container['database.dns'],
-                $container['database.user'],
-                $container['database.password'],
-                $container['database.persistent'],
-                $container['database.compress']
+                $config['type'],
+                $config['dns'],
+                $config['user'],
+                $config['password'],
+                $config['persistent'],
+                $config['compress']
             );
         };
     }

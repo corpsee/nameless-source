@@ -18,7 +18,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Nameless\Modules\Database\Database;
 use Symfony\Component\Routing\Generator\UrlGenerator;
-use Pimple\Container;
 
 /**
  * Base controller class

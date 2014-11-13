@@ -25,7 +25,8 @@ class ModuleProvider extends BaseModuleProvider
     public function register()
     {
         $this->container['auto.user'] = function ($container) {
-            return new User($container['session'], $container['routes-collection'], $container['auto.access']);
+            $config = $container['auth'];
+            return new User($container['session'], $container['routes-collection'], $config['access']);
         };
     }
 }

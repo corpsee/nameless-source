@@ -12,8 +12,6 @@
 
 namespace Nameless\Core;
 
-use Pimple\Container;
-
 /**
  * Base controller interface class
  *

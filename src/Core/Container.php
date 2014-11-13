@@ -110,36 +110,40 @@ class Container extends BaseContainer
     //TODO: Added MongoDB, Redis, PDO
     protected function initSession()
     {
-        $session_type = $this['session.type'];
+        $config = $this['session'];
 
-        switch ($session_type) {
+        switch ($config['type']) {
             case 'files':
                 $this['session.handler'] = function ($container) {
-                    return new NativeFileSessionHandler($container['session.path']);
+                    $config = $container['session'];
+                    return new NativeFileSessionHandler($config['path']);
                 };
                 break;
             case 'memcache':
                 $this['session.handler'] = function ($container) {
-                    $path = explode(':', $container['session.path']);
+                    $config = $container['session'];
+                    $path = explode(':', $config['path']);
 
                     $memcache = new \Memcache();
                     $memcache->connect($path[0], $path[1]);
-                    return new MemcacheSessionHandler($memcache, $container['session.handler_options']);
+                    return new MemcacheSessionHandler($memcache, $config['handler_options']);
                 };
                 break;
             case 'memcached':
                 $this['session.handler'] = function ($container) {
-                    $path = explode(':', $container['session.path']);
+                    $config = $container['session'];
+                    $path = explode(':', $config['path']);
 
                     $memcached = new \Memcached();
                     $memcached->addServer($path[0], $path[1]);
-                    return new MemcachedSessionHandler($memcached, $container['session.handler_options']);
+                    return new MemcachedSessionHandler($memcached, $config['handler_options']);
                 };
                 break;
         }
 
         $this['session.storage'] = function ($container) {
-            return new NativeSessionStorage($container['session.options'], $container['session.handler']);
+            $config = $container['session'];
+            return new NativeSessionStorage($config['options'], $config['handler']);
         };
 
         $this['session'] = function ($container) {

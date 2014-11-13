@@ -26,13 +26,15 @@ class ModuleProvider extends BaseModuleProvider
     {
         //TODO: вызывать исключение, если не заданы необходимые настройки (['logger']['name'] например)
         $this->container['logger.logger'] = function ($container) {
-            $logger = new Logger($container['logger.name']);
+            $config = $container['logger'];
+            $logger = new Logger($config['name']);
             $logger->pushHandler($container['logger.handler']);
             return $logger;
         };
 
         $this->container['logger.handler'] = function ($container) {
-            return new StreamHandler($container['logger.file'], $container['logger.level']);
+            $config = $container['logger'];
+            return new StreamHandler($config['path'] . $config['name'] . '.log', $container['logger.level']);
         };
 
         $this->container['logger.level'] = function ($container) {
@@ -42,7 +44,5 @@ class ModuleProvider extends BaseModuleProvider
                 return Logger::DEBUG;
             }
         };
-
-        $this->container['logger.file'] = $this->container['logger.path'] . $this->container['logger.name'] . '.log';
     }
 }

@@ -85,27 +85,13 @@ class Application extends HttpKernel
 
         return $config;
     }
-    /**
-     * @param array  $config
-     * @param string $parent
-     */
-    private function setConfig(array $config, $parent = '')
-    {
-        foreach ($config as $option => $value) {
-            $full_path = $parent . $option;
-
-            if (is_array($config[$option]) && $option !== 'modules' && $option !== 'routes') {
-                $this->setConfig($config[$option], $full_path . '.');
-            } else {
-                $this->container[$full_path] = $value;
-            }
-        }
-    }
 
     private function initConfigs()
     {
         $config = $this->getConfigsFromFiles();
-        $this->setConfig($config);
+        foreach ($config as $option => $value) {
+            $this->container[$option] = $value;
+        }
     }
 
     private function initRoutes()

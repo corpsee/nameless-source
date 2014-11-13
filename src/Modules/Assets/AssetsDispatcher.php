@@ -12,8 +12,6 @@
 
 namespace Nameless\Modules\Assets;
 
-use Pimple\Container;
-
 /**
  * AssetsDispatcher class
  *

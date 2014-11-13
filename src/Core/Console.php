@@ -13,7 +13,6 @@
 namespace Nameless\Core;
 
 use Symfony\Component\Console\Application as BaseApplication;
-use Pimple\Container;
 
 
 /**
