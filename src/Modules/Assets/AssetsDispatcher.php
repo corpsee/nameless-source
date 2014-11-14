@@ -74,7 +74,8 @@ class AssetsDispatcher
         $compress_postfix = $compress ? 'min.' : '';
         $version = $assets_collection->getLastModified();
 
-        $compiled_path = $this->container['assets.path'] . $name . '.' . $compress_postfix . $assets_collection->getMetaType();
+        $config = $this->container['assets'];
+        $compiled_path = $config['path'] . $name . '.' . $compress_postfix . $assets_collection->getMetaType();
 
         if
         (
@@ -122,10 +123,11 @@ class AssetsDispatcher
     //TODO: Remove every time generation, check changes
     protected function generateAssetsTest(AssetsCollection $assets_collection, $compiled_path, $compress = true)
     {
+        $config = $this->container['assets'];
         if ($compress) {
-            $dump = $assets_collection->dumpCompress($this->container['assets.path']);
+            $dump = $assets_collection->dumpCompress($config['path']);
         } else {
-            $dump = $assets_collection->dump($this->container['assets.path']);
+            $dump = $assets_collection->dump($config['path']);
         }
 
         if (false === @file_put_contents($compiled_path, $dump)) {

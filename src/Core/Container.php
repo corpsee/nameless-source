@@ -84,7 +84,7 @@ class Container extends BaseContainer
             $dispatcher = new EventDispatcher();
             $dispatcher->addSubscriber(new RouterListener($container['url-matcher'], null, $container['logger.logger']));
             $dispatcher->addSubscriber(new LocaleListener($container['locale']));
-            $dispatcher->addSubscriber(new NamelessListener($container['session'], $container['benchmark'], $container['logger.logger']));
+            $dispatcher->addSubscriber(new NamelessListener($container['session.session'], $container['benchmark'], $container['logger.logger']));
             $dispatcher->addSubscriber(new ResponseListener('UTF-8'));
 
             return $dispatcher;
@@ -143,10 +143,10 @@ class Container extends BaseContainer
 
         $this['session.storage'] = function ($container) {
             $config = $container['session'];
-            return new NativeSessionStorage($config['options'], $config['handler']);
+            return new NativeSessionStorage($config['options'], $container['session.handler']);
         };
 
-        $this['session'] = function ($container) {
+        $this['session.session'] = function ($container) {
             return new Session($container['session.storage']);
         };
     }
