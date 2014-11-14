@@ -12,6 +12,8 @@
 
 namespace Nameless\Modules\Assets;
 
+use Nameless\Core\Container;
+
 /**
  * AssetsDispatcher class
  *
