@@ -100,9 +100,10 @@ class AssetsDispatcher
 
     protected function generateAssetsDebug(AssetsCollection $assets_collection)
     {
+        $config = $this->container['assets'];
         $result_assets = '';
-        if ($assets_collection->getMetaType() === 'js' && $this->container['assets.less']) {
-            $assets_collection->addAsset(new Asset($this->container['assets.lessjs_url']));
+        if ($assets_collection->getMetaType() === 'js' && $config['less']) {
+            $assets_collection->addAsset(new Asset($config['lessjs_url']));
         }
 
         $assets = $assets_collection->getAssets();
