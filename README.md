@@ -5,7 +5,7 @@
 [![Total Downloads](https://poser.pugx.org/corpsee/nameless-source/downloads.svg)](https://packagist.org/packages/corpsee/nameless-source)
 [![License](https://poser.pugx.org/corpsee/nameless-source/license.svg)](https://packagist.org/packages/corpsee/nameless-source)
 
-Nameless Framework
+Nameless framework
 ==================
 
 Yet another framework based on Symfony Components.
