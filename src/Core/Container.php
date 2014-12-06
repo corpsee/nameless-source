@@ -62,7 +62,11 @@ class Container extends BaseContainer
         };
 
         $this['request-context'] = function ($container) {
-            return new RequestContext($container['http_port'], $container['https_port']);
+            $context = new RequestContext();
+            $context->setHttpPort($container['http_port']);
+            $context->setHttpsPort($container['https_port']);
+
+            return $context;
         };
 
         $this['url-matcher'] = function ($container) {

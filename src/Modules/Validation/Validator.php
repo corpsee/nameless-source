@@ -286,14 +286,15 @@ class Validator
     public function validate($form)
     {
         $errors = [];
-        if (isset($this->container['validation.rules'][$form])) {
+        $validation_config = $this->container['validation'];
+        if (isset($validation_config['rules'][$form])) {
             $post = $this->container['request']->request->all();
             foreach ($post as $key => $value) {
-                if (isset($this->container['validation.rules'][$form][$key])) {
+                if (isset($validation_config['rules'][$form][$key])) {
                     if ($validate = $this->validateField(
                         $key,
                         $value,
-                        $this->container['validation.rules'][$form][$key]
+                        $validation_config['rules'][$form][$key]
                     )
                     ) {
                         $errors[] = $validate;

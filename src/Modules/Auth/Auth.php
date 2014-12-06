@@ -123,7 +123,7 @@ class Auth
         if (false === $user) {
             $error = self::ERROR_USERNAME_INVALID;
         } else {
-            if (password_verify($this->user_password, $user['password'])) {
+            if (!password_verify($this->user_password, $user['password'])) {
                 $error = self::ERROR_PASSWORD_INVALID;
             } else {
                 $this->user_id = isset($user['id']) ? (integer)$user['id'] : $this->user_name;

@@ -109,7 +109,7 @@ class Application extends HttpKernel
 
             /** @var RouteCollection $collection */
             $collection = $this->container['routes-collection'];
-            $collection->add($route_name, new Route($route_value['pattern'], $defaults, $requirements, $options));
+            $collection->add($route_name, new Route($route_value['path'], $defaults, $requirements, $options));
         }
     }
 
