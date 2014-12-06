@@ -25,7 +25,7 @@ class AccessController extends Controller
     public function before()
     {
 
-        $access = $this->container['auto.user']->getAccessByRoute($this->getAttributes('_route'));
+        $access = $this->container['auth.user']->getAccessByRoute($this->getAttributes('_route'));
 
         if (!$access) {
             throw new AccessDeniedException('Access Denied!');

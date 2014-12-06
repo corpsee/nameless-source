@@ -95,11 +95,11 @@ class User
         }*/
     }
 
-    /*public function autoLogin(Auth $auto)
+    /*public function autoLogin(Auth $auth)
     {
-        $user_groups   = arrayToString($auto->getUserGroups());
-        $user_id       = $auto->getUserId();
-        $user_name     = $auto->getUserName();
+        $user_groups   = arrayToString($auth->getUserGroups());
+        $user_id       = $auth->getUserId();
+        $user_name     = $auth->getUserName();
 
         $this->session->set(self::USER_ID, $user_id);
         $this->session->set(self::USER_NAME, $user_name);
