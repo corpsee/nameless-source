@@ -10,13 +10,13 @@
  * @link       https://github.com/corpsee/Nameless
  */
 
-namespace Nameless\Modules\Auto;
+namespace Nameless\Modules\Auth;
 
 use Nameless\Core\ModuleProvider as BaseModuleProvider;
-use Nameless\Modules\Auto\User;
+use Nameless\Modules\Auth\User;
 
 /**
- * Auto ModuleProvider class
+ * Auth ModuleProvider class
  *
  * @author Corpsee <poisoncorpsee@gmail.com>
  */

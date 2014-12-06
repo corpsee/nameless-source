@@ -10,17 +10,17 @@
  * @link       https://github.com/corpsee/Nameless
  */
 
-namespace Nameless\Modules\Auto;
+namespace Nameless\Modules\Auth;
 
-use Nameless\Modules\Auto\Providers\UserProviderInterface;
+use Nameless\Modules\Auth\Providers\UserProviderInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 
 /**
- * Auto class
+ * Auth class
  *
  * @author Corpsee <poisoncorpsee@gmail.com>
  */
-class Auto
+class Auth
 {
     const ERROR_NONE             = 0;
     const ERROR_USERNAME_INVALID = 1;

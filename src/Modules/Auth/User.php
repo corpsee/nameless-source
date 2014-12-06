@@ -10,7 +10,7 @@
  * @link       https://github.com/corpsee/Nameless
  */
 
-namespace Nameless\Modules\Auto;
+namespace Nameless\Modules\Auth;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -55,16 +55,16 @@ class User
     }
 
     /**
-     * @param Auto $auto
+     * @param Auth $auth
      * @param integer $duration
      *
      * @return Response|void
      */
-    public function login(Auto $auto, $duration = 0 /*, Response $response = NULL, $duration = 0*/)
+    public function login(Auth $auth, $duration = 0 /*, Response $response = NULL, $duration = 0*/)
     {
-        $user_groups = serialize($auto->getUserGroups());
-        $user_id     = $auto->getUserId();
-        $user_name   = $auto->getUserName();
+        $user_groups = serialize($auth->getUserGroups());
+        $user_id     = $auth->getUserId();
+        $user_name   = $auth->getUserName();
 
         $this->session->migrate(false, $duration);
 
@@ -95,7 +95,7 @@ class User
         }*/
     }
 
-    /*public function autoLogin(Auto $auto)
+    /*public function autoLogin(Auth $auto)
     {
         $user_groups   = arrayToString($auto->getUserGroups());
         $user_id       = $auto->getUserId();

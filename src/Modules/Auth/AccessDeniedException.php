@@ -10,7 +10,7 @@
  * @link       https://github.com/corpsee/Nameless
  */
 
-namespace Nameless\Modules\Auto;
+namespace Nameless\Modules\Auth;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
 

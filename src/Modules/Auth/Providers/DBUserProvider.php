@@ -10,7 +10,7 @@
  * @link       https://github.com/corpsee/Nameless
  */
 
-namespace Nameless\Modules\Auto\Providers;
+namespace Nameless\Modules\Auth\Providers;
 
 use Nameless\Modules\Database;
 
