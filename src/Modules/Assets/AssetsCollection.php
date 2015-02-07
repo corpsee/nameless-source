@@ -14,7 +14,7 @@ namespace Nameless\Modules\Assets;
 
 use Assetic\Asset\AssetCollection;
 use Assetic\Filter\CssMinFilter;
-use Assetic\Filter\GoogleClosure\CompilerApiFilter;
+use Assetic\Filter\PackerFilter;
 
 /**
  * AssetCollection class
@@ -103,7 +103,7 @@ class AssetsCollection
     {
         $filters = [];
         if ($this->assets[0]->getType() === 'js') {
-            $filters[] = new CompilerApiFilter();
+            $filters[] = new PackerFilter();
         } else {
             $filters[] = new CssMinFilter();
         }
