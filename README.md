@@ -13,4 +13,4 @@ Yet another framework based on Symfony Components.
 License
 -------
 
-The Nameless debug package is open source software licensed under the GPLv3 license.
+The Nameless debug package is open source software licensed under the GPL-3.0 license.
