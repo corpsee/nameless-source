@@ -163,7 +163,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testTrueNoempty($string)
     {
         $this->init();
-        $this->assertArrayNotHasKey(0, $this->validator->validate($string, ['noempty']));
+        $this->assertArrayNotHasKey(0, $this->validator->validate($string, ['no_empty']));
     }
 
     /**
@@ -172,7 +172,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testFalseNoempty($string)
     {
         $this->init();
-        $this->assertArrayHasKey(0, $this->validator->validate($string, ['noempty']));
+        $this->assertArrayHasKey(0, $this->validator->validate($string, ['no_empty']));
     }
 
     /**

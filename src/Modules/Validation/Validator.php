@@ -208,13 +208,13 @@ class Validator
     /**
      * @param string         $rule
      * @param mixed          $value
-     * @param integer|string $ext_rule
+     * @param integer|string $rule_extended
      *
      * @throws \InvalidArgumentException
      *
      * @return boolean
      */
-    protected function checkRule($rule, $value, $ext_rule = null)
+    protected function checkRule($rule, $value, $rule_extended = null)
     {
         switch ($rule) {
             case 'no_empty':
@@ -236,13 +236,13 @@ class Validator
             case 'url':
                 return $this->url($value);
             case 'length':
-                return $this->length($value, (integer)$ext_rule);
+                return $this->length($value, (integer)$rule_extended);
             case 'min_length':
-                return $this->minLength($value, (integer)$ext_rule);
+                return $this->minLength($value, (integer)$rule_extended);
             case 'max_length':
-                return $this->maxLength($value, (integer)$ext_rule);
+                return $this->maxLength($value, (integer)$rule_extended);
             case 'equal_fields':
-                return $this->equalFields($value, $ext_rule);
+                return $this->equalFields($value, $rule_extended);
             default:
                 throw new \InvalidArgumentException('Invalid validation rule');
         }
@@ -256,7 +256,7 @@ class Validator
      *
      * @return array
      */
-    public function validate($value, $rules)
+    public function validate($value, array $rules)
     {
         $errors = [];
         $value  = trim($value);
