@@ -23,9 +23,8 @@ class ModuleProvider extends BaseModuleProvider
 {
     public function register()
     {
-        $this->container['validation.validator'] = function ($container) {
-            return new Validator($container);
+        $this->container['validation.validator'] = function () {
+            return new Validator();
         };
-        $this->container['localization']->load('messages', 'validation');
     }
 }

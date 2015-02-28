@@ -17,28 +17,14 @@ namespace Nameless\Modules\Validation;
  *
  * @author Corpsee <poisoncorpsee@gmail.com>
  */
-//TODO: validator refactoring!
 class Validator
 {
-    /**
-     * @var Container
-     */
-    private $container;
-
-    /**
-     * @param Container $container
-     */
-    public function __construct($container)
-    {
-        $this->container = $container;
-    }
-
     /**
      * @param string $value
      *
      * @return boolean
      */
-    private function noempty($value)
+    protected function noEmpty($value)
     {
         if (!$value) {
             return false;
@@ -51,7 +37,7 @@ class Validator
      *
      * @return boolean
      */
-    private function number($value)
+    protected function number($value)
     {
         if ($value && !preg_match('!^[\p{Nd}]+$!iu', $value)) {
             return false;
@@ -64,7 +50,7 @@ class Validator
      *
      * @return boolean
      */
-    private function decimal($value)
+    protected function decimal($value)
     {
         if ($value && !preg_match('!^[\p{Nd}\., ]+$!iu', $value)) {
             return false;
@@ -77,7 +63,7 @@ class Validator
      *
      * @return boolean
      */
-    private function alpha($value)
+    protected function alpha($value)
     {
         if ($value && !preg_match('!^[\p{L} ]+$!iu', $value)) {
             return false;
@@ -90,7 +76,7 @@ class Validator
      *
      * @return boolean
      */
-    private function alpha_ext($value)
+    protected function alphaExt($value)
     {
         if ($value && !preg_match('!^[\p{L}\p{P}\p{Nd} ]+$!iu', $value)) {
             return false;
@@ -103,7 +89,7 @@ class Validator
      *
      * @return boolean
      */
-    private function email_simple($value)
+    protected function emailSimple($value)
     {
         if ($value && !preg_match('!^[^@]*@[^@]*$!iu', $value)) {
             return false;
@@ -116,7 +102,7 @@ class Validator
      *
      * @return boolean
      */
-    private function email($value)
+    protected function email($value)
     {
         if ($value && !preg_match(
                 '!
@@ -138,7 +124,7 @@ class Validator
      *
      * @return boolean
      */
-    private function phone($value)
+    protected function phone($value)
     {
         if ($value && !preg_match('!^[\p{Nd}+\(\) ]+$!iu', $value)) {
             return false;
@@ -151,7 +137,7 @@ class Validator
      *
      * @return boolean
      */
-    private function url($value)
+    protected function url($value)
     {
         if ($value && !preg_match(
                 '!^(http://|https://){0,1}(www\.){0,1}([-\p{L}\p{Nd}_]{2,}){1,}\.[\p{L}\p{Nd}]{2,4}[-\p{L}\p{Nd}_+&/=?\.%]{1,}!iu',
@@ -164,12 +150,12 @@ class Validator
     }
 
     /**
-     * @param string $value
-     * @param string $rule
+     * @param string  $value
+     * @param integer $rule
      *
      * @return boolean
      */
-    private function length($value, $rule)
+    protected function length($value, $rule)
     {
         if (mb_strlen($value, 'UTF-8') !== $rule) {
             return false;
@@ -178,12 +164,12 @@ class Validator
     }
 
     /**
-     * @param string $value
-     * @param string $rule
+     * @param string  $value
+     * @param integer $rule
      *
      * @return boolean
      */
-    private function min_length($value, $rule)
+    protected function minLength($value, $rule)
     {
         if (mb_strlen($value, 'UTF-8') < $rule) {
             return false;
@@ -192,12 +178,12 @@ class Validator
     }
 
     /**
-     * @param string $value
-     * @param string $rule
+     * @param string  $value
+     * @param integer $rule
      *
      * @return boolean
      */
-    private function max_length($value, $rule)
+    protected function maxLength($value, $rule)
     {
         if (mb_strlen($value, 'UTF-8') > $rule) {
             return false;
@@ -211,7 +197,7 @@ class Validator
      *
      * @return boolean
      */
-    private function equal_field($value, $rule)
+    protected function equalFields($value, $rule)
     {
         if ($value !== $rule) {
             return false;
@@ -219,91 +205,73 @@ class Validator
         return true;
     }
 
-    //TODO: private
     /**
-     * @param string $key
+     * @param string         $rule
+     * @param mixed          $value
+     * @param integer|string $ext_rule
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return boolean
+     */
+    protected function checkRule($rule, $value, $ext_rule = null)
+    {
+        switch ($rule) {
+            case 'no_empty':
+                return $this->noEmpty($value);
+            case 'number':
+                return $this->number($value);
+            case 'decimal':
+                return $this->decimal($value);
+            case 'alpha':
+                return $this->alpha($value);
+            case 'alpha_ext':
+                return $this->alphaExt($value);
+            case 'email_simple':
+                return $this->emailSimple($value);
+            case 'email':
+                return $this->email($value);
+            case 'phone':
+                return $this->phone($value);
+            case 'url':
+                return $this->url($value);
+            case 'length':
+                return $this->length($value, (integer)$ext_rule);
+            case 'min_length':
+                return $this->minLength($value, (integer)$ext_rule);
+            case 'max_length':
+                return $this->maxLength($value, (integer)$ext_rule);
+            case 'equal_fields':
+                return $this->equalFields($value, $ext_rule);
+            default:
+                throw new \InvalidArgumentException('Invalid validation rule');
+        }
+    }
+
+    /**
      * @param string $value
-     * @param array $rules
-     *
-     * @return array
+     * @param array  $rules
      *
      * @throws \InvalidArgumentException
-     */
-    public function validateField($key, $value, $rules)
-    {
-        $errors = [];
-        $value = trim($value);
-
-        foreach ($rules as $rule) {
-            if (is_array($rule) && count($rule) == 2) {
-                if (!$error = $this->{$rule[0]}($value)) {
-                    $errors[] = $this->container['localization']->get(
-                        $rule[0],
-                        ['field' => $key, 'param2' => $rule[1]]
-                    );
-                }
-            } elseif (is_string($rule)) {
-                if (!$error = $this->{$rule}($value)) {
-                    $errors[] = $this->container['localization']->get($rule, ['field' => $key]);
-                }
-            } else {
-                throw new \InvalidArgumentException('Invalid validation rule');
-            }
-        }
-
-        return $errors;
-    }
-
-    public function validateFieldTest($value, $rules)
-    {
-        $errors = [];
-        $value = trim($value);
-
-        foreach ($rules as $rule) {
-            if (is_array($rule) && count($rule) == 2) {
-                if (!$error = $this->{$rule[0]}($value)) {
-                    $errors[] = 'error';
-                }
-            } elseif (is_string($rule)) {
-                if (!$error = $this->{$rule}($value)) {
-                    $errors[] = 'error';
-                }
-            } else {
-                throw new \InvalidArgumentException('Invalid validation rule');
-            }
-        }
-
-        return $errors;
-    }
-
-    /**
-     * @param string $form
      *
      * @return array
-     *
-     * @throws \InvalidArgumentException
      */
-    public function validate($form)
+    public function validate($value, $rules)
     {
         $errors = [];
-        $validation_config = $this->container['validation'];
-        if (isset($validation_config['rules'][$form])) {
-            $post = $this->container['request']->request->all();
-            foreach ($post as $key => $value) {
-                if (isset($validation_config['rules'][$form][$key])) {
-                    if ($validate = $this->validateField(
-                        $key,
-                        $value,
-                        $validation_config['rules'][$form][$key]
-                    )
-                    ) {
-                        $errors[] = $validate;
-                    }
-                }
+        $value  = trim($value);
+
+        foreach ($rules as $rule) {
+            list($rule_normalized, $rule_extended) = [$rule, null];
+            if (is_array($rule)) {
+                list($rule_normalized, $rule_extended) = $rule;
             }
-        } else {
-            throw new \InvalidArgumentException('Invalid form name');
+
+            if (!$this->checkRule($rule_normalized, $value, $rule_extended)) {
+                $errors[] = $rule[0];
+            }
         }
+
         return $errors;
     }
 }
