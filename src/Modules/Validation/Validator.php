@@ -20,6 +20,8 @@ namespace Nameless\Modules\Validation;
 class Validator
 {
     /**
+     * Config rule: no_empty
+     *
      * @param string $value
      *
      * @return boolean
@@ -33,6 +35,8 @@ class Validator
     }
 
     /**
+     * Config rule: number
+     *
      * @param string $value
      *
      * @return boolean
@@ -46,6 +50,8 @@ class Validator
     }
 
     /**
+     * Config rule: decimal
+     *
      * @param string $value
      *
      * @return boolean
@@ -59,6 +65,8 @@ class Validator
     }
 
     /**
+     * Config rule: alpha
+     *
      * @param string $value
      *
      * @return boolean
@@ -72,6 +80,8 @@ class Validator
     }
 
     /**
+     * Config rule: alpha_ext
+     *
      * @param string $value
      *
      * @return boolean
@@ -85,6 +95,8 @@ class Validator
     }
 
     /**
+     * Config rule: email_simple
+     *
      * @param string $value
      *
      * @return boolean
@@ -98,6 +110,8 @@ class Validator
     }
 
     /**
+     * Config rule: email
+     *
      * @param string $value
      *
      * @return boolean
@@ -120,6 +134,8 @@ class Validator
     }
 
     /**
+     * Config rule: phone
+     *
      * @param string $value
      *
      * @return boolean
@@ -133,6 +149,8 @@ class Validator
     }
 
     /**
+     * Config rule: url
+     *
      * @param string $value
      *
      * @return boolean
@@ -150,6 +168,8 @@ class Validator
     }
 
     /**
+     * Config rule: length
+     *
      * @param string  $value
      * @param integer $rule
      *
@@ -164,6 +184,8 @@ class Validator
     }
 
     /**
+     * Config rule: min_length
+     *
      * @param string  $value
      * @param integer $rule
      *
@@ -178,6 +200,8 @@ class Validator
     }
 
     /**
+     * Config rule: max_length
+     *
      * @param string  $value
      * @param integer $rule
      *
@@ -192,12 +216,14 @@ class Validator
     }
 
     /**
+     * Config rule: equal_field
+     *
      * @param string $value
      * @param string $rule
      *
      * @return boolean
      */
-    protected function equalFields($value, $rule)
+    protected function equalField($value, $rule)
     {
         if ($value !== $rule) {
             return false;
@@ -206,7 +232,7 @@ class Validator
     }
 
     /**
-     * @param string         $rule
+     * @param string         $rule          Config rule: no_empty|number|decimal|alpha|alpha_ext|email_simple|email|phone|url|length|min_length|max_length|equal_field
      * @param mixed          $value
      * @param integer|string $rule_extended
      *
@@ -241,8 +267,8 @@ class Validator
                 return $this->minLength($value, (integer)$rule_extended);
             case 'max_length':
                 return $this->maxLength($value, (integer)$rule_extended);
-            case 'equal_fields':
-                return $this->equalFields($value, $rule_extended);
+            case 'equal_field':
+                return $this->equalField($value, $rule_extended);
             default:
                 throw new \InvalidArgumentException('Invalid validation rule');
         }
