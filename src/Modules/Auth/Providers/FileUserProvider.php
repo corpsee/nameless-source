@@ -12,8 +12,6 @@
 
 namespace Nameless\Modules\Auth\Providers;
 
-use Nameless\Modules\Auth\User;
-
 /**
  * FileUserProvider class
  *

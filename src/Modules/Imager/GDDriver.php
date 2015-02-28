@@ -99,7 +99,6 @@ class GDDriver extends ImageDriver
             default:
                 throw new \LogicException("Image type '" . $format . "' don`t support");
         }
-        //exit();
     }
 
     /**

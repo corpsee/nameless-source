@@ -71,40 +71,7 @@ class User
         $this->session->set(self::USER_ID, $user_id);
         $this->session->set(self::USER_NAME, $user_name);
         $this->session->set(self::USER_GROUPS, $user_groups);
-
-        /*if (($response instanceof Response) && ($duration > 0))
-        {
-            $cookie_array = array
-            (
-                self::USER_ID        => $user_id,
-                self::USER_NAME      => $user_name,
-                self::USER_PASSWORD  => $user_password,
-            );
-
-            $cookie = array
-            (
-                    self::USER_ID       => $user_id,
-                    self::USER_NAME     => $user_name,
-                    self::USER_DURATION => $duration,
-                    self::USER_PREVIEW  => sha1(serialize($cookie_array)),
-            );
-
-            $response->headers->setCookie(new Cookie(self::COOKIE_AUTOLOGIN, serialize($cookie), time() + $duration));
-
-            return $response;
-        }*/
     }
-
-    /*public function autoLogin(Auth $auth)
-    {
-        $user_groups   = arrayToString($auth->getUserGroups());
-        $user_id       = $auth->getUserId();
-        $user_name     = $auth->getUserName();
-
-        $this->session->set(self::USER_ID, $user_id);
-        $this->session->set(self::USER_NAME, $user_name);
-        $this->session->set(self::USER_GROUPS, $user_groups);
-    }*/
 
     /**
      * @param boolean $destroy

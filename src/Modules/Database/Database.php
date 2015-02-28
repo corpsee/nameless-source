@@ -60,10 +60,10 @@ class Database extends \PDO
         return $result;
     }
 
-    // $result = $database->extendPrepare('SELECT * FROM `table`');
-    // while ($row = $result->fetch(\PDO::FETCH_ASSOC)) { }
-
     /**
+     * Example: $result = $database->extendPrepare('SELECT * FROM `table`');
+     * while ($row = $result->fetch(\PDO::FETCH_ASSOC)) { }
+     *
      * @param string $sql
      * @param array $params
      *

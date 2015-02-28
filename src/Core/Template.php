@@ -94,7 +94,6 @@ class Template
     //TODO: make filters is a preffixes in the $data_name
     public function setData($name, $value = null, $filter = null)
     {
-        //var_dump($name); exit;
         if ($name && !is_null($value)) {
             $this->data[$name] = $value;
             if (!is_null($filter)) {

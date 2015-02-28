@@ -13,7 +13,6 @@
 namespace Nameless\Modules\Auth;
 
 use Nameless\Modules\Auth\Providers\UserProviderInterface;
-use Symfony\Component\HttpFoundation\Cookie;
 
 /**
  * Auth class
