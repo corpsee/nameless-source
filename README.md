@@ -4,6 +4,7 @@
 [![Latest Unstable Version](https://poser.pugx.org/corpsee/nameless-source/v/unstable.svg)](https://packagist.org/packages/corpsee/nameless-source)
 [![Total Downloads](https://poser.pugx.org/corpsee/nameless-source/downloads.svg)](https://packagist.org/packages/corpsee/nameless-source)
 [![License](https://poser.pugx.org/corpsee/nameless-source/license.svg)](https://packagist.org/packages/corpsee/nameless-source)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/d8ab1596-7182-4934-8e86-12d99fffee4b/mini.png)](https://insight.sensiolabs.com/projects/d8ab1596-7182-4934-8e86-12d99fffee4b)
 
 Nameless framework
 ==================
