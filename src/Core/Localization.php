@@ -1,13 +1,12 @@
 <?php
 
 /**
- * This file is part of the Nameless framework.
- * For the full copyright and license information, please view the LICENSE
+ * Nameless framework
  *
- * @package    Nameless
- * @author     Corpsee <poisoncorpsee@gmail.com>
- * @copyright  2012 - 2014. Corpsee <poisoncorpsee@gmail.com>
- * @link       https://github.com/corpsee/Nameless
+ * @package Nameless framework
+ * @author  Corpsee <poisoncorpsee@gmail.com>
+ * @license https://github.com/corpsee/nameless-source/blob/master/LICENSE
+ * @link    https://github.com/corpsee/nameless-source
  */
 
 namespace Nameless\Core;
@@ -64,16 +63,16 @@ class Localization
         switch ($module) {
             //TODO: ucfirst($module) for more than 1 word?
             case 'core':
-                $file_path = NAMELESS_PATH . ucfirst($module) . DS . 'localization' . DS . $language . DS . $file . '.php';
-                $default_file_path = NAMELESS_PATH . ucfirst($module) . DS . 'localization' . DS . $this->default_language . DS . $file . '.php';
+                $file_path = dirname(__DIR__) . '/' . ucfirst($module) . '/localization/' . $language . '/' . $file . '.php';
+                $default_file_path = dirname(__DIR__) . '/' . ucfirst($module) . '/localization/' . $this->default_language . '/' . $file . '.php';
                 break;
             case 'application':
-                $file_path = APPLICATION_PATH . 'localization' . DS . $language . DS . $file . '.php';
-                $default_file_path = APPLICATION_PATH . 'localization' . DS . $this->default_language . DS . $file . '.php';
+                $file_path = APPLICATION_PATH . 'localization/' . $language . '/' . $file . '.php';
+                $default_file_path = APPLICATION_PATH . 'localization/' . $this->default_language . '/' . $file . '.php';
                 break;
             default:
-                $file_path = NAMELESS_PATH . 'Modules' . DS . ucfirst($module) . DS . 'localization' . DS . $language . DS . $file . '.php';
-                $default_file_path = NAMELESS_PATH . 'Modules' . DS . ucfirst($module) . DS . 'localization' . DS . $this->default_language . DS . $file . '.php';
+                $file_path = dirname(__DIR__) . '/Modules/' . ucfirst($module) . '/localization/' . $language . '/' . $file . '.php';
+                $default_file_path = dirname(__DIR__) . '/Modules/' . ucfirst($module) . '/localization/' . $this->default_language . '/' . $file . '.php';
         }
 
         if (file_exists($file_path)) {

@@ -1,20 +1,20 @@
 <?php
 
 /**
- * This file is part of the Nameless framework.
- * For the full copyright and license information, please view the LICENSE
+ * Nameless framework
  *
- * @package    Nameless
- * @author     Corpsee <poisoncorpsee@gmail.com>
- * @copyright  2012 - 2014. Corpsee <poisoncorpsee@gmail.com>
- * @link       https://github.com/corpsee/Nameless
+ * @package Nameless framework
+ * @author  Corpsee <poisoncorpsee@gmail.com>
+ * @license https://github.com/corpsee/nameless-source/blob/master/LICENSE
+ * @link    https://github.com/corpsee/nameless-source
  */
 
-namespace Nameless\Modules\Auto;
+namespace Nameless\Modules\Auth;
 
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Nameless\Core\ControllerInterface;
 
 /**
  * AccessListener class

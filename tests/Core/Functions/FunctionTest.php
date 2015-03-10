@@ -9,7 +9,6 @@ class FunctionTest extends \PHPUnit_Framework_TestCase
         return array
         (
             [PUBLIC_PATH . 'files/path/to/url'],
-            [PUBLIC_PATH . 'files' . DS . 'path' . DS . 'to' . DS . 'url'],
             [PUBLIC_PATH . 'files\path\to\url'],
         );
     }
@@ -46,13 +45,6 @@ class FunctionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testHashMakeCheck()
-    {
-        $password = 'password_string';
-        $hash = hashMake($password);
-        $this->assertTrue(hashCheck($password, $hash));
-    }
-
     /**
      * @dataProvider pathToURLProvider
      */
@@ -66,7 +58,7 @@ class FunctionTest extends \PHPUnit_Framework_TestCase
      */
     public function testURLToPath($string)
     {
-        $this->assertEquals(PUBLIC_PATH . 'files' . DS . 'path' . DS . 'to' . DS . 'url', URLToPath($string));
+        $this->assertEquals(PUBLIC_PATH . 'files/path/to/url', URLToPath($string));
     }
 
 

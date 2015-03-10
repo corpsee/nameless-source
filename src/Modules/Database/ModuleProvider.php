@@ -1,13 +1,12 @@
 <?php
 
 /**
- * This file is part of the Nameless framework.
- * For the full copyright and license information, please view the LICENSE
+ * Nameless framework
  *
- * @package    Nameless
- * @author     Corpsee <poisoncorpsee@gmail.com>
- * @copyright  2012 - 2014. Corpsee <poisoncorpsee@gmail.com>
- * @link       https://github.com/corpsee/Nameless
+ * @package Nameless framework
+ * @author  Corpsee <poisoncorpsee@gmail.com>
+ * @license https://github.com/corpsee/nameless-source/blob/master/LICENSE
+ * @link    https://github.com/corpsee/nameless-source
  */
 
 namespace Nameless\Modules\Database;
@@ -21,25 +20,19 @@ use Nameless\Core\ModuleProvider as BaseModuleProvider;
  */
 class ModuleProvider extends BaseModuleProvider
 {
-    public function register($module_path = null)
+    public function register()
     {
-        $module_path = __DIR__ . DS;
-        parent::register($module_path);
-
-        $this->container['database.database'] = function ($c) {
+        $this->container['database.database'] = function ($container) {
+            $config = $container['database'];
             return new Database
             (
-                $c['database.type'],
-                $c['database.dns'],
-                $c['database.user'],
-                $c['database.password'],
-                $c['database.persistent'],
-                $c['database.compress']
+                $config['type'],
+                $config['dns'],
+                $config['user'],
+                $config['password'],
+                $config['persistent'],
+                $config['compress']
             );
         };
-    }
-
-    public function boot()
-    {
     }
 }

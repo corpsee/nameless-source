@@ -1,16 +1,15 @@
 <?php
 
 /**
- * This file is part of the Nameless framework.
- * For the full copyright and license information, please view the LICENSE
+ * Nameless framework
  *
- * @package    Nameless
- * @author     Corpsee <poisoncorpsee@gmail.com>
- * @copyright  2012 - 2014. Corpsee <poisoncorpsee@gmail.com>
- * @link       https://github.com/corpsee/Nameless
+ * @package Nameless framework
+ * @author  Corpsee <poisoncorpsee@gmail.com>
+ * @license https://github.com/corpsee/nameless-source/blob/master/LICENSE
+ * @link    https://github.com/corpsee/nameless-source
  */
 
-namespace Nameless\Modules\Auto\Providers;
+namespace Nameless\Modules\Auth\Providers;
 
 use Nameless\Modules\Database;
 
@@ -41,7 +40,7 @@ class DBUserProvider implements UserProviderInterface
      */
     public function getUserByName($user_name)
     {
-        return $this->database->selectOne("SELECT `id`, `password` FROM `tbl_users` WHERE `username` = ?", [$user_name]);
+        return $this->database->selectOne("SELECT `id`, `password` FROM `users` WHERE `username` = ?", [$user_name]);
     }
 
     /**
@@ -51,7 +50,7 @@ class DBUserProvider implements UserProviderInterface
      */
     public function getUserGroups($user_name)
     {
-        $groups = $this->database->selectOne("SELECT `groups` FROM `tbl_users` WHERE `username` = ?", [$user_name]);
+        $groups = $this->database->selectOne("SELECT `groups` FROM `users` WHERE `username` = ?", [$user_name]);
 
         if ($groups) {
             return stringToArray($groups['groups']);

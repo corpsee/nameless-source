@@ -1,16 +1,15 @@
 <?php
 
 /**
- * This file is part of the Nameless framework.
- * For the full copyright and license information, please view the LICENSE
+ * Nameless framework
  *
- * @package    Nameless
- * @author     Corpsee <poisoncorpsee@gmail.com>
- * @copyright  2012 - 2014. Corpsee <poisoncorpsee@gmail.com>
- * @link       https://github.com/corpsee/Nameless
+ * @package Nameless framework
+ * @author  Corpsee <poisoncorpsee@gmail.com>
+ * @license https://github.com/corpsee/nameless-source/blob/master/LICENSE
+ * @link    https://github.com/corpsee/nameless-source
  */
 
-namespace Nameless\Modules\Auto;
+namespace Nameless\Modules\Auth;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -55,56 +54,23 @@ class User
     }
 
     /**
-     * @param Auto $auto
+     * @param Auth $auth
      * @param integer $duration
      *
      * @return Response|void
      */
-    public function login(Auto $auto, $duration = 0 /*, Response $response = NULL, $duration = 0*/)
+    public function login(Auth $auth, $duration = 0 /*, Response $response = NULL, $duration = 0*/)
     {
-        $user_groups = serialize($auto->getUserGroups());
-        $user_id     = $auto->getUserId();
-        $user_name   = $auto->getUserName();
+        $user_groups = serialize($auth->getUserGroups());
+        $user_id     = $auth->getUserId();
+        $user_name   = $auth->getUserName();
 
         $this->session->migrate(false, $duration);
 
         $this->session->set(self::USER_ID, $user_id);
         $this->session->set(self::USER_NAME, $user_name);
         $this->session->set(self::USER_GROUPS, $user_groups);
-
-        /*if (($response instanceof Response) && ($duration > 0))
-        {
-            $cookie_array = array
-            (
-                self::USER_ID        => $user_id,
-                self::USER_NAME      => $user_name,
-                self::USER_PASSWORD  => $user_password,
-            );
-
-            $cookie = array
-            (
-                    self::USER_ID       => $user_id,
-                    self::USER_NAME     => $user_name,
-                    self::USER_DURATION => $duration,
-                    self::USER_PREVIEW  => sha1(serialize($cookie_array)),
-            );
-
-            $response->headers->setCookie(new Cookie(self::COOKIE_AUTOLOGIN, serialize($cookie), time() + $duration));
-
-            return $response;
-        }*/
     }
-
-    /*public function autoLogin(Auto $auto)
-    {
-        $user_groups   = arrayToString($auto->getUserGroups());
-        $user_id       = $auto->getUserId();
-        $user_name     = $auto->getUserName();
-
-        $this->session->set(self::USER_ID, $user_id);
-        $this->session->set(self::USER_NAME, $user_name);
-        $this->session->set(self::USER_GROUPS, $user_groups);
-    }*/
 
     /**
      * @param boolean $destroy

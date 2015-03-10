@@ -1,18 +1,15 @@
 <?php
 
 /**
- * This file is part of the Nameless framework.
- * For the full copyright and license information, please view the LICENSE
+ * Nameless framework
  *
- * @package    Nameless
- * @author     Corpsee <poisoncorpsee@gmail.com>
- * @copyright  2012 - 2014. Corpsee <poisoncorpsee@gmail.com>
- * @link       https://github.com/corpsee/Nameless
+ * @package Nameless framework
+ * @author  Corpsee <poisoncorpsee@gmail.com>
+ * @license https://github.com/corpsee/nameless-source/blob/master/LICENSE
+ * @link    https://github.com/corpsee/nameless-source
  */
 
 namespace Nameless\Modules\Validation;
-
-use Pimple\Container;
 
 /**
  * Validator class
@@ -288,14 +285,15 @@ class Validator
     public function validate($form)
     {
         $errors = [];
-        if (isset($this->container['validation.rules'][$form])) {
+        $validation_config = $this->container['validation'];
+        if (isset($validation_config['rules'][$form])) {
             $post = $this->container['request']->request->all();
             foreach ($post as $key => $value) {
-                if (isset($this->container['validation.rules'][$form][$key])) {
+                if (isset($validation_config['rules'][$form][$key])) {
                     if ($validate = $this->validateField(
                         $key,
                         $value,
-                        $this->container['validation.rules'][$form][$key]
+                        $validation_config['rules'][$form][$key]
                     )
                     ) {
                         $errors[] = $validate;

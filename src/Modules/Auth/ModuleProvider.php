@@ -9,12 +9,13 @@
  * @link    https://github.com/corpsee/nameless-source
  */
 
-namespace Nameless\Modules\Validation;
+namespace Nameless\Modules\Auth;
 
 use Nameless\Core\ModuleProvider as BaseModuleProvider;
+use Nameless\Modules\Auth\User;
 
 /**
- * Validation ModuleProvider class
+ * Auth ModuleProvider class
  *
  * @author Corpsee <poisoncorpsee@gmail.com>
  */
@@ -22,9 +23,9 @@ class ModuleProvider extends BaseModuleProvider
 {
     public function register()
     {
-        $this->container['validation.validator'] = function ($container) {
-            return new Validator($container);
+        $this->container['auth.user'] = function ($container) {
+            $config = $container['auth'];
+            return new User($container['session.session'], $container['routes-collection'], $config['access']);
         };
-        $this->container['localization']->load('messages', 'validation');
     }
 }

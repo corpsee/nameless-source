@@ -1,18 +1,17 @@
 <?php
 
 /**
- * This file is part of the Nameless framework.
- * For the full copyright and license information, please view the LICENSE
+ * Nameless framework
  *
- * @package    Nameless
- * @author     Corpsee <poisoncorpsee@gmail.com>
- * @copyright  2012 - 2014. Corpsee <poisoncorpsee@gmail.com>
- * @link       https://github.com/corpsee/Nameless
+ * @package Nameless framework
+ * @author  Corpsee <poisoncorpsee@gmail.com>
+ * @license https://github.com/corpsee/nameless-source/blob/master/LICENSE
+ * @link    https://github.com/corpsee/nameless-source
  */
 
 namespace Nameless\Modules\Assets;
 
-use Pimple\Container;
+use Nameless\Core\Container;
 
 /**
  * AssetsDispatcher class
@@ -76,7 +75,8 @@ class AssetsDispatcher
         $compress_postfix = $compress ? 'min.' : '';
         $version = $assets_collection->getLastModified();
 
-        $compiled_path = $this->container['assets.path'] . $name . '.' . $compress_postfix . $assets_collection->getMetaType();
+        $config = $this->container['assets'];
+        $compiled_path = $config['path'] . $name . '.' . $compress_postfix . $assets_collection->getMetaType();
 
         if
         (
@@ -99,9 +99,10 @@ class AssetsDispatcher
 
     protected function generateAssetsDebug(AssetsCollection $assets_collection)
     {
+        $config = $this->container['assets'];
         $result_assets = '';
-        if ($assets_collection->getMetaType() === 'js' && $this->container['assets.less']) {
-            $assets_collection->addAsset(new Asset($this->container['assets.lessjs_url']));
+        if ($assets_collection->getMetaType() === 'js' && $config['less']) {
+            $assets_collection->addAsset(new Asset($config['lessjs_url']));
         }
 
         $assets = $assets_collection->getAssets();
@@ -124,10 +125,11 @@ class AssetsDispatcher
     //TODO: Remove every time generation, check changes
     protected function generateAssetsTest(AssetsCollection $assets_collection, $compiled_path, $compress = true)
     {
+        $config = $this->container['assets'];
         if ($compress) {
-            $dump = $assets_collection->dumpCompress($this->container['assets.path']);
+            $dump = $assets_collection->dumpCompress($config['path']);
         } else {
-            $dump = $assets_collection->dump($this->container['assets.path']);
+            $dump = $assets_collection->dump($config['path']);
         }
 
         if (false === @file_put_contents($compiled_path, $dump)) {

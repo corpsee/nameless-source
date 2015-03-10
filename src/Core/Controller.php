@@ -1,13 +1,12 @@
 <?php
 
 /**
- * This file is part of the Nameless framework.
- * For the full copyright and license information, please view the LICENSE
+ * Nameless framework
  *
- * @package    Nameless
- * @author     Corpsee <poisoncorpsee@gmail.com>
- * @copyright  2012 - 2014. Corpsee <poisoncorpsee@gmail.com>
- * @link       https://github.com/corpsee/Nameless
+ * @package Nameless framework
+ * @author  Corpsee <poisoncorpsee@gmail.com>
+ * @license https://github.com/corpsee/nameless-source/blob/master/LICENSE
+ * @link    https://github.com/corpsee/nameless-source
  */
 
 namespace Nameless\Core;
@@ -18,7 +17,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Nameless\Modules\Database\Database;
 use Symfony\Component\Routing\Generator\UrlGenerator;
-use Pimple\Container;
 
 /**
  * Base controller class
@@ -61,7 +59,7 @@ class Controller implements ControllerInterface
     }
 
     /**
-     * @return Kernel
+     * @return Application
      */
     private function getKernel()
     {
@@ -139,7 +137,7 @@ class Controller implements ControllerInterface
         if (is_null($template_path)) {
             $template_path = $this->container['templates_path'];
         }
-        $template = new Template($template_path, $template, $data, $template_filter, $filters);
+        $template = new Template($template_path, $template, $data, $template_filter, $filters, $response, $template_extension);
         return $template->render($compress);
     }
 

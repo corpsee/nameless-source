@@ -3,7 +3,7 @@
 namespace Nameless\Tests\Modules\Tests\Modules\Validation;
 
 use Nameless\Modules\Validation\Validator;
-use Pimple\Container;
+use Nameless\Core\Container;
 
 class ValidatorTest extends \PHPUnit_Framework_TestCase
 {

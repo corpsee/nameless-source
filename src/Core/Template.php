@@ -1,13 +1,12 @@
 <?php
 
 /**
- * This file is part of the Nameless framework.
- * For the full copyright and license information, please view the LICENSE
+ * Nameless framework
  *
- * @package    Nameless
- * @author     Corpsee <poisoncorpsee@gmail.com>
- * @copyright  2012 - 2014. Corpsee <poisoncorpsee@gmail.com>
- * @link       https://github.com/corpsee/Nameless
+ * @package Nameless framework
+ * @author  Corpsee <poisoncorpsee@gmail.com>
+ * @license https://github.com/corpsee/nameless-source/blob/master/LICENSE
+ * @link    https://github.com/corpsee/nameless-source
  */
 
 namespace Nameless\Core;
@@ -94,7 +93,6 @@ class Template
     //TODO: make filters is a preffixes in the $data_name
     public function setData($name, $value = null, $filter = null)
     {
-        //var_dump($name); exit;
         if ($name && !is_null($value)) {
             $this->data[$name] = $value;
             if (!is_null($filter)) {
@@ -109,45 +107,27 @@ class Template
     }
 
     /**
-     * @param string|array $name
-     *
      * @return mixed
      *
      * @throws \OutOfBoundsException
      */
-    public function getData($name = null)
+    public function getData()
     {
-        if (is_null($name)) {
-            $data = [];
-            foreach ($this->data as $name => $data_value) {
-                $filter = isset($this->filters[$name]) ? $this->filters[$name] : $this->template_filter;
-                switch ($filter) {
-                    case 0:
-                        $data[$name] = $data_value;
-                        break;
-                    case 1:
-                        $data[$name] = self::escape($data_value);
-                        break;
-                    case 2:
-                        $data[$name] = $this->cleanXSS($data_value);
-                }
-            }
-            return $data;
-        } elseif (isset($this->data[$name])) {
+        $data = [];
+        foreach ($this->data as $name => $data_value) {
             $filter = isset($this->filters[$name]) ? $this->filters[$name] : $this->template_filter;
             switch ($filter) {
                 case 0:
-                    $return = $this->data[$name];
+                    $data[$name] = $data_value;
                     break;
                 case 1:
-                    $return = self::escape($this->data[$name]);
+                    $data[$name] = self::escape($data_value);
                     break;
                 case 2:
-                    $return = $this->cleanXSS($this->data[$name]);
+                    $data[$name] = $this->cleanXSS($data_value);
             }
-            return $return;
         }
-        throw new \OutOfBoundsException('Value doesn`t exist in template data');
+        return $data;
     }
 
     /**

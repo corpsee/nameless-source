@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'auto' => [
+    'auth' => [
         'users'  => [],
         'access' => [],
     ],

@@ -1,40 +1,13 @@
 <?php
-/**
- * This file is part of the Nameless framework.
- * For the full copyright and license information, please view the LICENSE
- *
- * @package    Nameless
- * @author     Corpsee <poisoncorpsee@gmail.com>
- * @copyright  2012 - 2014. Corpsee <poisoncorpsee@gmail.com>
- * @link       https://github.com/corpsee/Nameless
- */
 
 /**
- * @param string $value
- * @param int $rounds
+ * Nameless framework
  *
- * @return string
+ * @package Nameless framework
+ * @author  Corpsee <poisoncorpsee@gmail.com>
+ * @license https://github.com/corpsee/nameless-source/blob/master/LICENSE
+ * @link    https://github.com/corpsee/nameless-source
  */
-function hashMake($value, $rounds = 10)
-{
-    $work_rounds = str_pad($rounds, 2, '0', STR_PAD_LEFT);
-
-    $salt = substr(str_shuffle(str_repeat('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 5)), 0, 40);
-    $salt = substr(strtr(base64_encode($salt), '+', '.'), 0, 22);
-
-    return crypt($value, '$2a$' . $work_rounds . '$' . $salt);
-}
-
-/**
- * @param string $value
- * @param string $hash
- *
- * @return boolean
- */
-function hashCheck($value, $hash)
-{
-    return crypt($value, $hash) === $hash;
-}
 
 /**
  * @param string $path
@@ -43,7 +16,7 @@ function hashCheck($value, $hash)
  */
 function pathToURL($path)
 {
-    return str_replace([PUBLIC_PATH, DS, '\\'], ['/', '/', '/'], $path);
+    return str_replace([PUBLIC_PATH, '\\'], ['/', '/'], $path);
 }
 
 /**
@@ -53,7 +26,7 @@ function pathToURL($path)
  */
 function URLToPath($path)
 {
-    return PUBLIC_PATH . str_replace('/', DS, ltrim($path, '/'));
+    return PUBLIC_PATH . ltrim($path, '/');
 }
 
 /**

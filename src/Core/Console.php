@@ -1,29 +1,28 @@
 <?php
 
 /**
- * This file is part of the Nameless framework.
- * For the full copyright and license information, please view the LICENSE
+ * Nameless framework
  *
- * @package    Nameless
- * @author     Corpsee <poisoncorpsee@gmail.com>
- * @copyright  2012 - 2014. Corpsee <poisoncorpsee@gmail.com>
- * @link       https://github.com/corpsee/Nameless
+ * @package Nameless framework
+ * @author  Corpsee <poisoncorpsee@gmail.com>
+ * @license https://github.com/corpsee/nameless-source/blob/master/LICENSE
+ * @link    https://github.com/corpsee/nameless-source
  */
 
 namespace Nameless\Core;
 
-use Symfony\Component\Console\Application;
-use Pimple\Container;
+use Symfony\Component\Console\Application as BaseApplication;
+
 
 /**
- * Kernel class
+ * Console class
  *
  * @author Corpsee <poisoncorpsee@gmail.com>
  */
-class Console extends Application
+class Console extends BaseApplication
 {
     /**
-     * @var Kernel
+     * @var Application
      */
     protected $kernel;
 
@@ -33,13 +32,13 @@ class Console extends Application
     protected $container;
 
     /**
-     * @param Kernel $kernel
+     * @param Application $kernel
      * @param string $name
      * @param string $version
      */
-    public function __construct(Kernel $kernel, $name = 'UNKNOWN', $version = 'UNKNOWN')
+    public function __construct(Application $kernel, $name = 'UNKNOWN', $version = 'UNKNOWN')
     {
-        $this->kernel = $kernel->boot();
+        $this->kernel = $kernel;
         parent::__construct($name, $version);
     }
 
