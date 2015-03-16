@@ -33,7 +33,8 @@
         "kriswallsmith/assetic":     "1.2.*",
         "oyejorge/less.php":         "1.7.*",
         "natxet/CssMin":             "3.0.*",
-        "meenie/javascript-packer":  "1.*"
+        "meenie/javascript-packer":  "1.*",
+        "robmorgan/phinx":           "0.4.*"
     },
     "require-dev": {
         "phpunit/phpunit": "4.1.*"
