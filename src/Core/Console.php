@@ -11,7 +11,11 @@
 
 namespace Nameless\Core;
 
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Application as BaseApplication;
+use Phinx\Console\Command as PhinxCommand;
+use Phinx\Config\Config as PhinxConfig;
 
 
 /**
@@ -38,8 +42,18 @@ class Console extends BaseApplication
      */
     public function __construct(Application $kernel, $name = 'UNKNOWN', $version = 'UNKNOWN')
     {
-        $this->kernel = $kernel;
         parent::__construct($name, $version);
+
+        $this->kernel    = $kernel;
+        $this->container = $this->kernel->getContainer();
+
+        $phinx_config = $this->loadPhinxConfig();
+
+        $this->add((new PhinxCommand\Create())->setConfig($phinx_config));
+        $this->add((new PhinxCommand\Migrate())->setConfig($phinx_config));
+        $this->add((new PhinxCommand\Rollback())->setConfig($phinx_config));
+        $this->add((new PhinxCommand\Status())->setConfig($phinx_config));
+        $this->add((new PhinxCommand\Test())->setConfig($phinx_config));
     }
 
     /**
@@ -47,6 +61,15 @@ class Console extends BaseApplication
      */
     public function getContainer()
     {
-        return $this->kernel->getContainer();
+        return $this->container;
+    }
+
+    /**
+     * @return PhinxConfig
+     */
+    protected function loadPhinxConfig()
+    {
+        $config = $this->getContainer()['migrations'];
+        return new PhinxConfig($config, '');
     }
 }
