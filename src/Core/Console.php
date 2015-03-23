@@ -49,10 +49,26 @@ class Console extends BaseApplication
 
         $phinx_config = $this->loadPhinxConfig();
 
-        $this->add((new PhinxCommand\Create())->setConfig($phinx_config)->setName('migrations:create'));
-        $this->add((new PhinxCommand\Migrate())->setConfig($phinx_config)->setName('migrations:migrate'));
-        $this->add((new PhinxCommand\Rollback())->setConfig($phinx_config)->setName('migrations:rollback'));
-        $this->add((new PhinxCommand\Status())->setConfig($phinx_config)->setName('migrations:status'));
+        $this->add(
+            (new PhinxCommand\Create())
+                ->setConfig($phinx_config)
+                ->setName('migrations:create')
+        );
+        $this->add(
+            (new PhinxCommand\Migrate())
+                ->setConfig($phinx_config)
+                ->setName('migrations:migrate')
+        );
+        $this->add(
+            (new PhinxCommand\Rollback())
+                ->setConfig($phinx_config)
+                ->setName('migrations:rollback')
+        );
+        $this->add(
+            (new PhinxCommand\Status())
+                ->setConfig($phinx_config)
+                ->setName('migrations:status')
+        );
     }
 
     /**
