@@ -9,5 +9,8 @@ matrix:
         - php:
           - hhvm
 
-install: composer install
-script:  phpunit --configuration phpunit.xml --coverage-text
+install:
+  - composer selfupdate
+  - composer install
+script:
+  - phpunit --configuration phpunit.xml --coverage-text
