@@ -33,3 +33,4 @@ abstract class ModuleProvider
 
     abstract public function register();
 }
+

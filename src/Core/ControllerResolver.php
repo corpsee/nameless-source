@@ -62,3 +62,4 @@ class ControllerResolver extends BaseControllerResolver
         ];
     }
 }
+

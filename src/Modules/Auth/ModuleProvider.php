@@ -29,3 +29,4 @@ class ModuleProvider extends BaseModuleProvider
         };
     }
 }
+
