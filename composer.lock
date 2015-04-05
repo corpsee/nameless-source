@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ed000507f0c84316f21067b4706bbc9f",
+    "hash": "05eee18e5f723cd021566f7d804b7b04",
     "packages": [
         {
             "name": "ircmaxell/password-compat",
@@ -50,16 +50,16 @@
         },
         {
             "name": "kriswallsmith/assetic",
-            "version": "1.2.x-dev",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kriswallsmith/assetic.git",
-                "reference": "b20efe38845d20458702f97f3ff625d80805897b"
+                "reference": "0db20de988b7adc79375d33b2a566183af83c930"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kriswallsmith/assetic/zipball/b20efe38845d20458702f97f3ff625d80805897b",
-                "reference": "b20efe38845d20458702f97f3ff625d80805897b",
+                "url": "https://api.github.com/repos/kriswallsmith/assetic/zipball/0db20de988b7adc79375d33b2a566183af83c930",
+                "reference": "0db20de988b7adc79375d33b2a566183af83c930",
                 "shasum": ""
             },
             "require": {
@@ -120,7 +120,7 @@
                 "compression",
                 "minification"
             ],
-            "time": "2014-12-12 05:04:05"
+            "time": "2014-11-25 17:50:26"
         },
         {
             "name": "meenie/javascript-packer",
@@ -598,12 +598,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "5b91dc4ed5eb08553f57f6df04c4730a73992667"
+                "reference": "656a3f550462635f00cf5f1ed7aabd2b1f1bc299"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/5b91dc4ed5eb08553f57f6df04c4730a73992667",
-                "reference": "5b91dc4ed5eb08553f57f6df04c4730a73992667",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/656a3f550462635f00cf5f1ed7aabd2b1f1bc299",
+                "reference": "656a3f550462635f00cf5f1ed7aabd2b1f1bc299",
                 "shasum": ""
             },
             "require": {
@@ -647,7 +647,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2015-03-30 15:54:10"
+            "time": "2015-04-04 12:23:36"
         },
         {
             "name": "symfony/debug",
@@ -656,12 +656,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Debug.git",
-                "reference": "4bd15a76de7426bea3c348732a4b3973b7ff60ce"
+                "reference": "2b8d1207a790704d78472cd92e605fec83ad7dcc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Debug/zipball/4bd15a76de7426bea3c348732a4b3973b7ff60ce",
-                "reference": "4bd15a76de7426bea3c348732a4b3973b7ff60ce",
+                "url": "https://api.github.com/repos/symfony/Debug/zipball/2b8d1207a790704d78472cd92e605fec83ad7dcc",
+                "reference": "2b8d1207a790704d78472cd92e605fec83ad7dcc",
                 "shasum": ""
             },
             "require": {
@@ -708,7 +708,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "http://symfony.com",
-            "time": "2015-04-02 13:40:50"
+            "time": "2015-04-03 07:48:36"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -880,12 +880,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel.git",
-                "reference": "5ef517e669d12a76e0533e53b94b2c364dfbf9de"
+                "reference": "82627019f93cbbbe2b619cbd4d5da8e8e94cbe64"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/5ef517e669d12a76e0533e53b94b2c364dfbf9de",
-                "reference": "5ef517e669d12a76e0533e53b94b2c364dfbf9de",
+                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/82627019f93cbbbe2b619cbd4d5da8e8e94cbe64",
+                "reference": "82627019f93cbbbe2b619cbd4d5da8e8e94cbe64",
                 "shasum": ""
             },
             "require": {
@@ -949,7 +949,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "http://symfony.com",
-            "time": "2015-04-01 18:51:37"
+            "time": "2015-04-03 15:17:51"
         },
         {
             "name": "symfony/process",
@@ -1538,12 +1538,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "e0c95bbc21112932abed7372ee98da01c219a6ed"
+                "reference": "056bb2896c56752997f2c151089519f8cdc709c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/e0c95bbc21112932abed7372ee98da01c219a6ed",
-                "reference": "e0c95bbc21112932abed7372ee98da01c219a6ed",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/056bb2896c56752997f2c151089519f8cdc709c6",
+                "reference": "056bb2896c56752997f2c151089519f8cdc709c6",
                 "shasum": ""
             },
             "require": {
@@ -1576,7 +1576,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.7.x-dev"
+                    "dev-master": "4.8.x-dev"
                 }
             },
             "autoload": {
@@ -1605,7 +1605,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-04-02 05:38:19"
+            "time": "2015-04-03 13:45:47"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -2000,16 +2000,16 @@
         },
         {
             "name": "sebastian/version",
-            "version": "1.0.4",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/version.git",
-                "reference": "a77d9123f8e809db3fbdea15038c27a95da4058b"
+                "reference": "ab931d46cd0d3204a91e1b9a40c4bc13032b58e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/version/zipball/a77d9123f8e809db3fbdea15038c27a95da4058b",
-                "reference": "a77d9123f8e809db3fbdea15038c27a95da4058b",
+                "url": "https://api.github.com/repos/sebastianbergmann/version/zipball/ab931d46cd0d3204a91e1b9a40c4bc13032b58e4",
+                "reference": "ab931d46cd0d3204a91e1b9a40c4bc13032b58e4",
                 "shasum": ""
             },
             "type": "library",
@@ -2031,7 +2031,7 @@
             ],
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
-            "time": "2014-12-15 14:25:24"
+            "time": "2015-02-24 06:35:25"
         }
     ],
     "aliases": [],
