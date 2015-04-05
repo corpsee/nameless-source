@@ -9,25 +9,19 @@
  * @link    https://github.com/corpsee/nameless-source
  */
 
-namespace Nameless\Modules\Database;
+namespace Nameless\Modules\Migrations;
+
+use Nameless\Core\ModuleProvider as BaseModuleProvider;
 
 /**
- * Model class
+ * Migrations ModuleProvider class
  *
  * @author Corpsee <poisoncorpsee@gmail.com>
  */
-class Model
+class ModuleProvider extends BaseModuleProvider
 {
-    /**
-     * @var Database
-     */
-    protected $database;
-
-    /**
-     * @param Database $database
-     */
-    public function __construct(Database $database)
+    public function register()
     {
-        $this->database = $database;
+
     }
 }

@@ -17,4 +17,5 @@ return [
         'options'         => [],
         'handler_options' => [],
     ],
+    'routes' => [],
 ];
