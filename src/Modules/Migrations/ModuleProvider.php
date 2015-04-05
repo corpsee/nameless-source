@@ -30,7 +30,7 @@ class ModuleProvider extends BaseModuleProvider
      */
     public function registerConsole($console)
     {
-        $config       = $this->getContainer()['migrations'];
+        $config       = $this->container['migrations'];
         $phinx_config = new PhinxConfig($config, '');
 
         $console->add(
