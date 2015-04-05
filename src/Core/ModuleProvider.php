@@ -32,5 +32,10 @@ abstract class ModuleProvider
     }
 
     abstract public function register();
+
+    /**
+     * @param Console $console
+     */
+    abstract public function registerConsole($console);
 }
 

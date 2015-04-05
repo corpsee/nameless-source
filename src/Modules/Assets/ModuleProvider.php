@@ -11,6 +11,7 @@
 
 namespace Nameless\Modules\Assets;
 
+use Nameless\Core\Console;
 use Nameless\Core\ModuleProvider as BaseModuleProvider;
 
 /**
@@ -20,11 +21,16 @@ use Nameless\Core\ModuleProvider as BaseModuleProvider;
  */
 class ModuleProvider extends BaseModuleProvider
 {
-    //TODO: assets lib packeges like: $container['assets.dispatcher']->get['jquery']
+    //TODO: assets lib packages like: $container['assets.dispatcher']->get['jquery']
     public function register()
     {
         $this->container['assets.dispatcher'] = function ($container) {
             return new AssetsDispatcher($container);
         };
     }
+
+    /**
+     * @param Console $console
+     */
+    public function registerConsole($console) {}
 }

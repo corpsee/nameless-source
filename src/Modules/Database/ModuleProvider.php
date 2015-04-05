@@ -11,6 +11,7 @@
 
 namespace Nameless\Modules\Database;
 
+use Nameless\Core\Console;
 use Nameless\Core\ModuleProvider as BaseModuleProvider;
 
 /**
@@ -35,4 +36,9 @@ class ModuleProvider extends BaseModuleProvider
             );
         };
     }
+
+    /**
+     * @param Console $console
+     */
+    public function registerConsole($console) {}
 }

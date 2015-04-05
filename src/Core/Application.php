@@ -35,12 +35,12 @@ class Application extends HttpKernel
     /**
      * @var array
      */
-    private $modules = [];
+    protected $modules = [];
 
     /**
      * @var Container
      */
-    private $container;
+    protected $container;
 
     public function __construct()
     {
@@ -65,7 +65,7 @@ class Application extends HttpKernel
     /**
      * @return array
      */
-    private function getConfigsFromFiles()
+    protected function getConfigsFromFiles()
     {
         $app_config = [];
         if (file_exists(CONFIG_PATH . 'config.php')) {
@@ -85,7 +85,7 @@ class Application extends HttpKernel
         return $config;
     }
 
-    private function initConfigs()
+    protected function initConfigs()
     {
         $config = $this->getConfigsFromFiles();
         foreach ($config as $option => $value) {
@@ -93,7 +93,7 @@ class Application extends HttpKernel
         }
     }
 
-    private function initRoutes()
+    protected function initRoutes()
     {
         foreach ($this->container['routes'] as $route_name => $route_value) {
             $defaults = isset($route_value['defaults'])
@@ -112,7 +112,7 @@ class Application extends HttpKernel
         }
     }
 
-    private function initModules()
+    protected function initModules()
     {
         if (isset($this->container['modules'])) {
             foreach ($this->container['modules'] as $module) {
@@ -129,7 +129,25 @@ class Application extends HttpKernel
         }
     }
 
-    private function initTimezone()
+    /**
+     * @return ModuleProvider[]
+     */
+    public function getModuleProviders()
+    {
+        return $this->modules;
+    }
+
+    /**
+     * @param string $module
+     *
+     * @return ModuleProvider
+     */
+    public function getModuleProvider($module)
+    {
+        return $this->modules[$module];
+    }
+
+    protected function initTimezone()
     {
         if (isset($this->container['timezone'])) {
             date_default_timezone_set($this->container['timezone']);
@@ -139,7 +157,7 @@ class Application extends HttpKernel
     /**
      * @throws \RuntimeException
      */
-    private function initUnicode()
+    protected function initUnicode()
     {
         /** @var EventDispatcher $dispatcher */
         $dispatcher = $this->container['dispatcher'];
@@ -151,7 +169,7 @@ class Application extends HttpKernel
         mb_internal_encoding('UTF-8');
     }
 
-    private function initEnvironment()
+    protected function initEnvironment()
     {
         error_reporting(-1);
         ini_set('display_errors', 1);

@@ -11,8 +11,8 @@
 
 namespace Nameless\Modules\Auth;
 
+use Nameless\Core\Console;
 use Nameless\Core\ModuleProvider as BaseModuleProvider;
-use Nameless\Modules\Auth\User;
 
 /**
  * Auth ModuleProvider class
@@ -28,5 +28,10 @@ class ModuleProvider extends BaseModuleProvider
             return new User($container['session.session'], $container['routes-collection'], $config['access']);
         };
     }
+
+    /**
+     * @param Console $console
+     */
+    public function registerConsole($console) {}
 }
 

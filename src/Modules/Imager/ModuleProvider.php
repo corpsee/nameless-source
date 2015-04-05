@@ -11,6 +11,7 @@
 
 namespace Nameless\Modules\Imager;
 
+use Nameless\Core\Console;
 use Nameless\Core\ModuleProvider as BaseModuleProvider;
 
 /**
@@ -32,4 +33,9 @@ class ModuleProvider extends BaseModuleProvider
             return new Image($container['imager.driver']);
         };
     }
+
+    /**
+     * @param Console $console
+     */
+    public function registerConsole($console) {}
 }

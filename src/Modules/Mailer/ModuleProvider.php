@@ -11,6 +11,7 @@
 
 namespace Nameless\Modules\Mailer;
 
+use Nameless\Core\Console;
 use Nameless\Core\ModuleProvider as BaseModuleProvider;
 
 /**
@@ -38,4 +39,9 @@ class ModuleProvider extends BaseModuleProvider
             return new \Swift_Events_SimpleEventDispatcher();
         };
     }
+
+    /**
+     * @param Console $console
+     */
+    public function registerConsole($console) {}
 }

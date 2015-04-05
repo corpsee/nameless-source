@@ -11,6 +11,7 @@
 
 namespace Nameless\Modules\Logger;
 
+use Nameless\Core\Console;
 use Nameless\Core\ModuleProvider as BaseModuleProvider;
 use Monolog\Handler\StreamHandler;
 
@@ -44,4 +45,9 @@ class ModuleProvider extends BaseModuleProvider
             }
         };
     }
+
+    /**
+     * @param Console $console
+     */
+    public function registerConsole($console) {}
 }

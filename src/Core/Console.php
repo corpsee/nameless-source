@@ -36,7 +36,6 @@ class Console extends BaseApplication
     protected $container;
 
     /**
-     * @param Application $kernel
      * @param string $name
      * @param string $version
      */
@@ -46,29 +45,15 @@ class Console extends BaseApplication
 
         $this->kernel    = $kernel;
         $this->container = $this->kernel->getContainer();
+    }
 
-        $phinx_config = $this->loadPhinxConfig();
-
-        $this->add(
-            (new PhinxCommand\Create())
-                ->setConfig($phinx_config)
-                ->setName('migrations:create')
-        );
-        $this->add(
-            (new PhinxCommand\Migrate())
-                ->setConfig($phinx_config)
-                ->setName('migrations:migrate')
-        );
-        $this->add(
-            (new PhinxCommand\Rollback())
-                ->setConfig($phinx_config)
-                ->setName('migrations:rollback')
-        );
-        $this->add(
-            (new PhinxCommand\Status())
-                ->setConfig($phinx_config)
-                ->setName('migrations:status')
-        );
+    protected function initModules()
+    {
+        if (isset($this->container['modules'])) {
+            foreach ($this->container['modules'] as $module) {
+                $this->kernel->getModuleProvider($module)->registerConsole($this);
+            }
+        }
     }
 
     /**
@@ -77,14 +62,5 @@ class Console extends BaseApplication
     public function getContainer()
     {
         return $this->container;
-    }
-
-    /**
-     * @return PhinxConfig
-     */
-    protected function loadPhinxConfig()
-    {
-        $config = $this->getContainer()['migrations'];
-        return new PhinxConfig($config, '');
     }
 }
