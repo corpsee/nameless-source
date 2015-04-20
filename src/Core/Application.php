@@ -11,6 +11,7 @@
 
 namespace Nameless\Core;
 
+use Psr\Log\LogLevel;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request as BaseRequest;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -61,7 +62,6 @@ class Application extends HttpKernel
         parent::__construct($this->container['dispatcher'], $this->container['resolver']);
     }
 
-    //TODO: Add tests
     /**
      * @return array
      */
@@ -172,7 +172,6 @@ class Application extends HttpKernel
     protected function initEnvironment()
     {
         error_reporting(-1);
-        ini_set('display_errors', 1);
 
         if ($this->container['environment'] === 'debug') {
             ExceptionHandler::register();
@@ -185,10 +184,13 @@ class Application extends HttpKernel
             $this->container['dispatcher']->addSubscriber($listener);
         };
 
-        ErrorHandler::register(null, true);
-
-        ErrorHandler::setLogger($this->container['logger.logger'], 'emergency');
-        ErrorHandler::setLogger($this->container['logger.logger'], 'scream');
+        $handler = ErrorHandler::register(null, true);
+        $handler->setLoggers([
+            LogLevel::EMERGENCY => $this->container['logger.logger'],
+            LogLevel::ALERT     => $this->container['logger.logger'],
+            LogLevel::CRITICAL  => $this->container['logger.logger'],
+            LogLevel::ERROR     => $this->container['logger.logger'],
+        ]);
     }
 
     /**
