@@ -44,6 +44,8 @@ class Console extends BaseApplication
 
         $this->kernel    = $kernel;
         $this->container = $this->kernel->getContainer();
+
+        $this->initModules();
     }
 
     protected function initModules()
