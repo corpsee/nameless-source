@@ -16,7 +16,11 @@
  */
 function pathToURL($path)
 {
-    return str_replace([PUBLIC_PATH, '\\'], ['/', '/'], $path);
+    $unix_public = str_replace('\\', '/', PUBLIC_PATH);
+
+    $path = str_replace('\\', '/', $path);
+    $path = str_replace([$unix_public], '/', $path);
+    return $path;
 }
 
 /**
@@ -26,7 +30,9 @@ function pathToURL($path)
  */
 function URLToPath($path)
 {
-    return PUBLIC_PATH . ltrim($path, '/');
+    $unix_public = str_replace('\\', '/', PUBLIC_PATH);
+
+    return $unix_public . ltrim($path, '/');
 }
 
 /**

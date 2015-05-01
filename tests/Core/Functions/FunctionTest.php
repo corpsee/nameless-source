@@ -6,25 +6,26 @@ class FunctionTest extends \PHPUnit_Framework_TestCase
 {
     public function pathToURLProvider()
     {
-        return array
-        (
-            [PUBLIC_PATH . 'files/path/to/url'],
-            [PUBLIC_PATH . 'files\path\to\url'],
-        );
+        $unix_public = str_replace('\\', '/', PUBLIC_PATH);
+        $win_public  = str_replace('/', '\\', PUBLIC_PATH);
+        return [
+            [$unix_public . 'files/path/to/url'],
+            [$unix_public . 'files\path\to\url'],
+            [$win_public . 'files/path/to/url'],
+            [$win_public . 'files\path\to\url'],
+        ];
     }
 
     public function URLToPathProvider()
     {
-        return array
-        (
+        return [
             ['/files/path/to/url'],
-        );
+        ];
     }
 
     public function stringToArrayProvider()
     {
-        return array
-        (
+        return [
             ['string_part, string_part', 2],
             ['string part, string part', 2],
             ['string_part, string_part,', 2],
@@ -32,17 +33,16 @@ class FunctionTest extends \PHPUnit_Framework_TestCase
             ['', 0],
             [',', 0],
             [' , ', 0],
-        );
+        ];
     }
 
     public function arrayToStringProvider()
     {
-        return array
-        (
+        return [
             [['string', 'string'], 'string, string'],
             [['string'], 'string'],
             [[], ''],
-        );
+        ];
     }
 
     /**
@@ -58,7 +58,9 @@ class FunctionTest extends \PHPUnit_Framework_TestCase
      */
     public function testURLToPath($string)
     {
-        $this->assertEquals(PUBLIC_PATH . 'files/path/to/url', URLToPath($string));
+        $unix_public = str_replace('\\', '/', PUBLIC_PATH);
+
+        $this->assertEquals($unix_public . 'files/path/to/url', URLToPath($string));
     }
 
 
