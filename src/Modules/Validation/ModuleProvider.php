@@ -11,6 +11,7 @@
 
 namespace Nameless\Modules\Validation;
 
+use Nameless\Core\Console;
 use Nameless\Core\ModuleProvider as BaseModuleProvider;
 
 /**
@@ -26,4 +27,9 @@ class ModuleProvider extends BaseModuleProvider
             return new Validator();
         };
     }
+
+    /**
+     * @param Console $console
+     */
+    public function registerConsole($console) {}
 }
