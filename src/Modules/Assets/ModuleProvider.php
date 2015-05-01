@@ -32,5 +32,8 @@ class ModuleProvider extends BaseModuleProvider
     /**
      * @param Console $console
      */
-    public function registerConsole($console) {}
+    public function registerConsole($console)
+    {
+        $console->add((new AssetsCommand()));
+    }
 }

@@ -15,8 +15,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Application as BaseApplication;
 use Phinx\Console\Command as PhinxCommand;
-use Phinx\Config\Config as PhinxConfig;
-
 
 /**
  * Console class
@@ -36,8 +34,9 @@ class Console extends BaseApplication
     protected $container;
 
     /**
-     * @param string $name
-     * @param string $version
+     * @param Application $kernel
+     * @param string      $name
+     * @param string      $version
      */
     public function __construct(Application $kernel, $name = 'UNKNOWN', $version = 'UNKNOWN')
     {
