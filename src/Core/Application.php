@@ -185,12 +185,7 @@ class Application extends HttpKernel
         };
 
         $handler = ErrorHandler::register(null, true);
-        $handler->setLoggers([
-            LogLevel::EMERGENCY => $this->container['logger.logger'],
-            LogLevel::ALERT     => $this->container['logger.logger'],
-            LogLevel::CRITICAL  => $this->container['logger.logger'],
-            LogLevel::ERROR     => $this->container['logger.logger'],
-        ]);
+        $handler->setDefaultLogger($this->container['logger.logger']);
     }
 
     /**
