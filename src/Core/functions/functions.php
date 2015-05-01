@@ -17,10 +17,9 @@
 function pathToURL($path)
 {
     $unix_public = str_replace('\\', '/', PUBLIC_PATH);
+    $path        = str_replace('\\', '/', $path);
 
-    $path = str_replace('\\', '/', $path);
-    $path = str_replace([$unix_public], '/', $path);
-    return $path;
+    return str_replace([$unix_public], '/', $path);
 }
 
 /**
