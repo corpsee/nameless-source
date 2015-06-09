@@ -127,7 +127,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testTrueEmailSimple($string)
     {
         $this->init();
-        $this->assertEmpty($this->validator->validate($string, ['email_simple']));
+        self::assertEmpty($this->validator->validate($string, ['email_simple']));
     }
 
     /**
@@ -136,7 +136,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testFalseEmailSimple($string)
     {
         $this->init();
-        $this->assertArrayHasKey(0, $this->validator->validate($string, ['email_simple']));
+        self::assertArrayHasKey(0, $this->validator->validate($string, ['email_simple']));
     }
 
     /**
@@ -145,7 +145,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testTrueEmail($string)
     {
         $this->init();
-        $this->assertEmpty($this->validator->validate($string, ['email']));
+        self::assertEmpty($this->validator->validate($string, ['email']));
     }
 
     /**
@@ -154,7 +154,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testFalseEmail($string)
     {
         $this->init();
-        $this->assertArrayHasKey(0, $this->validator->validate($string, ['email']));
+        self::assertArrayHasKey(0, $this->validator->validate($string, ['email']));
     }
 
     /**
@@ -163,7 +163,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testTrueNoempty($string)
     {
         $this->init();
-        $this->assertArrayNotHasKey(0, $this->validator->validate($string, ['no_empty']));
+        self::assertArrayNotHasKey(0, $this->validator->validate($string, ['no_empty']));
     }
 
     /**
@@ -172,7 +172,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testFalseNoempty($string)
     {
         $this->init();
-        $this->assertArrayHasKey(0, $this->validator->validate($string, ['no_empty']));
+        self::assertArrayHasKey(0, $this->validator->validate($string, ['no_empty']));
     }
 
     /**
@@ -181,7 +181,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testTrueNumber($string)
     {
         $this->init();
-        $this->assertArrayNotHasKey(0, $this->validator->validate($string, ['number']));
+        self::assertArrayNotHasKey(0, $this->validator->validate($string, ['number']));
     }
 
     /**
@@ -190,6 +190,6 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     public function testFalseNumber($string)
     {
         $this->init();
-        $this->assertArrayHasKey(0, $this->validator->validate($string, ['number']));
+        self::assertArrayHasKey(0, $this->validator->validate($string, ['number']));
     }
 }

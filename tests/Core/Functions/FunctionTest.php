@@ -50,7 +50,7 @@ class FunctionTest extends \PHPUnit_Framework_TestCase
      */
     public function testPathToURL($string)
     {
-        $this->assertEquals('/files/path/to/url', pathToURL($string));
+        self::assertEquals('/files/path/to/url', pathToURL($string));
     }
 
     /**
@@ -60,7 +60,7 @@ class FunctionTest extends \PHPUnit_Framework_TestCase
     {
         $unix_public = str_replace('\\', '/', PUBLIC_PATH);
 
-        $this->assertEquals($unix_public . 'files/path/to/url', URLToPath($string));
+        self::assertEquals($unix_public . 'files/path/to/url', URLToPath($string));
     }
 
 
@@ -69,7 +69,7 @@ class FunctionTest extends \PHPUnit_Framework_TestCase
      */
     public function testStringToArray($string, $count)
     {
-        $this->assertCount($count, stringToArray($string));
+        self::assertCount($count, stringToArray($string));
     }
 
     /**
@@ -77,6 +77,6 @@ class FunctionTest extends \PHPUnit_Framework_TestCase
      */
     public function testArrayToString($array, $string)
     {
-        $this->assertEquals($string, arrayToString($array));
+        self::assertEquals($string, arrayToString($array));
     }
 }
