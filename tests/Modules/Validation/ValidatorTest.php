@@ -16,15 +16,15 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator = new Validator();
     }
 
-    public function noemptyTrueProvider()
+    public function noEmptyTrueProvider()
     {
         return [
-            ['noempty'],
+            ['no_empty'],
             ['.'],
         ];
     }
 
-    public function noemptyFalseProvider()
+    public function noEmptyFalseProvider()
     {
         return [
             [''],
@@ -158,18 +158,18 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider noemptyTrueProvider
+     * @dataProvider noEmptyTrueProvider
      */
-    public function testTrueNoempty($string)
+    public function testTrueNoEmpty($string)
     {
         $this->init();
         self::assertArrayNotHasKey(0, $this->validator->validate($string, ['no_empty']));
     }
 
     /**
-     * @dataProvider noemptyFalseProvider
+     * @dataProvider noEmptyFalseProvider
      */
-    public function testFalseNoempty($string)
+    public function testFalseNoEmpty($string)
     {
         $this->init();
         self::assertArrayHasKey(0, $this->validator->validate($string, ['no_empty']));
