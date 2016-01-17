@@ -12,6 +12,7 @@
 namespace Nameless\Modules\Assets;
 
 use Nameless\Core\Container;
+use Nameless\Utilities\PathHelper;
 
 /**
  * AssetsDispatcher class
@@ -93,7 +94,7 @@ class AssetsDispatcher
         }
         return sprintf(
             $this->templates[$assets_collection->getMetaType()],
-            pathToURL($compiled_path) . '?v=' . $version
+            PathHelper::toURL($compiled_path, PUBLIC_PATH) . '?v=' . $version
         );
     }
 
@@ -135,6 +136,6 @@ class AssetsDispatcher
         if (false === @file_put_contents($compiled_path, $dump)) {
             throw new \RuntimeException('Unable to write file ' . $compiled_path);
         }
-        return pathToURL($compiled_path);
+        return PathHelper::toURL($compiled_path, PUBLIC_PATH);
     }
 }

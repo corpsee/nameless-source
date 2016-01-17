@@ -13,6 +13,8 @@ namespace Nameless\Modules\Assets;
 
 use Assetic\Filter\LessphpFilter;
 use Assetic\Asset\FileAsset;
+use Nameless\Utilities\PathHelper;
+use Nameless\Utilities\UrlHelper;
 
 /**
  * Asset class
@@ -76,7 +78,7 @@ class Asset
             return $this->path;
         }
 
-        $this->path = URLToPath($this->url);
+        $this->path = UrlHelper::toPath($this->url, PUBLIC_PATH);
         return $this->path;
     }
 
@@ -179,7 +181,7 @@ class Asset
         $urls = array_unique($urls_old[1]);
 
         foreach ($urls as $url) {
-            $urls_new[] = "'" . pathToURL(realpath(trim($url, '"\''))) . "'";
+            $urls_new[] = "'" . PathHelper::toURL(realpath(trim($url, '"\'')), PUBLIC_PATH) . "'";
         }
 
         $asset_text = str_replace($urls, $urls_new, $asset_text);

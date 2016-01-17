@@ -11,6 +11,7 @@
 
 namespace Nameless\Core;
 
+use Nameless\Utilities\FileSizeHelper;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
@@ -99,7 +100,7 @@ class NamelessListener implements EventSubscriberInterface
 
             if (!is_null($this->benchmark)) {
                 $total = $this->benchmark->getAppStatistic();
-                $this->logger->info('= Time: ' . $total['time'] . ', Memory: ' . sizeHumanize($total['memory']));
+                $this->logger->info('= Time: ' . $total['time'] . ', Memory: ' . FileSizeHelper::humanize($total['memory']));
             }
         }
     }

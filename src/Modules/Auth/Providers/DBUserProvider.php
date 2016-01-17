@@ -12,6 +12,7 @@
 namespace Nameless\Modules\Auth\Providers;
 
 use Nameless\Modules\Database;
+use Nameless\Utilities\StringHelper;
 
 /**
  * DBUserProvider class
@@ -53,7 +54,7 @@ class DBUserProvider implements UserProviderInterface
         $groups = $this->database->selectOne("SELECT `groups` FROM `users` WHERE `username` = ?", [$user_name]);
 
         if ($groups) {
-            return stringToArray($groups['groups']);
+            return StringHelper::toArray($groups['groups']);
         }
         return false;
     }

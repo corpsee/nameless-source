@@ -1,53 +1,49 @@
 {
-    "name":        "corpsee/nameless-source",
-    "description": "Yet another framework based on Symfony Components.",
-    "type":        "framework",
-    "keywords": [
-        "framework",
-        "nameless"
-    ],
-    "license": "GPL-3.0",
-    "authors": [
-        {
-            "name":     "Corpsee",
-            "email":    "poisoncorpsee@gmail.com",
-            "homepage": "http://corpsee.com",
-            "role":     "Developer"
-        }
-    ],
-    "require": {
-        "php":                       ">=5.4.0",
-        "ext-mbstring":              "*",
+  "name":        "corpsee/nameless-source",
+  "description": "Yet another framework based on Symfony Components.",
+  "type":        "framework",
+  "keywords":    ["framework", "nameless"],
+  "license":     "GPL-3.0",
+  "authors": [
+    {
+      "name":     "Corpsee",
+      "email":    "poisoncorpsee@gmail.com",
+      "homepage": "http://corpsee.com",
+      "role":     "Developer"
+    }
+  ],
+  "require": {
+    "php":          ">=5.4.0",
+    "ext-mbstring": "*",
 
-        "psr/log":                   "1.0.*",
-        "ircmaxell/password-compat": "1.0.*",
-        "pimple/pimple":             "3.0.*",
-        "symfony/http-foundation":   "2.8.*",
-        "symfony/http-kernel":       "2.8.*",
-        "symfony/routing":           "2.8.*",
-        "symfony/event-dispatcher":  "2.8.*",
-        "symfony/debug":             "2.8.*",
-        "symfony/console":           "2.8.*",
-        "swiftmailer/swiftmailer":   "5.4.*",
-        "monolog/monolog":           "1.17.*",
-        "kriswallsmith/assetic":     "1.3.*",
-        "oyejorge/less.php":         "1.7.*",
-        "natxet/CssMin":             "3.0.*",
-        "meenie/javascript-packer":  "1.1.*",
-        "robmorgan/phinx":           "0.5.*"
-    },
-    "require-dev": {
-        "symfony/yaml":    "2.8.*",
-        "phpunit/phpunit": "4.8.*"
-    },
-    "autoload": {
-        "psr-4": {
-            "Nameless\\":        "src",
-            "Nameless\\Tests\\": "tests"
-        },
-        "files": [
-            "src/Core/functions/functions.php"
-        ]
-    },
-    "minimum-stability": "dev"
+    "psr/log":                   "1.0.*",
+    "ircmaxell/password-compat": "1.0.*",
+    "pimple/pimple":             "3.0.*",
+    "symfony/http-foundation":   "2.8.*",
+    "symfony/http-kernel":       "2.8.*",
+    "symfony/routing":           "2.8.*",
+    "symfony/event-dispatcher":  "2.8.*",
+    "symfony/debug":             "2.8.*",
+    "symfony/console":           "2.8.*",
+    "swiftmailer/swiftmailer":   "5.4.*",
+    "monolog/monolog":           "1.17.*",
+    "kriswallsmith/assetic":     "1.3.*",
+    "oyejorge/less.php":         "1.7.*",
+    "natxet/CssMin":             "3.0.*",
+    "meenie/javascript-packer":  "1.1.*",
+    "robmorgan/phinx":           "0.5.*",
+
+    "corpsee/nameless-utilities": "1.0.*"
+  },
+  "require-dev": {
+    "symfony/yaml":    "2.8.*",
+    "phpunit/phpunit": "4.8.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Nameless\\":        "src",
+      "Nameless\\Tests\\": "tests"
+    }
+  },
+  "minimum-stability": "dev"
 }

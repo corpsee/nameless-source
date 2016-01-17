@@ -11,9 +11,6 @@
          bootstrap="./tests/bootstrap.php"
 >
     <testsuites>
-        <testsuite name="Nameless Test Suite">
-            <directory suffix="Test.php">./tests/Core/Functions</directory>
-        </testsuite>
         <testsuite name="Nameless Validation Test Suite">
             <directory suffix="Test.php">./tests/Modules/Validation</directory>
         </testsuite>
