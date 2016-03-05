@@ -34,7 +34,7 @@ class ModuleProvider extends BaseModuleProvider
 
         $this->container['logger.handler'] = function ($container) {
             $config = $container['logger'];
-            return new StreamHandler($config['path'] . $config['name'] . '.log', $container['logger.level']);
+            return new StreamHandler(rtrim($config['path'], '/') . '/' . $config['name'] . '.log', $container['logger.level']);
         };
 
         $this->container['logger.level'] = function ($container) {

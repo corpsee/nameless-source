@@ -2,7 +2,7 @@
 
 return [
     'logger' => [
-        'path' => ROOT_PATH . 'logs/',
+        'path' => ROOT_PATH . 'logs',
         'name' => 'nameless.local',
     ],
 ];
