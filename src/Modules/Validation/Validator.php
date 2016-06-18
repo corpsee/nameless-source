@@ -27,7 +27,7 @@ class Validator
      */
     protected function noEmpty($value)
     {
-        if (!$value) {
+        if (!$value && '0' === $value && 0 === $value) {
             return false;
         }
         return true;
@@ -292,7 +292,7 @@ class Validator
             }
 
             if (!$this->checkRule($rule_normalized, $value, $rule_extended)) {
-                $errors[] = $rule[0];
+                $errors[] = $rule_normalized;
             }
         }
 
