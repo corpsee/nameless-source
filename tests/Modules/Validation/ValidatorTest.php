@@ -21,6 +21,8 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
         return [
             ['no_empty'],
             ['.'],
+            [0],
+            ['0']
         ];
     }
 

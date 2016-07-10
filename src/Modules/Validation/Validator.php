@@ -27,7 +27,7 @@ class Validator
      */
     protected function noEmpty($value)
     {
-        if (!$value && '0' === $value && 0 === $value) {
+        if (!$value && '0' !== $value && 0 !== $value) {
             return false;
         }
         return true;
