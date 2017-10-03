@@ -5,6 +5,8 @@
 [![License](https://img.shields.io/packagist/l/corpsee/nameless-source.svg?label=License&style=flat-square)](https://packagist.org/packages/corpsee/nameless-source)
 [![SensioLabs Insight](https://img.shields.io/sensiolabs/i/d8ab1596-7182-4934-8e86-12d99fffee4b.svg?label=Insight&style=flat-square)](https://insight.sensiolabs.com/projects/d8ab1596-7182-4934-8e86-12d99fffee4b)
 
+**This package is abandoned and no longer maintained.**
+
 Nameless framework
 ==================
 
